@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.domain.Actor
 import com.example.filmly.domain.Film
 import com.example.filmly.domain.Serie
+import com.example.filmly.domain.Trending
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment() {
@@ -20,29 +21,21 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        val filmsRecyclerView = view.rv_topFilmsToday
-        val seriesRecyclerView = view.rv_topSeriesToday
-        val actorsRecyclerView = view.rv_topActorsToday
-
-        filmsRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = TopFilmsAdapter(getFilms())
+        val recyclerView = view.rv_homeLists
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = HomeListsAdapter(getListTrending())
             setHasFixedSize(true)
         }
-
-        seriesRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = TopSeriesAdapter(getSeries())
-            setHasFixedSize(true)
-        }
-
-        actorsRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = TopActorsAdapter(getActors())
-            setHasFixedSize(true)
-        }
-
         return view
+    }
+
+    fun getListTrending(): List<Trending> {
+        val genre01 = Trending("Top Filmes de Hoje", getFilms())
+        val genre02 = Trending("Top Séries de Hoje", getSeries())
+        val genre03 = Trending("Top Atores de Hoje", getActors())
+        val genre04 = Trending("Misturado", getSeries() + getFilms() + getActors())
+        return listOf(genre01, genre02, genre03, genre04)
     }
 
     fun getFilms(): List<Film> {
