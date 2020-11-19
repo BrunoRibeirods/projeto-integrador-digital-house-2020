@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Filmly</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="see_more">Ver mais</string>
+    <string name="top_filmes_today">Top Filmes de Hoje</string>
+    <string name="hello_wil">Olá, Will</string>
+    <string name="top_series_today">Top Series de Hoje</string>
+    <string name="top_actors_today">Top Atores de Hoje</string>
+</resources>
