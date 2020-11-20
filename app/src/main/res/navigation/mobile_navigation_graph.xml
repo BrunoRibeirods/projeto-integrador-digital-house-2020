@@ -9,5 +9,18 @@
         android:id="@+id/homeFragment"
         android:name="com.example.filmly.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_trendingList"
+            app:destination="@id/trendingList" />
+    </fragment>
+    <fragment
+        android:id="@+id/trendingList"
+        android:name="com.example.filmly.TrendingListFragment"
+        android:label="fragment_trending_list"
+        tools:layout="@layout/fragment_trending_list" >
+        <argument
+            android:name="trending"
+            app:argType="com.example.filmly.domain.Trending" />
+    </fragment>
 </navigation>

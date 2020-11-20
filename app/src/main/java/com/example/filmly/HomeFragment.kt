@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.domain.Actor
 import com.example.filmly.domain.Film
@@ -24,7 +25,10 @@ class HomeFragment : Fragment() {
         val recyclerView = view.rv_homeLists
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = HomeListsAdapter(getListTrending())
+            adapter = HomeListsAdapter(getListTrending(), SeeMoreNavigation { trending ->
+                val action = HomeFragmentDirections.actionHomeFragmentToTrendingList(trending)
+                findNavController().navigate(action)
+            })
             setHasFixedSize(true)
         }
         return view

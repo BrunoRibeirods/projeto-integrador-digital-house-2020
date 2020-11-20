@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.filmly.domain.Trending
 import kotlinx.android.synthetic.main.title_and_cards_list_item.view.*
 
-class HomeListsAdapter(val data: List<Trending>) : RecyclerView.Adapter<HomeListsAdapter.HomeListsViewHolder>() {
+class HomeListsAdapter(val data: List<Trending>, val seeMoreNavigation: SeeMoreNavigation) : RecyclerView.Adapter<HomeListsAdapter.HomeListsViewHolder>() {
 
     override fun onBindViewHolder(holder: HomeListsViewHolder, position: Int) {
         val item = data[position]
@@ -20,6 +20,10 @@ class HomeListsAdapter(val data: List<Trending>) : RecyclerView.Adapter<HomeList
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = CardsListAdapter(item.data)
             setHasFixedSize(true)
+        }
+
+        holder.view.tv_seeMore.setOnClickListener {
+            seeMoreNavigation.click(item)
         }
     }
 
@@ -33,5 +37,8 @@ class HomeListsAdapter(val data: List<Trending>) : RecyclerView.Adapter<HomeList
     }
 
     class HomeListsViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+}
 
+class SeeMoreNavigation(val click: (trending: Trending) -> Unit) {
+    fun onClick(trending: Trending) = click(trending)
 }
