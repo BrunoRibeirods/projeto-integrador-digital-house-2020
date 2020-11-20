@@ -27,7 +27,7 @@ class HomeListsAdapter(val data: List<Trending>, val seeMoreNavigation: SeeMoreN
         }
 
         holder.view.tv_seeMore.setOnClickListener {
-            seeMoreNavigation.click(item)
+            seeMoreNavigation.onClick(item)
         }
     }
 
