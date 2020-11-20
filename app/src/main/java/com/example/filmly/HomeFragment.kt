@@ -25,7 +25,7 @@ class HomeFragment : Fragment() {
         val recyclerView = view.rv_homeLists
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = HomeListsAdapter(getListTrending(), SeeMoreNavigation { trending ->
+            adapter = HomeListsAdapter(getListTrending(), HomeListsAdapter.SeeMoreNavigation { trending ->
                 val action = HomeFragmentDirections.actionHomeFragmentToTrendingList(trending)
                 findNavController().navigate(action)
             })

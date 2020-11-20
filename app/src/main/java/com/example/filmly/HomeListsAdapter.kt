@@ -41,8 +41,9 @@ class HomeListsAdapter(val data: List<Trending>, val seeMoreNavigation: SeeMoreN
     }
 
     class HomeListsViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+
+    class SeeMoreNavigation(val click: (trending: Trending) -> Unit) {
+        fun onClick(trending: Trending) = click(trending)
+    }
 }
 
-class SeeMoreNavigation(val click: (trending: Trending) -> Unit) {
-    fun onClick(trending: Trending) = click(trending)
-}
