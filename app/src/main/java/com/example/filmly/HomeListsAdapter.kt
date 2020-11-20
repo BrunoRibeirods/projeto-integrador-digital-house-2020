@@ -3,6 +3,7 @@ package com.example.filmly
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmly.domain.Trending
@@ -18,7 +19,10 @@ class HomeListsAdapter(val data: List<Trending>, val seeMoreNavigation: SeeMoreN
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = CardsListAdapter(item.data)
+            adapter = CardsListAdapter(item.data, CardsListAdapter.CardDetailNavigation { id ->
+                val action = HomeFragmentDirections.actionHomeFragmentToCardDetailFragment(id)
+                findNavController().navigate(action)
+            })
             setHasFixedSize(true)
         }
 

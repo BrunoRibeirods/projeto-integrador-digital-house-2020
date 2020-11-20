@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_trendingList"
             app:destination="@id/trendingList" />
+        <action
+            android:id="@+id/action_homeFragment_to_cardDetailFragment"
+            app:destination="@id/cardDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/trendingList"
@@ -22,5 +25,14 @@
         <argument
             android:name="trending"
             app:argType="com.example.filmly.domain.Trending" />
+    </fragment>
+    <fragment
+        android:id="@+id/cardDetailFragment"
+        android:name="com.example.filmly.domain.CardDetailFragment"
+        android:label="fragment_card_detail"
+        tools:layout="@layout/fragment_card_detail" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
 </navigation>
