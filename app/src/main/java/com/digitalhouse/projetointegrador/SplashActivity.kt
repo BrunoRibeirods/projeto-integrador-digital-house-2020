@@ -16,7 +16,11 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+        animation_logo = AnimationUtils.loadAnimation(this, R.anim.logo_splash_anim)
+        filmly_logo_splashScreen.animation = animation_logo
 
+        animation_dot = AnimationUtils.loadAnimation(this, R.anim.logo_splash_anim)
+        lazy_dot_splashScreen.animation = animation_dot
 
 
         Handler().postDelayed({
