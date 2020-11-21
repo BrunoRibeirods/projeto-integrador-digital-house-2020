@@ -5,6 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/blackFilmly"
+    android:padding="8dp"
+    android:layout_gravity="center"
+    android:gravity="center"
     tools:context=".ViewMoreFragment"
     android:orientation="vertical">
 
