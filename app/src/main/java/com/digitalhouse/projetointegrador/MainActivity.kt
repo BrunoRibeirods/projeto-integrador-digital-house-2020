@@ -1,7 +1,9 @@
 package com.digitalhouse.projetointegrador
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,5 +17,15 @@ class MainActivity : AppCompatActivity() {
             addToBackStack(null)
             commit()
         }
+
+        val fragment2 = FavoriteListsFragment.newInstance()
+
+        Handler().postDelayed({
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_main_test, fragment2)
+                addToBackStack(null)
+                commit()
+            }
+        }, 5000)
     }
 }
