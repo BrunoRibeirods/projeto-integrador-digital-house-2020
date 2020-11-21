@@ -13,4 +13,20 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="filmly">
+
+        <item name="android:textSize">48sp</item>
+
+        <item name="android:textColor">#FFCC18</item>
+
+        <item name="android:shadowColor">#59FFCC18</item>
+
+        <item name="android:shadowDx">0</item>
+
+        <item name="android:shadowDy">4</item>
+
+        <item name="android:shadowRadius">4</item>
+
+    </style>
 </resources>
