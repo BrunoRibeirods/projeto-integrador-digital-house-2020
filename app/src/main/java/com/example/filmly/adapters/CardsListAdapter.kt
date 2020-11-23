@@ -1,9 +1,10 @@
-package com.example.filmly
+package com.example.filmly.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.filmly.R
 import com.example.filmly.domain.Card
 import kotlinx.android.synthetic.main.cards_list_item.view.*
 

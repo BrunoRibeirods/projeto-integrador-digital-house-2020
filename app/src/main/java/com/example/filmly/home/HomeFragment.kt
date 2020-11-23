@@ -1,4 +1,4 @@
-package com.example.filmly
+package com.example.filmly.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.filmly.R
+import com.example.filmly.adapters.HomeListsAdapter
 import com.example.filmly.domain.Actor
 import com.example.filmly.domain.Film
+import com.example.filmly.domain.HeadLists
 import com.example.filmly.domain.Serie
-import com.example.filmly.domain.Trending
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment() {
@@ -34,11 +36,11 @@ class HomeFragment : Fragment() {
         return view
     }
 
-    fun getListTrending(): List<Trending> {
-        val genre01 = Trending("Top Filmes de Hoje", getFilms())
-        val genre02 = Trending("Top Séries de Hoje", getSeries())
-        val genre03 = Trending("Top Atores de Hoje", getActors())
-        val genre04 = Trending("Misturado", getSeries() + getFilms() + getActors())
+    fun getListTrending(): List<HeadLists> {
+        val genre01 = HeadLists("Top Filmes de Hoje", getFilms())
+        val genre02 = HeadLists("Top Séries de Hoje", getSeries())
+        val genre03 = HeadLists("Top Atores de Hoje", getActors())
+        val genre04 = HeadLists("Misturado", getSeries() + getFilms() + getActors())
         return listOf(genre01, genre02, genre03, genre04)
     }
 
