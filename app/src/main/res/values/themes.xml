@@ -23,4 +23,20 @@
         <item name="android:colorActivatedHighlight">@color/white</item>
     </style>
 
+    <style name="Theme.Filmly.Overlay.Button" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/gray900</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="Theme.Filmly.Overlay.Button.Yellow" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/yellow</item>
+        <item name="colorOnPrimary">@color/black</item>
+    </style>
+
+    <style name="Widget.Filmly.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAlignment">textStart</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="colorPrimary">@color/gray900</item>
+    </style>
+
 </resources>
