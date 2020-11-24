@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.R
 import com.example.filmly.adapters.HomeListsAdapter
@@ -20,6 +21,10 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        view.civ_profileImage.setOnClickListener {
+            findNavController().navigate(R.id.profileFragment)
+        }
 
         val recyclerView = view.rv_homeLists
         recyclerView.apply {

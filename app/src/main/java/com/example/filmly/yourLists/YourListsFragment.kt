@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.R
 import com.example.filmly.adapters.YourListsAdapter
@@ -24,6 +25,10 @@ class YourListsFragment : Fragment() {
         // Inflate the layout for this fragment
 
         val view = inflater.inflate(R.layout.fragment_your_lists, container, false)
+
+        view.civ_profileImage.setOnClickListener {
+            findNavController().navigate(R.id.profileFragment)
+        }
 
         view.rv_yourLists.apply {
             adapter = YourListsAdapter(getLists(), YourListsAdapter.SeeMoreNavigation { headLists ->
