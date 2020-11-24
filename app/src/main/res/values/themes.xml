@@ -18,4 +18,9 @@
         <item name="itemIconTint">@color/icon_colors</item>
     </style>
 
+    <style name="Widget.Filmly.SearchView" parent="Widget.AppCompat.SearchView">
+        <item name="android:colorAccent">@color/white</item>
+        <item name="android:colorActivatedHighlight">@color/white</item>
+    </style>
+
 </resources>

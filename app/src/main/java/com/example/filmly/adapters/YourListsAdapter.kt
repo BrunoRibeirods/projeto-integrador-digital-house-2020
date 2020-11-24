@@ -8,15 +8,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmly.R
 import com.example.filmly.domain.HeadLists
-import com.example.filmly.search.SearchFragmentDirections
+import com.example.filmly.yourLists.YourListsFragmentDirections
 import kotlinx.android.synthetic.main.title_and_cards_list_item.view.*
 
-class SearchListsAdapter(
+class YourListsAdapter(
     val data: List<HeadLists>,
     val seeMoreNavigation: SeeMoreNavigation
-) : RecyclerView.Adapter<SearchListsAdapter.HeadSearchViewHolder>() {
+) : RecyclerView.Adapter<YourListsAdapter.HeadYourListsViewHolder>() {
 
-    override fun onBindViewHolder(holder: HeadSearchViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HeadYourListsViewHolder, position: Int) {
         val item = data[position]
 
         holder.view.tv_titleMessage.text = item.titleMessage
@@ -25,7 +25,7 @@ class SearchListsAdapter(
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = CardsListAdapter(item.data, CardsListAdapter.CardDetailNavigation { id ->
-                val action = SearchFragmentDirections.actionSearchFragmentToCardDetailFragment(id)
+                val action = YourListsFragmentDirections.actionYourListsFragmentToCardDetailFragment(id)
                 findNavController().navigate(action)
             })
             setHasFixedSize(true)
@@ -36,17 +36,19 @@ class SearchListsAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeadSearchViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeadYourListsViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.title_and_cards_list_item, parent, false)
-        return HeadSearchViewHolder(view)
+        return HeadYourListsViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
-    class HeadSearchViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
-    class SeeMoreNavigation(val click: (headLists: HeadLists) -> Unit) {
+    class HeadYourListsViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+
+    class SeeMoreNavigation(val click: (HeadLists) -> Unit) {
         fun onClick(headLists: HeadLists) = click(headLists)
     }
+
 }

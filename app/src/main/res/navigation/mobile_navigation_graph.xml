@@ -56,5 +56,12 @@
         android:id="@+id/yourListsFragment"
         android:name="com.example.filmly.yourLists.YourListsFragment"
         android:label="fragment_your_lists"
-        tools:layout="@layout/fragment_your_lists" />
+        tools:layout="@layout/fragment_your_lists" >
+        <action
+            android:id="@+id/action_yourListsFragment_to_listsFragment"
+            app:destination="@id/listsFragment" />
+        <action
+            android:id="@+id/action_yourListsFragment_to_cardDetailFragment"
+            app:destination="@id/cardDetailFragment" />
+    </fragment>
 </navigation>

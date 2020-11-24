@@ -7,14 +7,34 @@
     android:background="@color/black101010"
     tools:context=".search.SearchFragment">
 
-    <androidx.appcompat.widget.SearchView
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_search_24"
+        app:layout_constraintBottom_toBottomOf="@+id/searchView"
+        app:layout_constraintEnd_toEndOf="@+id/searchView"
+        app:layout_constraintTop_toTopOf="@+id/searchView" />
+
+    <EditText
         android:id="@+id/searchView"
+        android:inputType="text"
+        android:maxLength="30"
+        android:maxLines="1"
+        android:maxHeight="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="8dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="16dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:hint="Buscar"
+        android:textColor="@color/white"
+        android:textColorHint="@color/gray"
+        android:backgroundTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+    </EditText>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_searchResults"
@@ -22,6 +42,7 @@
         android:layout_height="0dp"
         tools:listitem="@layout/title_and_cards_list_item"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
