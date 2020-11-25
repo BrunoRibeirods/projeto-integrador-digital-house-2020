@@ -1,9 +1,9 @@
-package com.digitalhouse.filmly.ui.login
+package com.example.filmly.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.digitalhouse.filmly.data.LoginDataSource
-import com.digitalhouse.filmly.data.LoginRepository
+import com.example.filmly.data.LoginDataSource
+import com.example.filmly.data.LoginRepository
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.

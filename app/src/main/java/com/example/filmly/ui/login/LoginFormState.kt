@@ -1,4 +1,4 @@
-package com.digitalhouse.filmly.ui.login
+package com.example.filmly.ui.login
 
 /**
  * Data validation state of the login form.

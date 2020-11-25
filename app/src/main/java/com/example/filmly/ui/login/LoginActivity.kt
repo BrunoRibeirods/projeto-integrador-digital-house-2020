@@ -1,4 +1,4 @@
-package com.digitalhouse.filmly.ui.login
+package com.example.filmly.ui.login
 
 import android.app.Activity
 import androidx.lifecycle.Observer
@@ -15,7 +15,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 
-import com.digitalhouse.filmly.R
+import com.example.filmly.R
 
 class LoginActivity : AppCompatActivity() {
 

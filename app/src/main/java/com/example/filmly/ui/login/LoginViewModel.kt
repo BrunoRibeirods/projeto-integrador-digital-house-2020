@@ -1,13 +1,13 @@
-package com.digitalhouse.filmly.ui.login
+package com.example.filmly.ui.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
-import com.digitalhouse.filmly.data.LoginRepository
-import com.digitalhouse.filmly.data.Result
+import com.example.filmly.data.LoginRepository
+import com.example.filmly.data.Result
 
-import com.digitalhouse.filmly.R
+import com.example.filmly.R
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 

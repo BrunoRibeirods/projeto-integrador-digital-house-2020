@@ -1,6 +1,6 @@
-package com.digitalhouse.filmly.data
+package com.example.filmly.data
 
-import com.digitalhouse.filmly.data.model.LoggedInUser
+import com.example.filmly.data.model.LoggedInUser
 
 /**
  * Class that requests authentication and user information from the remote data source and

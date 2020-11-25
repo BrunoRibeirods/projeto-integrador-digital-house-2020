@@ -1,4 +1,4 @@
-package com.digitalhouse.filmly.data
+package com.example.filmly.data
 
 /**
  * A generic class that holds a value with its loading status.

@@ -1,6 +1,6 @@
-package com.digitalhouse.filmly.data
+package com.example.filmly.data
 
-import com.digitalhouse.filmly.data.model.LoggedInUser
+import com.example.filmly.data.model.LoggedInUser
 import java.io.IOException
 
 /**

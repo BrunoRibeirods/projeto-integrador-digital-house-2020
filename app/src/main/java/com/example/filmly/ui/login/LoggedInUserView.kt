@@ -1,4 +1,4 @@
-package com.digitalhouse.filmly.ui.login
+package com.example.filmly.ui.login
 
 /**
  * User details post authentication that is exposed to the UI
