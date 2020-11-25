@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmly.R
 import com.example.filmly.domain.Card
+import com.example.filmly.domain.CardDetail
 import kotlinx.android.synthetic.main.item_view_more.view.*
 
 class ViewMoreAdapter(private val listaDeCards: List<Card>, val cardNavigation: CardDetailNavigation): RecyclerView.Adapter<ViewMoreAdapter.CardListViewHolder>() {
@@ -18,11 +19,12 @@ class ViewMoreAdapter(private val listaDeCards: List<Card>, val cardNavigation: 
 
     override fun onBindViewHolder(holder: CardListViewHolder, position: Int) {
         val currentItem = listaDeCards[position]
+        val cardDetail = CardDetail(currentItem.name, currentItem.image, currentItem.descricao)
 
         holder.title.text = currentItem.name
         holder.imgCard.setImageResource(currentItem.image)
         holder.cardFull.setOnClickListener {
-            cardNavigation.onClick(currentItem.id)
+            cardNavigation.onClick(cardDetail)
         }
     }
 
@@ -34,8 +36,7 @@ class ViewMoreAdapter(private val listaDeCards: List<Card>, val cardNavigation: 
         val cardFull = itemView.card_item_view_more
     }
 
-    class CardDetailNavigation(val click: (Int) -> Unit) {
-        fun onClick(id: Int) = click(id)
+    class CardDetailNavigation(val click: (CardDetail) -> Unit) {
+        fun onClick(card: CardDetail) = click(card)
     }
-
 }

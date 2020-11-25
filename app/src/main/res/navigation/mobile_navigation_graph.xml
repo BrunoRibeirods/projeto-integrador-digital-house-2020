@@ -23,8 +23,8 @@
         android:label="fragment_card_detail"
         tools:layout="@layout/fragment_card_detail" >
         <argument
-            android:name="id"
-            app:argType="integer" />
+            android:name="detail"
+            app:argType="com.example.filmly.domain.CardDetail" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
