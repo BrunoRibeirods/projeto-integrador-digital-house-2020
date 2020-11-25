@@ -11,15 +11,16 @@
         android:theme="@style/Theme.Filmly">
       
         <activity android:name="com.example.filmly.SplashActivity" android:theme="@style/SplashTheme">
-        
-        <activity android:name=".MainActivity"
-            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustNothing" />
           
     </application>
 

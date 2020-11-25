@@ -11,20 +11,11 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_trendingList"
-            app:destination="@id/listsFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_cardDetailFragment"
             app:destination="@id/cardDetailFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/listsFragment"
-        android:name="com.example.filmly.ListsFragment"
-        android:label="fragment_lists"
-        tools:layout="@layout/fragment_lists" >
-        <argument
-            android:name="headLists"
-            app:argType="com.example.filmly.domain.HeadLists" />
+        <action
+            android:id="@+id/action_homeFragment_to_viewMoreFragment"
+            app:destination="@id/viewMoreFragment" />
     </fragment>
     <fragment
         android:id="@+id/cardDetailFragment"
@@ -44,8 +35,8 @@
             android:id="@+id/action_searchFragment_to_cardDetailFragment"
             app:destination="@id/cardDetailFragment" />
         <action
-            android:id="@+id/action_searchFragment_to_ListsFragment"
-            app:destination="@id/listsFragment" />
+            android:id="@+id/action_searchFragment_to_viewMoreFragment"
+            app:destination="@id/viewMoreFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -58,10 +49,37 @@
         android:label="fragment_your_lists"
         tools:layout="@layout/fragment_your_lists" >
         <action
-            android:id="@+id/action_yourListsFragment_to_listsFragment"
-            app:destination="@id/listsFragment" />
-        <action
             android:id="@+id/action_yourListsFragment_to_cardDetailFragment"
+            app:destination="@id/cardDetailFragment" />
+        <action
+            android:id="@+id/action_yourListsFragment_to_viewMoreFragment"
+            app:destination="@id/viewMoreFragment" />
+        <action
+            android:id="@+id/action_yourListsFragment_to_favoriteListsFragment"
+            app:destination="@id/favoriteListsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewMoreFragment"
+        android:name="com.example.filmly.ViewMoreFragment"
+        android:label="fragment_view_more"
+        tools:layout="@layout/fragment_view_more" >
+        <argument
+            android:name="headList"
+            app:argType="com.example.filmly.domain.HeadLists" />
+        <action
+            android:id="@+id/action_viewMoreFragment_to_cardDetailFragment"
+            app:destination="@id/cardDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteListsFragment"
+        android:name="com.example.filmly.FavoriteListsFragment"
+        android:label="fragment_favorite_lists"
+        tools:layout="@layout/fragment_favorite_lists" >
+        <argument
+            android:name="headList"
+            app:argType="com.example.filmly.domain.HeadLists" />
+        <action
+            android:id="@+id/action_favoriteListsFragment_to_cardDetailFragment"
             app:destination="@id/cardDetailFragment" />
     </fragment>
 </navigation>
