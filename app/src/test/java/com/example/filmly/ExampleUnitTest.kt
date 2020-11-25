@@ -1,4 +1,4 @@
-package com.digitalhouse.projetointegrador
+package com.example.filmly
 
 import org.junit.Test
 

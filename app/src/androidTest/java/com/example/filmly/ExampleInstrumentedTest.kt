@@ -1,4 +1,4 @@
-package com.digitalhouse.projetointegrador
+package com.example.filmly
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -1,4 +1,4 @@
-package com.digitalhouse.projetointegrador.domain
+package com.example.filmly.domain
 
 data class ViewMoreCard(
     val id: Int,

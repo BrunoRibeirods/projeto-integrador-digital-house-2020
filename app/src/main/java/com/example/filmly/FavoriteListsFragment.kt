@@ -1,4 +1,4 @@
-package com.digitalhouse.projetointegrador
+package com.example.filmly
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.digitalhouse.projetointegrador.domain.ViewMoreCard
+import com.example.filmly.domain.ViewMoreCard
 
 
 class FavoriteListsFragment : Fragment() {

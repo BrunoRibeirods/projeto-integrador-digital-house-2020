@@ -1,10 +1,10 @@
-package com.digitalhouse.projetointegrador
+package com.example.filmly
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.digitalhouse.projetointegrador.domain.ViewMoreCard
+import com.example.filmly.domain.ViewMoreCard
 import kotlinx.android.synthetic.main.item_view_more.view.*
 
 class ViewMoreAdapter(private val listaDeCards: List<ViewMoreCard>): RecyclerView.Adapter<ViewMoreAdapter.CardListViewHolder>() {
