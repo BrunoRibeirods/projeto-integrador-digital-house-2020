@@ -12,6 +12,14 @@
     <string name="login">"Login"</string>
     <string name="remember">"Lembrar de mim"</string>
     <string name="or">"Ou"</string>
-    <string name="lost_password"><u>Esqueceu sua senha?</u></string>
-    <string name="new_account">Não possui uma conta? <font color="#FFCC18">Crie uma.</font></string>
+    <string name="lost_password">
+        <u>Esqueceu sua senha?</u>
+    </string>
+    <string name="new_account">Não possui uma conta?
+        <font color="#FFCC18">Crie uma.</font>
+    </string>
+    <string name="create_account">"Criar Conta"</string>
+    <string name="name">Nome</string>
+    <string name="password2">Confirmar Senha</string>
+    <string name="or_create">Ou criar conta com</string>
 </resources>
