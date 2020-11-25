@@ -1,5 +1,29 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
+    
+    <style name="filmly">
+
+        <item name="android:textSize">48sp</item>
+
+        <item name="android:textColor">#FFCC18</item>
+
+        <item name="android:shadowColor">#59FFCC18</item>
+
+        <item name="android:shadowDx">0</item>
+
+        <item name="android:shadowDy">4</item>
+
+        <item name="android:shadowRadius">4</item>
+
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">@font/lato</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Theme.Filmly" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/black</item>
@@ -38,5 +62,6 @@
         <item name="cornerRadius">10dp</item>
         <item name="colorPrimary">@color/gray900</item>
     </style>
+
 
 </resources>

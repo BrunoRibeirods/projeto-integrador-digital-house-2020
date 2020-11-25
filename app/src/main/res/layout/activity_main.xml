@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <fragment
         android:id="@+id/navHostFragment_MainActivity"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -29,5 +30,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         style="@style/Widget.App.BottomNavigationView"
         />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
