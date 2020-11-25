@@ -1,12 +1,11 @@
-package com.example.filmly
+package com.example.filmly.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.filmly.adapters.CardsListAdapter
+import com.example.filmly.R
 import com.example.filmly.domain.Card
-import com.example.filmly.domain.ViewMoreCard
 import kotlinx.android.synthetic.main.item_view_more.view.*
 
 class ViewMoreAdapter(private val listaDeCards: List<Card>, val cardNavigation: CardDetailNavigation): RecyclerView.Adapter<ViewMoreAdapter.CardListViewHolder>() {
