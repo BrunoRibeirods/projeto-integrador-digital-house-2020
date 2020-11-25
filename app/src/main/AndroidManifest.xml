@@ -9,28 +9,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Filmly">
-      
-        <activity android:name="com.example.filmly.SplashActivity" android:theme="@style/SplashTheme">
+
+        <activity
+            android:name="com.example.filmly.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-      
-      <activity android:name=".ui.lostpassword.LostPasswordActivity" android:theme="@style/LoginTheme">
-        </activity>
-        <activity android:name=".ui.register.RegisterActivity" android:theme="@style/LoginTheme">
-        </activity>
-      <activity
-                android:name=".ui.login.LoginActivity"
-                android:theme="@style/LoginTheme"
-        </activity>
 
         <activity
-            android:name=".MainActivity"
-            android:windowSoftInputMode="adjustNothing" />
-          
+            android:name=".ui.lostpassword.LostPasswordActivity"
+            android:theme="@style/LoginTheme"></activity>
+        <activity
+            android:name=".ui.register.RegisterActivity"
+            android:theme="@style/LoginTheme"></activity>
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:theme="@style/LoginTheme" />
+        <activity
+        android:name=".MainActivity"
+        android:windowSoftInputMode="adjustNothing" />
     </application>
-
 </manifest>
