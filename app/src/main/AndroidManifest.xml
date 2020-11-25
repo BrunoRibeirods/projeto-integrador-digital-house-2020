@@ -9,6 +9,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/LoginTheme">
+        <activity android:name=".ui.lostpassword.LostPasswordActivity">
+        </activity>
         <activity android:name=".ui.register.RegisterActivity">
         </activity>
         <activity

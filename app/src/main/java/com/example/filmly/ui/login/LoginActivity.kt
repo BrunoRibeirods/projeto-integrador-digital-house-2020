@@ -17,6 +17,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 
 import com.example.filmly.R
+import com.example.filmly.ui.lostpassword.LostPasswordActivity
 import com.example.filmly.ui.register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -100,6 +101,11 @@ class LoginActivity : AppCompatActivity() {
 
             newAccount.setOnClickListener {
                 val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+                startActivity(intent)
+            }
+
+            lost_password.setOnClickListener {
+                val intent = Intent(this@LoginActivity, LostPasswordActivity::class.java)
                 startActivity(intent)
             }
         }

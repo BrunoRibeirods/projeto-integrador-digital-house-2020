@@ -60,7 +60,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="text"
                             android:selectAllOnFocus="true"
-                    />
+                            android:textColor="@android:color/black"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </androidx.cardview.widget.CardView>
 
@@ -87,7 +87,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="textEmailAddress"
                             android:selectAllOnFocus="true"
-                    />
+                            android:textColor="@android:color/black"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </androidx.cardview.widget.CardView>
 
@@ -116,7 +116,7 @@
                             android:imeOptions="actionDone"
                             android:inputType="textPassword"
                             android:selectAllOnFocus="true"
-                    />
+                            android:textColor="@android:color/black"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </androidx.cardview.widget.CardView>
 
@@ -145,7 +145,7 @@
                             android:imeOptions="actionDone"
                             android:inputType="textPassword"
                             android:selectAllOnFocus="true"
-                    />
+                            android:textColor="@android:color/black"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </androidx.cardview.widget.CardView>
 

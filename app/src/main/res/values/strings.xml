@@ -22,4 +22,6 @@
     <string name="name">Nome</string>
     <string name="password2">Confirmar Senha</string>
     <string name="or_create">Ou criar conta com</string>
+    <string name="lost_pass">Recuperar Senha</string>
+    <string name="lost_pass_send">Enviar e-mail de recuperação</string>
 </resources>
