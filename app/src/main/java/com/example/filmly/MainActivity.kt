@@ -1,30 +1,24 @@
 package com.example.filmly
 
-import androidx.appcompat.app.AppCompatActivity
+
 import android.os.Bundle
-import android.os.Handler
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
+import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val fragment = ViewMoreFragment.newInstance()
+        setNavigationController()
+    }
 
-        supportFragmentManager.beginTransaction().apply {
-            add(R.id.fl_main_test, fragment)
-            addToBackStack(null)
-            commit()
-        }
+    fun setNavigationController() {
+        val navController = findNavController(R.id.navHostFragment_MainActivity)
+        bottom_navigation.setupWithNavController(navController)
 
-        val fragment2 = FavoriteListsFragment.newInstance()
-
-        Handler().postDelayed({
-            supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fl_main_test, fragment2)
-                addToBackStack(null)
-                commit()
-            }
-        }, 5000)
     }
 }

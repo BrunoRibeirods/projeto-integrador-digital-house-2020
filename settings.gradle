@@ -1,2 +1,4 @@
 include ':app'
-rootProject.name = "Projeto Integrador"
+
+rootProject.name = "Filmly"
+
