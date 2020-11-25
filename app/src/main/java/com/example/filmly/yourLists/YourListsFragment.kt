@@ -32,7 +32,7 @@ class YourListsFragment : Fragment() {
 
         view.rv_yourLists.apply {
             adapter = YourListsAdapter(getLists(), YourListsAdapter.SeeMoreNavigation { headLists ->
-                val action = YourListsFragmentDirections.actionYourListsFragmentToListsFragment(headLists)
+                val action = YourListsFragmentDirections.actionYourListsFragmentToFavoriteListsFragment(headLists)
                 findNavController().navigate(action)
             })
             layoutManager = LinearLayoutManager(context)

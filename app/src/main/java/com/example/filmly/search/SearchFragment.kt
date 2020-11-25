@@ -27,7 +27,7 @@ class SearchFragment : Fragment() {
         view.rv_searchResults.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = SearchListsAdapter(getResultsLists(), SearchListsAdapter.SeeMoreNavigation { headLists ->
-                val action = SearchFragmentDirections.actionSearchFragmentToListsFragment(headLists)
+                val action = SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
                 findNavController().navigate(action)
             })
 

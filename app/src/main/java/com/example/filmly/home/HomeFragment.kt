@@ -30,7 +30,7 @@ class HomeFragment : Fragment() {
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = HomeListsAdapter(getListTrending(), HomeListsAdapter.SeeMoreNavigation { trending ->
-                val action = HomeFragmentDirections.actionHomeFragmentToTrendingList(trending)
+                val action = HomeFragmentDirections.actionHomeFragmentToViewMoreFragment(trending)
                 findNavController().navigate(action)
             })
             setHasFixedSize(true)
@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
     }
 
     fun getListTrending(): List<HeadLists> {
-        val genre01 = HeadLists("Top Filmes de Hoje", getFilms())
+        val genre01 = HeadLists("Top Filmes de Hoje", getFilms() + getFilms())
         val genre02 = HeadLists("Top Séries de Hoje", getSeries())
         val genre03 = HeadLists("Top Atores de Hoje", getActors())
         val genre04 = HeadLists("Terror", getHorror() + getHorror())

@@ -13,6 +13,7 @@
     tools:context=".FavoriteListsFragment">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_favoriteLists"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:title="Series Favoritas"
