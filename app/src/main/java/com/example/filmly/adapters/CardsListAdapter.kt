@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmly.R
 import com.example.filmly.domain.Card
+import com.example.filmly.domain.CardDetail
 import kotlinx.android.synthetic.main.cards_list_item.view.*
 
 class CardsListAdapter(val data: List<Card>, val cardNavigation: CardDetailNavigation) : RecyclerView.Adapter<CardsListAdapter.CardsListViewHolder>() {
@@ -19,8 +20,9 @@ class CardsListAdapter(val data: List<Card>, val cardNavigation: CardDetailNavig
         val item = data[position]
         holder.view.iv_cardImage.setImageResource(item.image)
 
+        val cardDetail = CardDetail(item.name, item.image, item.descricao)
         holder.view.iv_cardImage.setOnClickListener {
-            cardNavigation.onClick(item.id)
+            cardNavigation.onClick(cardDetail)
         }
     }
 
@@ -28,7 +30,7 @@ class CardsListAdapter(val data: List<Card>, val cardNavigation: CardDetailNavig
 
     class CardsListViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
-    class CardDetailNavigation(val click: (Int) -> Unit) {
-        fun onClick(id: Int) = click(id)
+    class CardDetailNavigation(val click: (CardDetail) -> Unit) {
+        fun onClick(card: CardDetail) = click(card)
     }
 }

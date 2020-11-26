@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.filmly.domain.CardDetail
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
 
 class CardDetailFragment : Fragment() {
@@ -16,8 +17,11 @@ class CardDetailFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_card_detail, container, false)
 
-        val id = arguments?.getInt("id")
-        view.tv_cardId.text = "Make a Retrofit Request with this ID: $id"
+        val detail = arguments?.getSerializable("detail") as CardDetail
+
+        view.tv_titleDetail.text = detail.title
+        view.iv_cardDetailImage.setImageResource(detail.cardImage)
+        view.tv_sinopseCardDetail.text = detail.sinopse
 
         return view
     }

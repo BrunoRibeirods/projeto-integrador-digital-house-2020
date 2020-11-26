@@ -8,9 +8,8 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.filmly.adapters.ViewMoreAdapter
 import com.example.filmly.domain.HeadLists
-import com.example.filmly.domain.ViewMoreCard
-import kotlinx.android.synthetic.main.fragment_favorite_lists.view.*
 import kotlinx.android.synthetic.main.fragment_view_more.view.*
 
 

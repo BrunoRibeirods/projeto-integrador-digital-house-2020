@@ -23,8 +23,8 @@
         android:label="fragment_card_detail"
         tools:layout="@layout/fragment_card_detail" >
         <argument
-            android:name="id"
-            app:argType="integer" />
+            android:name="detail"
+            app:argType="com.example.filmly.domain.CardDetail" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -52,9 +52,6 @@
             android:id="@+id/action_yourListsFragment_to_cardDetailFragment"
             app:destination="@id/cardDetailFragment" />
         <action
-            android:id="@+id/action_yourListsFragment_to_viewMoreFragment"
-            app:destination="@id/viewMoreFragment" />
-        <action
             android:id="@+id/action_yourListsFragment_to_favoriteListsFragment"
             app:destination="@id/favoriteListsFragment" />
     </fragment>
@@ -72,9 +69,9 @@
     </fragment>
     <fragment
         android:id="@+id/favoriteListsFragment"
-        android:name="com.example.filmly.FavoriteListsFragment"
+        android:name="com.example.filmly.yourLists.ViewMoreYourListsFragment"
         android:label="fragment_favorite_lists"
-        tools:layout="@layout/fragment_favorite_lists" >
+        tools:layout="@layout/fragment_view_more_your_lists" >
         <argument
             android:name="headList"
             app:argType="com.example.filmly.domain.HeadLists" />
