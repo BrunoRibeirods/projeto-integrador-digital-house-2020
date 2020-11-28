@@ -7,8 +7,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmly.R
-import com.example.filmly.domain.HeadLists
-import com.example.filmly.home.HomeFragmentDirections
+import com.example.filmly.data.model.HeadLists
+import com.example.filmly.ui.home.HomeFragmentDirections
 import kotlinx.android.synthetic.main.title_and_cards_list_item.view.*
 
 class HomeListsAdapter(val data: List<HeadLists>, val seeMoreNavigation: SeeMoreNavigation) : RecyclerView.Adapter<HomeListsAdapter.HomeListsViewHolder>() {

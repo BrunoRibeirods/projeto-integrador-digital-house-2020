@@ -1,11 +1,12 @@
-package com.example.filmly
+package com.example.filmly.ui.cardDetail
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.filmly.domain.CardDetail
+import com.example.filmly.R
+import com.example.filmly.data.model.CardDetail
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
 
 class CardDetailFragment : Fragment() {

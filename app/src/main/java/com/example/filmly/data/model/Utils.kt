@@ -1,4 +1,4 @@
-package com.example.filmly.domain
+package com.example.filmly.data.model
 
 import com.example.filmly.R
 

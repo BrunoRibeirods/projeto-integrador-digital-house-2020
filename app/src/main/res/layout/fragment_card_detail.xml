@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black101010"
-    tools:context=".CardDetailFragment">
+    tools:context=".ui.cardDetail.CardDetailFragment">
 
     <ImageView
         android:src="@drawable/mr_robot"
@@ -19,7 +19,7 @@
 
     <LinearLayout
         android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="48dp"
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

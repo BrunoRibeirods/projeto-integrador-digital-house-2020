@@ -1,4 +1,4 @@
-package com.example.filmly.yourLists
+package com.example.filmly.ui.yourLists
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,10 +10,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.R
 import com.example.filmly.adapters.YourListsAdapter
-import com.example.filmly.domain.HeadLists
-import com.example.filmly.domain.getActors
-import com.example.filmly.domain.getFilms
-import com.example.filmly.domain.getSeries
+import com.example.filmly.data.model.HeadLists
+import com.example.filmly.data.model.getActors
+import com.example.filmly.data.model.getFilms
+import com.example.filmly.data.model.getSeries
 import kotlinx.android.synthetic.main.fragment_your_lists.view.*
 
 class YourListsFragment : Fragment() {
@@ -32,7 +32,10 @@ class YourListsFragment : Fragment() {
 
         view.rv_yourLists.apply {
             adapter = YourListsAdapter(getLists(), YourListsAdapter.SeeMoreNavigation { headLists ->
-                val action = YourListsFragmentDirections.actionYourListsFragmentToFavoriteListsFragment(headLists)
+                val action =
+                    YourListsFragmentDirections.actionYourListsFragmentToFavoriteListsFragment(
+                        headLists
+                    )
                 findNavController().navigate(action)
             })
             layoutManager = LinearLayoutManager(context)

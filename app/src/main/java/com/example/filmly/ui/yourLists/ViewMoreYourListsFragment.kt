@@ -1,4 +1,4 @@
-package com.example.filmly.yourLists
+package com.example.filmly.ui.yourLists
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.example.filmly.R
 import com.example.filmly.adapters.ViewMoreAdapter
-import com.example.filmly.domain.HeadLists
+import com.example.filmly.data.model.HeadLists
 import kotlinx.android.synthetic.main.fragment_view_more_your_lists.view.*
 
 
@@ -35,7 +35,9 @@ class ViewMoreYourListsFragment : Fragment() {
         }
         rc_favorite.adapter = ViewMoreAdapter(args.data, ViewMoreAdapter.CardDetailNavigation{
             val action =
-                ViewMoreYourListsFragmentDirections.actionFavoriteListsFragmentToCardDetailFragment(it)
+                ViewMoreYourListsFragmentDirections.actionFavoriteListsFragmentToCardDetailFragment(
+                    it
+                )
             findNavController().navigate(action)
         })
         rc_favorite.layoutManager = GridLayoutManager(context, 2)

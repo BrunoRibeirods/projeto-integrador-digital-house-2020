@@ -1,4 +1,4 @@
-package com.example.filmly.profile
+package com.example.filmly.ui.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater

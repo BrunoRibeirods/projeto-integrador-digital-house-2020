@@ -1,6 +1,6 @@
-package com.example.filmly.domain
+package com.example.filmly.data.model
 
-data class Serie(
+data class Actor(
     override val id: Int,
     override val name: String,
     override val image: Int,
