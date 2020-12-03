@@ -1,4 +1,4 @@
-package com.example.filmly.domain
+package com.example.filmly.data.model
 
 interface Card {
     val id: Int

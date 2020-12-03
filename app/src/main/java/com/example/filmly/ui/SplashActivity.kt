@@ -1,4 +1,4 @@
-package com.example.filmly
+package com.example.filmly.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.os.Handler
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import com.example.filmly.R
 import com.example.filmly.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 
