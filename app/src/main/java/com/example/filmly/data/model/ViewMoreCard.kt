@@ -1,4 +1,4 @@
-package com.example.filmly.domain
+package com.example.filmly.data.model
 
 data class ViewMoreCard(
     val id: Int,

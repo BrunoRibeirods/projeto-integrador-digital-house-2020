@@ -8,7 +8,7 @@
     android:padding="8dp"
     android:layout_gravity="center"
     android:gravity="center"
-    tools:context=".ViewMoreFragment"
+    tools:context=".ui.viewMore.ViewMoreFragment"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar

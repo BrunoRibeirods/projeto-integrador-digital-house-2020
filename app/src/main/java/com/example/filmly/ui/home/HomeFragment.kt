@@ -1,4 +1,4 @@
-package com.example.filmly.home
+package com.example.filmly.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.R
 import com.example.filmly.adapters.HomeListsAdapter
-import com.example.filmly.domain.*
+import com.example.filmly.data.model.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment() {

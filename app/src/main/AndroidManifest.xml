@@ -11,7 +11,7 @@
         android:theme="@style/Theme.Filmly">
 
         <activity
-            android:name="com.example.filmly.SplashActivity"
+            android:name="com.example.filmly.ui.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +30,7 @@
             android:name=".ui.login.LoginActivity"
             android:theme="@style/LoginTheme" />
         <activity
-        android:name=".MainActivity"
+        android:name=".ui.MainActivity"
         android:windowSoftInputMode="adjustNothing" />
     </application>
 </manifest>

@@ -1,15 +1,16 @@
-package com.example.filmly
+package com.example.filmly.ui.viewMore
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.filmly.R
 import com.example.filmly.adapters.ViewMoreAdapter
-import com.example.filmly.domain.HeadLists
+import com.example.filmly.data.model.HeadLists
 import kotlinx.android.synthetic.main.fragment_view_more.view.*
 
 

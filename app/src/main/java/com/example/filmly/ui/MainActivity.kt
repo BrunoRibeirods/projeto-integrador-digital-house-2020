@@ -1,10 +1,11 @@
-package com.example.filmly
+package com.example.filmly.ui
 
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.filmly.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 

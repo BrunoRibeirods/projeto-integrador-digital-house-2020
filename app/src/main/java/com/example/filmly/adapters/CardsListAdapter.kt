@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmly.R
-import com.example.filmly.domain.Card
-import com.example.filmly.domain.CardDetail
+import com.example.filmly.data.model.Card
+import com.example.filmly.data.model.CardDetail
 import kotlinx.android.synthetic.main.cards_list_item.view.*
 
 class CardsListAdapter(val data: List<Card>, val cardNavigation: CardDetailNavigation) : RecyclerView.Adapter<CardsListAdapter.CardsListViewHolder>() {

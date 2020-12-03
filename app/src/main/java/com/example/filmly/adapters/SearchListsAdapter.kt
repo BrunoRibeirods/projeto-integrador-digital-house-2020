@@ -7,8 +7,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmly.R
-import com.example.filmly.domain.HeadLists
-import com.example.filmly.search.SearchFragmentDirections
+import com.example.filmly.data.model.HeadLists
+import com.example.filmly.ui.search.SearchFragmentDirections
 import kotlinx.android.synthetic.main.title_and_cards_list_item.view.*
 
 class SearchListsAdapter(
