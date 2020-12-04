@@ -3,12 +3,20 @@ package com.example.filmly.ui
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.filmly.R
+import com.example.filmly.network.TmdbApi
+import com.example.filmly.network.TmdbApiteste
 import com.example.filmly.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_splash.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SplashActivity : AppCompatActivity() {
     lateinit var animation_logo: Animation
@@ -30,6 +38,7 @@ class SplashActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }, 4000)
+
 
     }
 }
