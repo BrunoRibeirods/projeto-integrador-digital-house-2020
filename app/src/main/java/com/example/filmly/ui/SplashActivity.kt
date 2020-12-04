@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import com.example.filmly.R
 import com.example.filmly.network.TmdbApi
 import com.example.filmly.network.TmdbApiteste
-import com.example.filmly.network.retrofit
 import com.example.filmly.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.Dispatchers
