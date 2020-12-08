@@ -1,5 +1,8 @@
 package com.example.filmly.ui.search
 
+import com.example.filmly.data.model.Actor
+import com.example.filmly.data.model.Film
+import com.example.filmly.data.model.Serie
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -15,7 +18,11 @@ data class Movie(
     val release_date: String? = null,
     val genre_ids: List<Int>?,
     val vote_average: Double?
-)
+){
+    fun convertToFilm(): Film {
+        return Film(id = id, name = title, image = poster_path, descricao = overview)
+    }
+}
 
 @Serializable
 data class TvResults(val page: Int, val results: List<TvShow>)
@@ -30,7 +37,11 @@ data class TvShow(
     val popularity: Double?,
     val genre_ids: List<Int>?,
     val vote_average: Double?
-)
+){
+    fun convertToSerie(): Serie {
+        return Serie(id = id, name = name, image = poster_path, descricao = overview)
+    }
+}
 
 
 @Serializable
@@ -43,7 +54,11 @@ data class Person(
     val known_for: List<KnownFor>,
     val name: String? = null,
     val popularity: Double? = null
-)
+){
+    fun convertToActor(): Actor {
+        return Actor(id = id, name = name, image = profile_path, null)
+    }
+}
 
 @Serializable
 data class KnownFor(

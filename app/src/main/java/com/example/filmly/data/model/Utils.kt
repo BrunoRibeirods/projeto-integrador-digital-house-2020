@@ -1,7 +1,7 @@
 package com.example.filmly.data.model
 
 import com.example.filmly.R
-
+/*
 val bohemian = "Freddie Mercury, Brian May, Roger Taylor e John Deacon formam a banda de rock Queen em 1970. Quando o estilo de vida agitado de Mercury começa a sair de controle, o grupo precisa encontrar uma forma de lidar com o sucesso e os excessos de seu líder."
 val branquelas = "Dois irmãos agentes do FBI, Marcus e Kevin Copeland, acidentalmente evitam que bandidos sejam presos em uma apreensão de drogas. Como castigo, eles são forçados a escoltar um par de socialites nos Hamptons. Porém, quando as meninas descobrem o plano da agência, se recusam a ir. Sem opções, Marcus e Kevin decidem posar como as irmãs, transformando-se de homens afro-americanos em um par de loiras."
 val theWitcher = "The Witcher é uma série de televisão de drama fantasia criada por Lauren Schmidt Hissrich para a Netflix. É baseado na série de livros de mesmo nome de Andrzej Sapkowski. Em 13 de novembro de 2019, a série foi renovada para segunda temporada."
@@ -51,3 +51,5 @@ fun getComedy(): List<Card> {
     val serie04 = Serie(16, "Todo Mundo Odeia o Chris", R.drawable.hate_chris, "Não adicionado")
     return listOf(film02, serie04)
 }
+
+ */

@@ -10,10 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.R
 import com.example.filmly.adapters.YourListsAdapter
+import com.example.filmly.data.model.Card
 import com.example.filmly.data.model.HeadLists
-import com.example.filmly.data.model.getActors
-import com.example.filmly.data.model.getFilms
-import com.example.filmly.data.model.getSeries
 import kotlinx.android.synthetic.main.fragment_your_lists.view.*
 
 class YourListsFragment : Fragment() {
@@ -26,12 +24,14 @@ class YourListsFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_your_lists, container, false)
 
+        val lista = mutableListOf<Card>()
+
         view.civ_profileImage.setOnClickListener {
             findNavController().navigate(R.id.profileFragment)
         }
 
         view.rv_yourLists.apply {
-            adapter = YourListsAdapter(getLists(), YourListsAdapter.SeeMoreNavigation { headLists ->
+            adapter = YourListsAdapter(getContent(lista, "Filme"), YourListsAdapter.SeeMoreNavigation { headLists ->
                 val action =
                     YourListsFragmentDirections.actionYourListsFragmentToFavoriteListsFragment(
                         headLists
@@ -45,10 +45,11 @@ class YourListsFragment : Fragment() {
         return view
     }
 
-    fun getLists(): List<HeadLists> {
-        val list01 = HeadLists("Séries Favoritas", getSeries())
-        val list02 = HeadLists("Meus Favoritos", getFilms() + getSeries() + getActors())
-        val list03 = HeadLists("Atores Favoritos", getActors())
-        return listOf(list02, list01, list03)
+    fun getContent(list: List<Card>, tipo:String): List<HeadLists>{
+        val heads = mutableListOf<HeadLists>()
+        heads.add(HeadLists("Resultado para $tipo", list))
+
+        return heads
     }
+
 }

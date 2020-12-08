@@ -27,9 +27,12 @@ class HomeFragment : Fragment() {
         }
 
         val recyclerView = view.rv_homeLists
+
+        val lista = mutableListOf<Card>()
+
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = HomeListsAdapter(getListTrending(), HomeListsAdapter.SeeMoreNavigation { trending ->
+            adapter = HomeListsAdapter(getContent(lista, "Trending"), HomeListsAdapter.SeeMoreNavigation { trending ->
                 val action = HomeFragmentDirections.actionHomeFragmentToViewMoreFragment(trending)
                 findNavController().navigate(action)
             })
@@ -38,14 +41,14 @@ class HomeFragment : Fragment() {
         return view
     }
 
-    fun getListTrending(): List<HeadLists> {
-        val genre01 = HeadLists("Top Filmes de Hoje", getFilms() + getFilms())
-        val genre02 = HeadLists("Top Séries de Hoje", getSeries())
-        val genre03 = HeadLists("Top Atores de Hoje", getActors())
-        val genre04 = HeadLists("Terror", getHorror() + getHorror())
-        val genre05 = HeadLists("Drama", getDrama() + getDrama())
-        val genre06 = HeadLists("Comédia", getComedy() + getComedy())
-        return listOf(genre01, genre02, genre03, genre04, genre05, genre06)
+
+    fun getContent(list: List<Card>, tipo:String): List<HeadLists>{
+        val heads = mutableListOf<HeadLists>()
+        heads.add(HeadLists("Resultado para $tipo", list))
+
+        return heads
     }
+
+
 
 }
