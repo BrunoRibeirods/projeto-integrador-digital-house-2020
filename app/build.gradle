@@ -76,5 +76,7 @@ dependencies {
 
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
 
+    implementation 'com.github.bumptech.glide:recyclerview-integration:4.11.0'
 
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 }

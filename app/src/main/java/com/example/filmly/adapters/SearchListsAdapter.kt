@@ -1,5 +1,6 @@
 package com.example.filmly.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +13,13 @@ import com.example.filmly.ui.search.SearchFragmentDirections
 import kotlinx.android.synthetic.main.title_and_cards_list_item.view.*
 
 class SearchListsAdapter(
-    val data: List<HeadLists>,
+    var data: List<HeadLists>,
     val seeMoreNavigation: SeeMoreNavigation
 ) : RecyclerView.Adapter<SearchListsAdapter.HeadSearchViewHolder>() {
 
     override fun onBindViewHolder(holder: HeadSearchViewHolder, position: Int) {
         val item = data[position]
+        Log.i("Recy", "Onbind")
 
         holder.view.tv_titleMessage.text = item.titleMessage
         val recyclerView = holder.view.rv_cards

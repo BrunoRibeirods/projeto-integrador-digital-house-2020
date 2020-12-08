@@ -13,30 +13,30 @@ class SearchViewModel(val repository: TmdbApi): ViewModel() {
     val tvLive = MutableLiveData<TvResults>()
     val personLive = MutableLiveData<PersonResults>()
 
-    fun getMoviesModel(){
+    fun getMoviesModel(query: String){
         try {
             viewModelScope.launch {
-                moviesLive.value = repository.getSearchMovie("0d3ca7edae2d9cb14c86ce991530aee6", 1, "batman")
+                moviesLive.value = repository.getSearchMovie("0d3ca7edae2d9cb14c86ce991530aee6", 1, query)
             }
         }catch (e: Exception){
             Log.e("SearchViewModel", e.toString())
         }
     }
 
-    fun getTvModel(){
+    fun getTvModel(query: String){
         try {
             viewModelScope.launch {
-                tvLive.value = repository.getSearchTv("0d3ca7edae2d9cb14c86ce991530aee6", 1, "Simpsons")
+                tvLive.value = repository.getSearchTv("0d3ca7edae2d9cb14c86ce991530aee6", 1, query)
             }
         }catch (e: Exception){
             Log.e("SearchViewModel", e.toString())
         }
     }
 
-    fun getPersonModel(){
+    fun getPersonModel(query: String){
         try {
             viewModelScope.launch {
-                personLive.value = repository.getSearchPerson("0d3ca7edae2d9cb14c86ce991530aee6", 1, "Terry")
+                personLive.value = repository.getSearchPerson("0d3ca7edae2d9cb14c86ce991530aee6", 1, query)
             }
         }catch (e: Exception){
             Log.e("SearchViewModel", e.toString())
