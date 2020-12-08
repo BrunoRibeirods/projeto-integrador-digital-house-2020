@@ -8,15 +8,15 @@
     tools:context=".ui.cardDetail.CardDetailFragment">
 
     <ImageView
-        android:src="@drawable/mr_robot"
         android:id="@+id/iv_cardDetailImage"
-        android:layout_width="match_parent"
-        android:scaleType="fitXY"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/mr_robot"
+        app:layout_constraintBottom_toTopOf="@id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/linearLayout"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_marginHorizontal="32dp"

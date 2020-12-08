@@ -42,7 +42,11 @@
         android:id="@+id/profileFragment"
         android:name="com.example.filmly.ui.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_accountDialogFragment"
+            app:destination="@id/accountDialogFragment" />
+    </fragment>
     <fragment
         android:id="@+id/yourListsFragment"
         android:name="com.example.filmly.ui.yourLists.YourListsFragment"
@@ -79,4 +83,8 @@
             android:id="@+id/action_favoriteListsFragment_to_cardDetailFragment"
             app:destination="@id/cardDetailFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/accountDialogFragment"
+        android:name="com.example.filmly.ui.profile.AccountDialogFragment"
+        android:label="AccountDialogFragment" />
 </navigation>

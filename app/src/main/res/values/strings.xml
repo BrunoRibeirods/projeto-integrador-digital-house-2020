@@ -40,6 +40,7 @@
     <string name="label_profile">Profile</string>
     <string name="your_lists">Suas Listas</string>
     <string name="sinopse_mr_robot">Elliot é um jovem programador que trabalha como engenheiro de segurança virtual durante o dia, e como hacker vigilante durante a noite. Elliot se vê em uma encruzilhada quando é recrutado para destruir a firma que ele é pago para proteger.</string>
+    <string name="save_item">save</string>
 
 
 </resources>

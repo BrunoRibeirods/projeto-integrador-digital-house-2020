@@ -42,6 +42,7 @@
         app:layout_constraintTop_toBottomOf="@+id/circleImageView">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_account_configuration"
             android:text="Configurações de Conta"
             android:layout_width="match_parent"
             android:layout_height="@dimen/buttonHeight"
