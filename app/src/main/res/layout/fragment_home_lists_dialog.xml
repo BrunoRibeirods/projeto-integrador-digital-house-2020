@@ -83,6 +83,7 @@
             android:id="@+id/mcb_filmes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:gravity="center" />
 
         <TextView
@@ -113,7 +114,8 @@
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/mcb_series"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:checked="true"/>
 
         <TextView
             android:id="@+id/textView7"
@@ -143,7 +145,8 @@
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/mcb_actors"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:checked="true"/>
 
         <TextView
             android:id="@+id/textView5"

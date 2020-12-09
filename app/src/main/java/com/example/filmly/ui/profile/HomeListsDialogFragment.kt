@@ -24,6 +24,7 @@ class HomeListsDialogFragment : DialogFragment() {
             findNavController().navigateUp()
         }
 
+        updatePosition(view)
         view.mcb_filmes.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 viewModel.addToGenderList("films")
