@@ -7,4 +7,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Dialog.TextAppearance" parent="TextAppearance.AppCompat" >
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black101010</item>
+    </style>
+
 </resources>

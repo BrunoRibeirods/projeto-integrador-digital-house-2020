@@ -20,16 +20,20 @@
 
             <TextView
                 android:text="Configurações de Conta"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                style="@style/Dialog.TextAppearance"/>
+
             <Space
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent" />
+
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_save"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:text="salvar"
                 android:textSize="14sp"
@@ -51,12 +55,13 @@
         android:padding="16dp">
         <TextView
             android:id="@+id/tv_change_name"
-            android:textColor="@color/black101010"
-            android:textSize="18sp"
             android:text="Alterar nome"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            style="@style/Dialog.TextAppearance"/>
+
         <EditText
+            android:id="@+id/et_name_configuration"
             android:hint="Nome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,36 +70,44 @@
         <TextView
             android:id="@+id/tv_change_email"
             android:text="Alterar email"
-            android:textColor="@color/black101010"
-            android:textSize="18sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:hint="email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"/>
-        <TextView
-            android:text="Alterar senha"
-            android:textColor="@color/black101010"
-            android:textSize="18sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            style="@style/Dialog.TextAppearance" />
+
         <EditText
-            android:hint="Nova senha"
+            android:id="@+id/et_email_configuration"
+            android:hint="Email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:inputType="textEmailAddress"/>
 
         <TextView
             android:text="Data de nascimento"
-            android:textColor="@color/black101010"
-            android:textSize="18sp"
+            style="@style/Dialog.TextAppearance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
         <EditText
+            android:id="@+id/et_dateOfBirth_configuration"
             android:hint="Data de nascimento"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"/>
+
+        <TextView
+            android:text="Alterar senha"
+            style="@style/Dialog.TextAppearance"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/et_changePassword_configuration"
+            android:hint="Alterar senha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+
     </LinearLayout>
 
 </LinearLayout>

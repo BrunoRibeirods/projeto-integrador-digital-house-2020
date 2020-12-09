@@ -46,6 +46,12 @@
         <action
             android:id="@+id/action_profileFragment_to_accountDialogFragment"
             app:destination="@id/accountDialogFragment" />
+        <argument
+            android:name="snack"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_profileFragment_to_homeListsDialogFragment"
+            app:destination="@id/homeListsDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/yourListsFragment"
@@ -86,5 +92,13 @@
     <dialog
         android:id="@+id/accountDialogFragment"
         android:name="com.example.filmly.ui.profile.AccountDialogFragment"
-        android:label="AccountDialogFragment" />
+        android:label="AccountDialogFragment" >
+        <action
+            android:id="@+id/action_accountDialogFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </dialog>
+    <fragment
+        android:id="@+id/homeListsDialogFragment"
+        android:name="com.example.filmly.ui.profile.HomeListsDialogFragment"
+        android:label="HomeListsDialogFragment" />
 </navigation>
