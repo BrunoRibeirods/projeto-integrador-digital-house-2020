@@ -1,84 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:overScrollMode="never"
     android:background="@color/black101010"
     tools:context=".ui.cardDetail.CardDetailFragment">
 
-    <ImageView
-        android:src="@drawable/mr_robot"
-        android:id="@+id/iv_cardDetailImage"
-        android:layout_width="match_parent"
-        android:scaleType="fitXY"
-        android:layout_height="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/linearLayout"/>
 
-    <LinearLayout
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="48dp"
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/iv_cardDetailImage"
-        tools:layout_editor_absoluteX="16dp">
-
-        <TextView
-            android:id="@+id/tv_titleDetail"
-            android:text="Mr.Robot"
-            android:textColor="@color/white"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
-
-        <ImageButton
-            android:backgroundTint="@color/black101010"
-            android:src="@drawable/ic_share"
-            android:layout_marginEnd="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <ImageButton
-            android:backgroundTint="@color/black101010"
-            android:src="@drawable/ic_add"
-            android:layout_marginEnd="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <ImageButton
-            android:backgroundTint="@color/black101010"
-            android:src="@drawable/ic_baseline_visibility_24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
-        <TextView
-            android:id="@+id/tv_sinopseCardDetail"
-            android:text="@string/sinopse_mr_robot"
-            android:textColor="@color/white"
+        <com.google.android.material.appbar.AppBarLayout
+            android:background="@android:color/transparent"
+            android:id="@+id/app_bar"
+            android:fitsSystemWindows="true"
+            android:overScrollMode="never"
+            android:layout_height="500dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </ScrollView>
+            >
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:background="@android:color/transparent"
+                android:overScrollMode="never"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:toolbarId="@+id/toolbar"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:expandedTitleMarginStart="24dp"
+                app:expandedTitleMarginBottom="12dp"
+                >
+
+
+                <ImageView
+                    android:id="@+id/iv_cardDetailImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:scaleType="centerCrop"
+                    app:layout_collapseMode="parallax"
+                    android:src="@drawable/mr_robot"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_cardDetailImageBlur"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:scaleType="centerCrop"
+                    app:layout_collapseMode="parallax"
+                    android:src="@drawable/henry_cavill"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                <androidx.appcompat.widget.Toolbar
+                    android:overScrollMode="never"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/toolbar"
+                    android:minHeight="50dp"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:layout_collapseMode="pin"
+                    android:layout_height="50dp"
+                    android:layout_width="match_parent"
+                    app:navigationIcon="@drawable/arrow_bg"
+                    />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:overScrollMode="never"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+        <LinearLayout
+            android:overScrollMode="never"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="48dp"
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/iv_cardDetailImage"
+                tools:layout_editor_absoluteX="16dp">
+
+                <TextView
+                    android:id="@+id/tv_titleDetail"
+                    android:text="Mr.Robot"
+                    android:textColor="@color/white"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+
+                <ImageButton
+                    android:backgroundTint="@color/black101010"
+                    android:src="@drawable/ic_share"
+                    android:layout_marginEnd="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageButton
+                    android:backgroundTint="@color/black101010"
+                    android:src="@drawable/ic_add"
+                    android:layout_marginEnd="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageButton
+                    android:backgroundTint="@color/black101010"
+                    android:src="@drawable/ic_baseline_visibility_24"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_margin="32dp"
+                android:id="@+id/tv_sinopseCardDetail"
+                android:text="@string/sinopse_mr_robot"
+                android:textColor="@color/white"
+                android:layout_gravity="center_vertical|end"
+                android:gravity="start"
+                android:textSize="17sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
 
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
