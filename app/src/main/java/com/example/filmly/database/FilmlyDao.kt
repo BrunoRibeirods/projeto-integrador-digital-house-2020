@@ -16,6 +16,9 @@ interface FilmlyDao {
     @Insert
     suspend fun insert(actor: Actor)
 
+    @Insert
+    suspend fun insert(watched: Watched)
+
     @Query("SELECT * FROM favorite_films ORDER BY id DESC")
     suspend fun getFavoriteFilms(): LiveData<List<Film>>
 
@@ -24,4 +27,7 @@ interface FilmlyDao {
 
     @Query("SELECT * FROM favorite_actors ORDER BY id DESC")
     suspend fun getFavoriteActors(): LiveData<List<Actor>>
+
+    @Query("SELECT * FROM watcheds ORDER BY id DESC")
+    suspend fun getWatcheds(): LiveData<List<Watched>>
 }

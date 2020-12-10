@@ -1,8 +1,14 @@
 package com.example.filmly.data.model
 
+import com.example.filmly.database.Actor
+
 data class Actor(
     override val id: Int?,
     override val name: String?,
     override val image: String?,
     override val descricao: String?
-) : Card
+) : Card {
+    fun asActorDatabase(): Actor {
+        return Actor(id = id, name = name, image = image, description = descricao)
+    }
+}
