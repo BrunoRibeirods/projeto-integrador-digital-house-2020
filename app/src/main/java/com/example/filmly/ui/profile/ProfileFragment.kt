@@ -22,9 +22,11 @@ class ProfileFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
-        val showSnack = arguments?.getBoolean("snack")
-        if (showSnack == true) {
-            Toast.makeText(context, "Mudanças salvas", Toast.LENGTH_SHORT).show()
+        viewModel.showChangesToast.observe(viewLifecycleOwner) {
+            it?.let {
+                Toast.makeText(context, "Alterações salvas", Toast.LENGTH_SHORT).show()
+                viewModel.doneShowingToast()
+            }
         }
 
         view.btn_account_configuration.setOnClickListener {
@@ -52,6 +54,7 @@ class ProfileFragment : Fragment() {
                 .setPositiveButton("Ok") { dialog, which ->
                     // Respond to positive button press
                     viewModel.updateSearchItem(positionSelected)
+                    viewModel.showChangesToast()
                 }
                 // Single-choice items (initialized with checked item)
                 .setSingleChoiceItems(viewModel.searchItems, viewModel.searchItemSelected.value!!) { dialog, which ->
@@ -63,6 +66,10 @@ class ProfileFragment : Fragment() {
 
         view.btn_home_configuration.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_homeListsDialogFragment)
+        }
+
+        view.btn_yourLists_configuration.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_yourListsDialogFragment)
         }
 
         return view

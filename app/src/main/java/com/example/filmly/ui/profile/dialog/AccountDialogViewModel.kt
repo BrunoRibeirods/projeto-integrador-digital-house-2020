@@ -1,8 +1,10 @@
-package com.example.filmly.ui.profile
+package com.example.filmly.ui.profile.dialog
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.filmly.data.model.UserInformation
+import com.example.filmly.repository.StatesRepository
 
 class AccountDialogViewModel : ViewModel() {
 
@@ -16,5 +18,13 @@ class AccountDialogViewModel : ViewModel() {
 
     fun doneNavigating() {
         _navigateToProfileFragment.value = null
+    }
+
+    fun saveInformation(user: UserInformation) {
+        StatesRepository.updateUserInformation(user)
+    }
+
+    fun showChangesToast() {
+        StatesRepository.showChangesToast()
     }
 }

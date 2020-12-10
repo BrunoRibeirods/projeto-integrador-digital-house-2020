@@ -1,9 +1,10 @@
-package com.example.filmly.ui.profile
+package com.example.filmly.ui.profile.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -34,6 +35,16 @@ class HomeListsDialogFragment : DialogFragment() {
             updatePosition(view)
         }
 
+        view.btn_save_home_configuration.setOnClickListener {
+            if (!allChecked(view)) {
+                Toast.makeText(context, "Selecione todas as caixas", Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.sendHomeOrderList()
+                viewModel.showChangesToast()
+                findNavController().navigateUp()
+            }
+        }
+
         view.mcb_series.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 viewModel.addToGenderList("series")
@@ -56,8 +67,14 @@ class HomeListsDialogFragment : DialogFragment() {
     }
 
     fun updatePosition(view: View) {
-        view.tv_film_position.text = (viewModel.genderList.indexOf("films") + 1).toString()
-        view.tv_serie_position.text = (viewModel.genderList.indexOf("series") + 1).toString()
-        view.tv_actor_position.text = (viewModel.genderList.indexOf("actors") + 1).toString()
+        view.tv_film_position.text = (viewModel.modelList.indexOf("films") + 1).toString()
+        view.tv_serie_position.text = (viewModel.modelList.indexOf("series") + 1).toString()
+        view.tv_actor_position.text = (viewModel.modelList.indexOf("actors") + 1).toString()
+    }
+
+    private fun allChecked(view: View): Boolean {
+        view.apply {
+            return mcb_filmes.isChecked && mcb_series.isChecked && mcb_actors.isChecked
+        }
     }
 }

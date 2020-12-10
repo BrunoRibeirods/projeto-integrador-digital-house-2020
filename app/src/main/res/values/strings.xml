@@ -31,7 +31,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="see_more">Ver mais</string>
     <string name="top_filmes_today">Top Filmes de Hoje</string>
-    <string name="hello_wil">Olá, Will</string>
+    <string name="hello_wil">Olá, %1$s!</string>
     <string name="top_series_today">Top Series de Hoje</string>
     <string name="top_actors_today">Top Atores de Hoje</string>
     <string name="label_home">Home</string>
@@ -41,6 +41,14 @@
     <string name="your_lists">Suas Listas</string>
     <string name="sinopse_mr_robot">Elliot é um jovem programador que trabalha como engenheiro de segurança virtual durante o dia, e como hacker vigilante durante a noite. Elliot se vê em uma encruzilhada quando é recrutado para destruir a firma que ele é pago para proteger.</string>
     <string name="save_item">save</string>
+    <string name="profileDialog_home_title">Configurar Página Inicial</string>
+    <string name="save">salvar</string>
+    <string name="order_lists">Ordenar listas</string>
+    <string name="position">Posição</string>
+    <string name="films">Filmes</string>
+    <string name="series">Séries</string>
+    <string name="actors">Atores</string>
+    <string name="your_lists_dialog">Configurar Suas Listas</string>
 
 
 </resources>

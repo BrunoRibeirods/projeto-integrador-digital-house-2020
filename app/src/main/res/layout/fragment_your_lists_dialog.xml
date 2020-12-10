@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar_home_dialog"
+        android:id="@+id/toolbar_your_lists_dialog"
         android:background="@color/black101010"
         app:navigationIcon="@drawable/ic_baseline_close_24"
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             >
 
             <TextView
-                android:text="@string/profileDialog_home_title"
+                android:text="@string/your_lists_dialog"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
@@ -34,9 +34,9 @@
                 android:layout_height="match_parent" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_save_home_configuration"
+                android:id="@+id/btn_save_yourLists_configuration"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:text="@string/save"
+                android:text="salvar"
                 android:textSize="14sp"
                 android:gravity="center"
                 android:textColor="@color/yellow"
@@ -62,14 +62,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/order_lists" />
+            android:text="Ordenar gêneros" />
 
         <TextView
             android:id="@+id/textView3"
             style="@style/Dialog.TextAppearance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/position"
+            android:text="Posição"
             android:layout_marginEnd="16dp" />
     </LinearLayout>
 
@@ -80,22 +80,22 @@
         android:orientation="horizontal">
 
         <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/mcb_filmes"
+            android:id="@+id/mcb_listTitle1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
             android:gravity="center" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/tv_listTitle1_yourLists_configuration"
             style="@style/Dialog.TextAppearance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:text="@string/films" />
+            android:text="Filmes" />
 
         <TextView
-            android:id="@+id/tv_film_position"
+            android:id="@+id/tv_position_listTitle1_configuration"
             style="@style/Dialog.TextAppearance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -112,21 +112,21 @@
         android:orientation="horizontal">
 
         <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/mcb_series"
+            android:id="@+id/mcb_listTitle2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"/>
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/tv_listTitle2_yourLists_configuration"
             style="@style/Dialog.TextAppearance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:text="@string/series" />
+            android:text="Séries" />
 
         <TextView
-            android:id="@+id/tv_serie_position"
+            android:id="@+id/tv_position_listTitle2_configuration"
             style="@style/Dialog.TextAppearance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -143,21 +143,21 @@
         android:orientation="horizontal">
 
         <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/mcb_actors"
+            android:id="@+id/mcb_listTitle3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"/>
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/tv_listTitle3_yourLists_configuration"
             style="@style/Dialog.TextAppearance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:text="@string/actors" />
+            android:text="Atores" />
 
         <TextView
-            android:id="@+id/tv_actor_position"
+            android:id="@+id/tv_position_listTitle3_configuration"
             style="@style/Dialog.TextAppearance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -166,6 +166,4 @@
             android:text="0"
             tools:text="3" />
     </LinearLayout>
-
-
 </LinearLayout>

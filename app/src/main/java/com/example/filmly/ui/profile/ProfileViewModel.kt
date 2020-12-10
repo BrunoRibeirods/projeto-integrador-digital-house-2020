@@ -3,9 +3,12 @@ package com.example.filmly.ui.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.filmly.repository.StatesRepository
 
 class ProfileViewModel : ViewModel() {
     val searchItems = arrayOf("Dia", "Semana")
+
+    val showChangesToast = StatesRepository.showChangesToast
 
     private val _searchItemSelected = MutableLiveData(0)
     val searchItemSelected: LiveData<Int>
@@ -25,5 +28,13 @@ class ProfileViewModel : ViewModel() {
 
     fun doneNavigating() {
         _navigateToAccountDialog.value = null
+    }
+
+    fun doneShowingToast() {
+        StatesRepository.doneShowingToast()
+    }
+
+    fun showChangesToast() {
+        StatesRepository.showChangesToast()
     }
 }

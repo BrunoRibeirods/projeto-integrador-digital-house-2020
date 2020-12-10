@@ -1,4 +1,4 @@
-package com.example.filmly.ui.profile
+package com.example.filmly.ui.profile.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.filmly.R
+import com.example.filmly.data.model.UserInformation
 import kotlinx.android.synthetic.main.fragment_account_dialog.view.*
 
 class AccountDialogFragment : DialogFragment() {
@@ -36,18 +37,29 @@ class AccountDialogFragment : DialogFragment() {
             findNavController().navigateUp()
         }
 
-        view.btn_save.setOnClickListener { view ->
+        view.btn_save.setOnClickListener {
+            saveInformation(view)
+            viewModel.showChangesToast()
             viewModel.navigateToProfileFragment()
         }
 
         viewModel.navigateToProfileFragment.observe(viewLifecycleOwner) {
             it?.let {
-                val action = AccountDialogFragmentDirections.actionAccountDialogFragmentToProfileFragment(true)
-                findNavController().navigate(action)
+                findNavController().navigateUp()
                 viewModel.doneNavigating()
             }
         }
 
         return view
+    }
+
+    fun saveInformation(view: View) {
+        val name = view.et_name_configuration.text.toString()
+        val email = view.et_email_configuration.text.toString()
+        val birthday = view.et_dateOfBirth_configuration.text.toString()
+        val password = view.et_changePassword_configuration.text.toString()
+
+
+        viewModel.saveInformation(UserInformation(name, email, birthday, password))
     }
 }

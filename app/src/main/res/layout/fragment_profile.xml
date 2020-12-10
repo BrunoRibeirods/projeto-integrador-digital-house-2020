@@ -68,6 +68,7 @@
             android:theme="@style/Theme.Filmly.Overlay.Button" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_yourLists_configuration"
             android:text="Configurações de Listas"
             android:layout_width="match_parent"
             android:layout_height="@dimen/buttonHeight"
