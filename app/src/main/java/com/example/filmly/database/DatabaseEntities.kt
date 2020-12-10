@@ -10,7 +10,6 @@ data class Film(
     val name: String?,
     val image: String?,
     val description: String?
-
 )
 
 @Entity(tableName = "favorite_series")

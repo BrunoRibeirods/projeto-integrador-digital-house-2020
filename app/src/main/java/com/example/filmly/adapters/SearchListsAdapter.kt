@@ -1,6 +1,5 @@
 package com.example.filmly.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,20 +13,19 @@ import kotlinx.android.synthetic.main.title_and_cards_list_item.view.*
 
 class SearchListsAdapter(
     var data: List<HeadLists>,
-    val seeMoreNavigation: SeeMoreNavigation
+    val seeMoreNavigation: SeeMoreNavigation,
 ) : RecyclerView.Adapter<SearchListsAdapter.HeadSearchViewHolder>() {
 
     override fun onBindViewHolder(holder: HeadSearchViewHolder, position: Int) {
         val item = data[position]
-        Log.i("Recy", "Onbind")
 
         holder.view.tv_titleMessage.text = item.titleMessage
         val recyclerView = holder.view.rv_cards
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = CardsListAdapter(item.data, CardsListAdapter.CardDetailNavigation { id ->
-                val action = SearchFragmentDirections.actionSearchFragmentToCardDetailFragment(id)
+            adapter = CardsListAdapter(item.data, item.cardInfo, CardsListAdapter.CardDetailNavigation { cardDetail ->
+                val action = SearchFragmentDirections.actionSearchFragmentToCardDetailFragment(cardDetail)
                 findNavController().navigate(action)
             })
             setHasFixedSize(true)

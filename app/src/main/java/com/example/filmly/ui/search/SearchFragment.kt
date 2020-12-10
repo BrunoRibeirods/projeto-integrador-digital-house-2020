@@ -2,9 +2,11 @@ package com.example.filmly.ui.search
 
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -14,7 +16,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.R
 import com.example.filmly.adapters.SearchListsAdapter
-import com.example.filmly.data.model.*
+import com.example.filmly.data.model.Card
+import com.example.filmly.data.model.CardDetail
+import com.example.filmly.data.model.HeadLists
 import com.example.filmly.network.TmdbApiteste
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
@@ -102,7 +106,7 @@ class SearchFragment : Fragment() {
             if(it.results.isNotEmpty()){
             view.rv_searchResults.adapter = SearchListsAdapter(getResultsLists(
                 it.results.map { it.convertToFilm() },
-                "Filmes"
+                CardDetail.FILM
             ), SearchListsAdapter.SeeMoreNavigation { headLists ->
                 val action =
                     SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
@@ -122,7 +126,7 @@ class SearchFragment : Fragment() {
             if(it.results.isNotEmpty())
             view.rv_searchResults.adapter = SearchListsAdapter(getResultsLists(
                 it.results.map { it.convertToSerie() },
-                "Series"
+                CardDetail.SERIE
             ), SearchListsAdapter.SeeMoreNavigation { headLists ->
                 val action =
                     SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
@@ -134,7 +138,7 @@ class SearchFragment : Fragment() {
             if(it.results.isNotEmpty())
             view.rv_searchResults.adapter = SearchListsAdapter(getResultsLists(
                 it.results.map { it.convertToActor() },
-                "Ator"
+                CardDetail.ACTOR
             ), SearchListsAdapter.SeeMoreNavigation { headLists ->
                 val action =
                     SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
@@ -142,13 +146,17 @@ class SearchFragment : Fragment() {
             })
         }
 
-
-
         return view
     }
 
-    fun getResultsLists(listaFilmes: List<Card>, tipo: String): List<HeadLists> {
-        listaH.add(HeadLists("Resultados para $tipo", listaFilmes))
+    fun getResultsLists(listaFilmes: List<Card>, cardInfo: Int): List<HeadLists> {
+        val tipo = when(cardInfo) {
+            CardDetail.FILM -> "Filmes"
+            CardDetail.ACTOR -> "Atores"
+            CardDetail.SERIE -> "Séries"
+            else -> "Outros"
+        }
+        listaH.add(HeadLists("Resultados para $tipo", listaFilmes, cardInfo))
         return listaH
     }
 

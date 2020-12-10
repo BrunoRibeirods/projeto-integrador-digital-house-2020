@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.filmly.network.TmdbApi
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class SearchViewModel(val repository: TmdbApi): ViewModel() {
     val moviesLive = MutableLiveData<MovieResults>()
@@ -42,6 +41,4 @@ class SearchViewModel(val repository: TmdbApi): ViewModel() {
             Log.e("SearchViewModel", e.toString())
         }
     }
-
-
 }

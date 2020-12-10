@@ -1,9 +1,5 @@
 package com.example.filmly.adapters
 
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +12,11 @@ import com.example.filmly.data.model.CardDetail
 import kotlinx.android.synthetic.main.cards_list_item.view.*
 
 
-class CardsListAdapter(val data: List<Card>, val cardNavigation: CardDetailNavigation) : RecyclerView.Adapter<CardsListAdapter.CardsListViewHolder>() {
+class CardsListAdapter(
+    val data: List<Card>,
+    val cardInfo: Int,
+    val cardNavigation: CardDetailNavigation,
+) : RecyclerView.Adapter<CardsListAdapter.CardsListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardsListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
@@ -31,10 +31,11 @@ class CardsListAdapter(val data: List<Card>, val cardNavigation: CardDetailNavig
         val item = data[position]
 
 
-
         val circularProgressDrawable = CircularProgressDrawable(holder.view.context)
         circularProgressDrawable.strokeWidth = 5f
-        circularProgressDrawable.setColorSchemeColors(holder.view.resources.getColor(R.color.color_main).toInt())
+        circularProgressDrawable.setColorSchemeColors(
+            holder.view.resources.getColor(R.color.color_main).toInt()
+        )
         circularProgressDrawable.centerRadius = 30f
         circularProgressDrawable.start()
 
@@ -48,7 +49,7 @@ class CardsListAdapter(val data: List<Card>, val cardNavigation: CardDetailNavig
             .fallback(circularProgressDrawable)
             .into(holder.view.iv_cardImage)
 
-        val cardDetail = CardDetail(item.name, item.image, item.descricao)
+        val cardDetail = CardDetail(cardInfo, item)
         holder.view.iv_cardImage.setOnClickListener {
             cardNavigation.onClick(cardDetail)
         }
@@ -59,6 +60,6 @@ class CardsListAdapter(val data: List<Card>, val cardNavigation: CardDetailNavig
     class CardsListViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
     class CardDetailNavigation(val click: (CardDetail) -> Unit) {
-        fun onClick(card: CardDetail) = click(card)
+        fun onClick(cardDetail: CardDetail) = click(cardDetail)
     }
 }
