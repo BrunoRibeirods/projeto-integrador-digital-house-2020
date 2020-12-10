@@ -42,7 +42,20 @@
         android:id="@+id/profileFragment"
         android:name="com.example.filmly.ui.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_accountDialogFragment"
+            app:destination="@id/accountDialogFragment" />
+        <argument
+            android:name="snack"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_profileFragment_to_homeListsDialogFragment"
+            app:destination="@id/homeListsDialogFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_yourListsDialogFragment"
+            app:destination="@id/yourListsDialogFragment" />
+    </fragment>
     <fragment
         android:id="@+id/yourListsFragment"
         android:name="com.example.filmly.ui.yourLists.YourListsFragment"
@@ -79,4 +92,20 @@
             android:id="@+id/action_favoriteListsFragment_to_cardDetailFragment"
             app:destination="@id/cardDetailFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/accountDialogFragment"
+        android:name="com.example.filmly.ui.profile.dialog.AccountDialogFragment"
+        android:label="AccountDialogFragment" >
+        <action
+            android:id="@+id/action_accountDialogFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </dialog>
+    <dialog
+        android:id="@+id/homeListsDialogFragment"
+        android:name="com.example.filmly.ui.profile.dialog.HomeListsDialogFragment"
+        android:label="HomeListsDialogFragment" />
+    <dialog
+        android:id="@+id/yourListsDialogFragment"
+        android:name="com.example.filmly.ui.profile.dialog.YourListsDialogFragment"
+        android:label="YourListsDialogFragment" />
 </navigation>
