@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_your_lists_dialog"
+        android:background="@color/black101010"
+        app:navigationIcon="@drawable/ic_baseline_close_24"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:text="@string/your_lists_dialog"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Dialog.TextAppearance"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_save_yourLists_configuration"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="salvar"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:textColor="@color/yellow"
+                android:layout_width="wrap_content"
+                android:layout_weight="0"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"/>
+        </LinearLayout>
+
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/tv_sortGender"
+            style="@style/Dialog.TextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Ordenar gêneros" />
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/Dialog.TextAppearance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Posição"
+            android:layout_marginEnd="16dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/mcb_listTitle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/tv_listTitle1_yourLists_configuration"
+            style="@style/Dialog.TextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="Filmes" />
+
+        <TextView
+            android:id="@+id/tv_position_listTitle1_configuration"
+            style="@style/Dialog.TextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="0"
+            tools:text="1" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/mcb_listTitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"/>
+
+        <TextView
+            android:id="@+id/tv_listTitle2_yourLists_configuration"
+            style="@style/Dialog.TextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="Séries" />
+
+        <TextView
+            android:id="@+id/tv_position_listTitle2_configuration"
+            style="@style/Dialog.TextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="0"
+            tools:text="2" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/mcb_listTitle3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"/>
+
+        <TextView
+            android:id="@+id/tv_listTitle3_yourLists_configuration"
+            style="@style/Dialog.TextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="Atores" />
+
+        <TextView
+            android:id="@+id/tv_position_listTitle3_configuration"
+            style="@style/Dialog.TextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="0"
+            tools:text="3" />
+    </LinearLayout>
+</LinearLayout>
