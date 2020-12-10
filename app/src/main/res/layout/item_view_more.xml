@@ -9,6 +9,7 @@
     >
 
     <androidx.cardview.widget.CardView
+        android:backgroundTint="@color/gray25"
         android:layout_width="170dp"
         android:layout_height="250dp"
         app:cardCornerRadius="8dp"

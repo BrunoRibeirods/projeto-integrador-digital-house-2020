@@ -55,19 +55,17 @@ class CardDetailFragment : Fragment() {
         Glide.with(view).asBitmap()
             .load("https://image.tmdb.org/t/p/w500${detail.cardImage}")
             .placeholder(circularProgressDrawable)
-            .error(circularProgressDrawable)
-            .fallback(circularProgressDrawable)
+            .error(R.drawable.placeholder)
+            .fallback(R.drawable.placeholder)
             .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     view.iv_cardDetailImage.setImageBitmap(resource)
                     view.iv_cardDetailImageBlur.setImageBitmap(FastBlur.doBlur(resource, 10, false))
                 }
                 override fun onLoadCleared(placeholder: Drawable?) {
-                    // this is called when imageView is cleared on lifecycle call or for
-                    // some other reason.
-                    // if you are referencing the bitmap somewhere else too other than this imageView
-                    // clear it here as you can no longer have the bitmap
+
                 }
+
             })
 
 
