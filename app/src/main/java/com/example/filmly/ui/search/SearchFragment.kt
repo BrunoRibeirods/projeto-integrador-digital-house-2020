@@ -102,7 +102,7 @@ class SearchFragment : Fragment() {
             if(it.results.isNotEmpty()){
             view.rv_searchResults.adapter = SearchListsAdapter(getResultsLists(
                 it.results.map { it.convertToFilm() },
-                "Filmes"
+                "filmes"
             ), SearchListsAdapter.SeeMoreNavigation { headLists ->
                 val action =
                     SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
@@ -122,7 +122,7 @@ class SearchFragment : Fragment() {
             if(it.results.isNotEmpty())
             view.rv_searchResults.adapter = SearchListsAdapter(getResultsLists(
                 it.results.map { it.convertToSerie() },
-                "Series"
+                "series"
             ), SearchListsAdapter.SeeMoreNavigation { headLists ->
                 val action =
                     SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
@@ -134,7 +134,7 @@ class SearchFragment : Fragment() {
             if(it.results.isNotEmpty())
             view.rv_searchResults.adapter = SearchListsAdapter(getResultsLists(
                 it.results.map { it.convertToActor() },
-                "Ator"
+                "pessoas"
             ), SearchListsAdapter.SeeMoreNavigation { headLists ->
                 val action =
                     SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
@@ -148,7 +148,18 @@ class SearchFragment : Fragment() {
     }
 
     fun getResultsLists(listaFilmes: List<Card>, tipo: String): List<HeadLists> {
+        val roles: HashMap<String, Int> = hashMapOf(
+            "Resultados para filmes" to 0,
+            "Resultados para series" to 1,
+            "Resultados para pessoas" to 2
+        )
+
         listaH.add(HeadLists("Resultados para $tipo", listaFilmes))
+        listaH.sortWith(Comparator { t, t2 ->
+            return@Comparator roles[t.titleMessage]!! - roles[t2.titleMessage]!!
+        })
+
+
         return listaH
     }
 

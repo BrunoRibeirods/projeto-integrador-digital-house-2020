@@ -37,7 +37,7 @@
                     android:layout_height="500dp"
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
-                    android:src="@drawable/mr_robot"
+                    android:src="@drawable/placeholder"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -48,7 +48,7 @@
                     android:layout_height="500dp"
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
-                    android:src="@drawable/henry_cavill"
+                    android:src="@drawable/placeholder"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

@@ -40,12 +40,11 @@ class CardsListAdapter(val data: List<Card>, val cardNavigation: CardDetailNavig
 
 
 
-
         Glide.with(holder.view).asBitmap()
             .load("https://image.tmdb.org/t/p/w500${item.image}")
             .placeholder(circularProgressDrawable)
-            .error(circularProgressDrawable)
-            .fallback(circularProgressDrawable)
+            .error(R.drawable.placeholder)
+            .fallback(R.drawable.placeholder)
             .into(holder.view.iv_cardImage)
 
         val cardDetail = CardDetail(item.name, item.image, item.descricao)
