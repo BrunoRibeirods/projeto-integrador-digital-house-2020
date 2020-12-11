@@ -9,7 +9,7 @@ object StatesRepository {
     val userInformation: LiveData<UserInformation>
         get() = _userInformation
 
-    private var _homeListsOrder = mutableListOf("films", "series", "actors")
+    private var _homeListsOrder = mutableListOf("films", "series", "actors", "trending")
     val homeListsOrder: List<String>
         get() = _homeListsOrder
 

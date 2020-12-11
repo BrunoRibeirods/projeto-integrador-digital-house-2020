@@ -30,7 +30,7 @@ class HomeFragment : Fragment() {
             }
         }
     }
-    
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -106,11 +106,13 @@ class HomeFragment : Fragment() {
             else -> "outros"
         }
 
+        val order = StatesRepository.homeListsOrder
+
         val roles: HashMap<String, Int> = hashMapOf(
-            "Top trending de hoje" to 0,
-            "Top séries de hoje" to 1,
-            "Top filmes de hoje" to 2,
-            "Top pessoas de hoje" to 3
+            "Top trending de hoje" to order.indexOf("trending"),
+            "Top séries de hoje" to order.indexOf("series"),
+            "Top filmes de hoje" to order.indexOf("films"),
+            "Top pessoas de hoje" to order.indexOf("actors")
         )
 
         viewModel.headLists.add(HeadLists("Top $tipo de hoje", listaFilmes, cardInfo))
