@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -95,6 +96,7 @@ class CardDetailFragment : Fragment() {
                 CardDetail.SERIE -> viewModel.insertSerie(detail.card as Serie)
                 CardDetail.ACTOR -> viewModel.insertActor(detail.card as Actor)
             }
+            Toast.makeText(context, "Adicionado", Toast.LENGTH_SHORT).show()
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
