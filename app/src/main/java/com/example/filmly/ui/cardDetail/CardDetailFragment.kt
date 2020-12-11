@@ -1,5 +1,7 @@
 package com.example.filmly.ui.cardDetail
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.text.LineBreaker.JUSTIFICATION_MODE_INTER_WORD
 import android.os.Build
@@ -13,11 +15,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.filmly.R
-import com.example.filmly.data.model.Actor
-import com.example.filmly.data.model.CardDetail
-import com.example.filmly.data.model.Film
-import com.example.filmly.data.model.Serie
+import com.example.filmly.data.model.*
 import com.example.filmly.repository.ServicesRepository
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
@@ -61,9 +62,18 @@ class CardDetailFragment : Fragment() {
         Glide.with(view).asBitmap()
             .load("https://image.tmdb.org/t/p/w500${detail.card.image}")
             .placeholder(circularProgressDrawable)
-            .error(circularProgressDrawable)
-            .fallback(circularProgressDrawable)
-            .into(view.iv_cardDetailImage)
+            .error(R.drawable.placeholder)
+            .fallback(R.drawable.placeholder)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    view.iv_cardDetailImage.setImageBitmap(resource)
+                    view.iv_cardDetailImageBlur.setImageBitmap(FastBlur.doBlur(resource, 10, false))
+                }
+                override fun onLoadCleared(placeholder: Drawable?) {
+
+                }
+
+            })
 
         view.tv_sinopseCardDetail.text = detail.card.descricao
 

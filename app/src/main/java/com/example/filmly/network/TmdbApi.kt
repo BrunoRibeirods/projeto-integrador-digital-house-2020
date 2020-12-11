@@ -19,7 +19,7 @@ interface TmdbApi {
 
 
 
-    @GET("trending/{type}/{time}")
+    @GET("trending/{type}/{time}?language=pt-BR")
     suspend fun getTrending(
         @Path("type") type: String,
         @Path("time") time: String,
