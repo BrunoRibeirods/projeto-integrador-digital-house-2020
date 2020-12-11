@@ -31,7 +31,7 @@ class ViewMoreFragment : Fragment() {
 
 
         val rc_viewMore = view.findViewById<RecyclerView>(R.id.rc_view_more)
-        rc_viewMore.adapter = ViewMoreAdapter(args.data, ViewMoreAdapter.CardDetailNavigation {
+        rc_viewMore.adapter = ViewMoreAdapter(args.data, args.cardInfo, ViewMoreAdapter.CardDetailNavigation {
             val action = ViewMoreFragmentDirections.actionViewMoreFragmentToCardDetailFragment(it)
             findNavController().navigate(action)
         })

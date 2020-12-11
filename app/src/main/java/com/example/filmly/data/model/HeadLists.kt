@@ -4,6 +4,7 @@ import java.io.Serializable
 
 class HeadLists(
     val titleMessage: String,
-    val data: List<Card>
+    val data: List<Card>,
+    val cardInfo: Int
 ) : Serializable {
 }

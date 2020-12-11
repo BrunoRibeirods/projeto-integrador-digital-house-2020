@@ -2,9 +2,11 @@ package com.example.filmly.ui.search
 
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -14,20 +16,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.R
 import com.example.filmly.adapters.SearchListsAdapter
-import com.example.filmly.data.model.*
-import com.example.filmly.network.TmdbApiteste
+import com.example.filmly.data.model.Card
+import com.example.filmly.data.model.CardDetail
+import com.example.filmly.data.model.HeadLists
+import com.example.filmly.repository.ServicesRepository
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
 
 class SearchFragment : Fragment() {
-    private val serviceApi = TmdbApiteste
-    lateinit var listaH:MutableList<HeadLists>
+    private lateinit var repository: ServicesRepository
     private var clickNum = 1
 
     val viewModel by viewModels<SearchViewModel>(){
         object: ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return SearchViewModel(serviceApi.retrofitService) as T
+                return SearchViewModel(repository) as T
             }
         }
     }
@@ -39,9 +42,10 @@ class SearchFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_search, container, false)
+        
+        repository = ServicesRepository.getInstance(requireContext())
+        
         val listavazia = emptyList<HeadLists>()
-        listaH = mutableListOf()
-
 
         view.searchView.requestFocus()
 
@@ -51,9 +55,9 @@ class SearchFragment : Fragment() {
                 InputMethodManager.SHOW_FORCED,
                 InputMethodManager.HIDE_IMPLICIT_ONLY
             )
-            viewModel.getMoviesModel("Vingadores")
-            viewModel.getTvModel("Game of")
-            viewModel.getPersonModel("T")
+            viewModel.updateMoviesLive("Vingadores")
+            viewModel.updateTvLive("Game of")
+            viewModel.updatePersonLive("T")
         }
 
 
@@ -75,10 +79,10 @@ class SearchFragment : Fragment() {
 
         view.searchView.setOnKeyListener { view, i, keyEvent ->
             if(i == KeyEvent.KEYCODE_ENTER && keyEvent.action == KeyEvent.ACTION_UP && !view.searchView.text.isEmpty()){
-                listaH = mutableListOf()
-                viewModel.getMoviesModel(searchView.text.toString())
-                viewModel.getTvModel(searchView.text.toString())
-                viewModel.getPersonModel(searchView.text.toString())
+                viewModel.headLists = mutableListOf()
+                viewModel.updateMoviesLive(searchView.text.toString())
+                viewModel.updateTvLive(searchView.text.toString())
+                viewModel.updatePersonLive(searchView.text.toString())
                 val imm: InputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(searchView.windowToken, 0)
                 return@setOnKeyListener true
@@ -88,10 +92,10 @@ class SearchFragment : Fragment() {
 
         view.btn_search.setOnClickListener {
             if(!view.searchView.text.isEmpty())
-            listaH = mutableListOf()
-            viewModel.getMoviesModel(searchView.text.toString())
-            viewModel.getTvModel(searchView.text.toString())
-            viewModel.getPersonModel(searchView.text.toString())
+            viewModel.headLists = mutableListOf()
+            viewModel.updateMoviesLive(searchView.text.toString())
+            viewModel.updateTvLive(searchView.text.toString())
+            viewModel.updatePersonLive(searchView.text.toString())
             val imm: InputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(searchView.windowToken, 0)
 
@@ -102,7 +106,9 @@ class SearchFragment : Fragment() {
             if(it.results.isNotEmpty()){
             view.rv_searchResults.adapter = SearchListsAdapter(getResultsLists(
                 it.results.map { it.convertToFilm() },
-                "filmes"
+
+                CardDetail.FILM
+
             ), SearchListsAdapter.SeeMoreNavigation { headLists ->
                 val action =
                     SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
@@ -122,7 +128,9 @@ class SearchFragment : Fragment() {
             if(it.results.isNotEmpty())
             view.rv_searchResults.adapter = SearchListsAdapter(getResultsLists(
                 it.results.map { it.convertToSerie() },
-                "series"
+
+                CardDetail.SERIE
+
             ), SearchListsAdapter.SeeMoreNavigation { headLists ->
                 val action =
                     SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
@@ -134,7 +142,9 @@ class SearchFragment : Fragment() {
             if(it.results.isNotEmpty())
             view.rv_searchResults.adapter = SearchListsAdapter(getResultsLists(
                 it.results.map { it.convertToActor() },
-                "pessoas"
+
+                CardDetail.ACTOR
+
             ), SearchListsAdapter.SeeMoreNavigation { headLists ->
                 val action =
                     SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
@@ -142,25 +152,30 @@ class SearchFragment : Fragment() {
             })
         }
 
-
-
         return view
     }
 
-    fun getResultsLists(listaFilmes: List<Card>, tipo: String): List<HeadLists> {
+
+    fun getResultsLists(listaFilmes: List<Card>, cardInfo: Int): List<HeadLists> {
+        val tipo = when(cardInfo) {
+            CardDetail.FILM -> "filmes"
+            CardDetail.ACTOR -> "pessoas"
+            CardDetail.SERIE -> "séries"
+            else -> "Outros"
+        }
+
         val roles: HashMap<String, Int> = hashMapOf(
             "Resultados para filmes" to 0,
-            "Resultados para series" to 1,
+            "Resultados para séries" to 1,
             "Resultados para pessoas" to 2
         )
 
-        listaH.add(HeadLists("Resultados para $tipo", listaFilmes))
-        listaH.sortWith(Comparator { t, t2 ->
+        viewModel.headLists.add(HeadLists("Resultados para $tipo", listaFilmes, cardInfo))
+        viewModel.headLists.sortWith(Comparator { t, t2 ->
             return@Comparator roles[t.titleMessage]!! - roles[t2.titleMessage]!!
         })
 
-
-        return listaH
+        return viewModel.headLists
     }
 
 

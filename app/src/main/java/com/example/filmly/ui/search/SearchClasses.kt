@@ -77,5 +77,3 @@ data class KnownFor(
     val genre_ids: List<Double>?,
     val vote_average: Double?
 )
-
-

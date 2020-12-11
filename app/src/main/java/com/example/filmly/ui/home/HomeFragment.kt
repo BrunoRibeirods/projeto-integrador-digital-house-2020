@@ -10,33 +10,36 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+
 import androidx.navigation.findNavController
+
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.R
 import com.example.filmly.adapters.HomeListsAdapter
 import com.example.filmly.adapters.SearchListsAdapter
 import com.example.filmly.data.model.Card
+import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.HeadLists
-import com.example.filmly.network.TmdbApiteste
+
+import com.example.filmly.repository.ServicesRepository
+
 import com.example.filmly.repository.StatesRepository
 import com.example.filmly.ui.search.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment() {
-    private val serviceApi = TmdbApiteste
-    lateinit var listaH:MutableList<HeadLists>
+
+    private lateinit var repository: ServicesRepository
     private var clickNum = 1
 
-    val viewModel by viewModels<HomeViewModel>(){
-        object: ViewModelProvider.Factory {
+    val viewModel by viewModels<HomeViewModel>() {
+        object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return HomeViewModel(serviceApi.retrofitService) as T
+                return HomeViewModel(repository) as T
             }
         }
     }
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,20 +53,26 @@ class HomeFragment : Fragment() {
 
 
 
-        viewModel.getTrending("all", "day")
-        viewModel.getTrending("tv", "day")
-        viewModel.getTrending("movie", "day")
-        viewModel.getTrending("person", "day")
+    
 
 
 
 
-        view.tv_greetings.text = getString(R.string.hello_wil, StatesRepository.userInformation.value?.name)
+        repository = ServicesRepository.getInstance(requireContext())
+
+        val listavazia = emptyList<HeadLists>()
+
+        viewModel.getTrendingLive("all")
+        viewModel.getTrendingLive("tv")
+        viewModel.getTrendingLive("movie")
+        viewModel.getTrendingLive("person")
+
+        view.tv_greetings.text =
+            getString(R.string.hello_wil, StatesRepository.userInformation.value?.name)
 
         view.civ_profileImage.setOnClickListener {
             findNavController().navigate(R.id.profileFragment)
         }
-
 
 
         val recyclerView = view.rv_homeLists
@@ -77,62 +86,70 @@ class HomeFragment : Fragment() {
             setHasFixedSize(true)
         }
 
-        viewModel.trendingLive.observe(viewLifecycleOwner){
+        viewModel.trendingLive.observe(viewLifecycleOwner) {
             recyclerView.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                adapter = HomeListsAdapter(getResultsLists(
-                    it.results.map {
-                                   when(it.media_type){
-                                       "movie" -> it.convertToCard()
-                                       "tv" -> it.convertToTv()
-                                       "person" -> it.convertToPerson()
-                                       else -> it.convertToCard()
-                                   }
-                    },
-                    when(it.results.map { it.media_type }.distinct().joinToString()){
-                        "movie" -> "filmes"
-                        "tv" -> "series"
-                        "person" -> "pessoas"
-                        else -> "trending"
-                    }
+                adapter = HomeListsAdapter(
+                    getResultsLists(
+                        it.results.map {
+                            when (it.media_type) {
+                                "movie" -> it.convertToCard()
+                                "tv" -> it.convertToTv()
+                                "person" -> it.convertToPerson()
+                                else -> it.convertToCard()
+                            }
+                        },
+                        when (it.results.map { it.media_type }.distinct().joinToString()) {
+                            "movie" -> CardDetail.FILM
+                            "tv" -> CardDetail.SERIE
+                            "person" -> CardDetail.ACTOR
+                            else -> CardDetail.TRENDING
+                        }
 
-                ), HomeListsAdapter.SeeMoreNavigation { trending ->
-                    val action = HomeFragmentDirections.actionHomeFragmentToViewMoreFragment(trending)
-                    findNavController().navigate(action)
-                })
+                    ), HomeListsAdapter.SeeMoreNavigation { trending ->
+                        val action =
+                            HomeFragmentDirections.actionHomeFragmentToViewMoreFragment(trending)
+                        findNavController().navigate(action)
+                    })
                 setHasFixedSize(true)
             }
         }
 
-
-
-
         return view
     }
 
+    fun getResultsLists(listaFilmes: List<Card>, cardInfo: Int): List<HeadLists> {
 
-    fun getResultsLists(listaFilmes: List<Card>, tipo: String): List<HeadLists> {
-        Log.i("tipo", tipo)
+        val tipo = when (cardInfo) {
+            CardDetail.FILM -> "filmes"
+            CardDetail.ACTOR -> "pessoas"
+            CardDetail.SERIE -> "séries"
+            CardDetail.TRENDING -> "trending"
+            else -> "outros"
+        }
+
+        val timeString = when(StatesRepository.searchTime) {
+            "day" -> "do dia"
+            else -> "da semana"
+        }
+
+
+        val order = StatesRepository.homeListsOrder
+
         val roles: HashMap<String, Int> = hashMapOf(
-            "Top trending de hoje" to 0,
-            "Top series de hoje" to 1,
-            "Top filmes de hoje" to 2,
-            "Top pessoas de hoje" to 3
+            "Top trending $timeString" to order.indexOf("trending"),
+            "Top séries $timeString" to order.indexOf("series"),
+            "Top filmes $timeString" to order.indexOf("films"),
+            "Top pessoas $timeString" to order.indexOf("actors")
         )
 
-
-
-
-        listaH.add(HeadLists("Top $tipo de hoje", listaFilmes))
-        listaH.sortWith(Comparator { t, t2 ->
+        viewModel.headLists.add(HeadLists("Top $tipo $timeString", listaFilmes, cardInfo))
+        viewModel.headLists.sortWith(Comparator { t, t2 ->
             return@Comparator roles[t.titleMessage]!! - roles[t2.titleMessage]!!
         })
 
-
-
-        return listaH.distinctBy { it.titleMessage }
+        return viewModel.headLists.distinctBy { it.titleMessage }
     }
-
 
 
 }

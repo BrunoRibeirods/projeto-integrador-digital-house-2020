@@ -9,30 +9,38 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.filmly.R
 import com.example.filmly.data.model.HeadLists
 import com.example.filmly.ui.yourLists.YourListsFragmentDirections
+import com.example.filmly.ui.yourLists.YourListsViewModel
 import kotlinx.android.synthetic.main.title_and_cards_list_item.view.*
 
 class YourListsAdapter(
-    val data: List<HeadLists>,
+    viewModel: YourListsViewModel,
     val seeMoreNavigation: SeeMoreNavigation
 ) : RecyclerView.Adapter<YourListsAdapter.HeadYourListsViewHolder>() {
+
+    var data = listOf<HeadLists?>()
 
     override fun onBindViewHolder(holder: HeadYourListsViewHolder, position: Int) {
         val item = data[position]
 
-        holder.view.tv_titleMessage.text = item.titleMessage
+        holder.view.tv_titleMessage.text = item?.titleMessage
         val recyclerView = holder.view.rv_cards
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = CardsListAdapter(item.data, CardsListAdapter.CardDetailNavigation { id ->
-                val action = YourListsFragmentDirections.actionYourListsFragmentToCardDetailFragment(id)
-                findNavController().navigate(action)
-            })
+            adapter =
+                item?.data?.let {
+                    CardsListAdapter(it, item.cardInfo, CardsListAdapter.CardDetailNavigation { id ->
+                        val action = YourListsFragmentDirections.actionYourListsFragmentToCardDetailFragment(id)
+                        findNavController().navigate(action)
+                    })
+                }
             setHasFixedSize(true)
         }
 
         holder.view.tv_seeMore.setOnClickListener {
-            seeMoreNavigation.onClick(item)
+            item?.let {
+                seeMoreNavigation.onClick(it)
+            }
         }
     }
 

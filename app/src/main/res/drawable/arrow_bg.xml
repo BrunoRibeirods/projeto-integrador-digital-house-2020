@@ -3,5 +3,3 @@
     <item android:drawable="@drawable/ic_baseline_lens_24" android:color="@color/blackFilmly" android:height="46dp" android:width="46dp"/>
     <item android:id="@+id/seta_cardDetail" android:drawable="@drawable/ic_arrow_back" android:color="@color/color_main" android:height="30dp" android:width="30dp" android:top="8dp" android:start="8dp"/>
 </layer-list>
-
-

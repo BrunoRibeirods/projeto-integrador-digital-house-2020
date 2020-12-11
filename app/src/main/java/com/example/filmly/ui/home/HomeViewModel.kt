@@ -1,20 +1,27 @@
 package com.example.filmly.ui.home
 
 import android.util.Log
+
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.filmly.network.TmdbApi
+import com.example.filmly.data.model.HeadLists
+import com.example.filmly.repository.ServicesRepository
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
-class HomeViewModel(val repository: TmdbApi): ViewModel() {
-    val trendingLive = MutableLiveData<TrendingResults>()
+class HomeViewModel(val repository: ServicesRepository): ViewModel() {
+    private val _trendingLive = MutableLiveData<TrendingResults>()
+    val trendingLive: LiveData<TrendingResults>
+        get() = _trendingLive
 
-    fun getTrending(type: String, time: String){
+    val headLists = mutableListOf<HeadLists>()
+
+    fun getTrendingLive(type: String){
         viewModelScope.launch {
             try {
-                trendingLive.value = repository.getTrending(type, time, "0d3ca7edae2d9cb14c86ce991530aee6")
+                _trendingLive.value = repository.getTrending(type)
+
             }catch (e:Exception){
                 Log.e("HomeViewModel", e.toString())
             }

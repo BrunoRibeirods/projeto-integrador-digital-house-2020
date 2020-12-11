@@ -167,5 +167,35 @@
             tools:text="3" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/mcb_trending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"/>
+
+        <TextView
+            android:id="@+id/textView6"
+            style="@style/Dialog.TextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="@string/trending" />
+
+        <TextView
+            android:id="@+id/tv_trending_position"
+            style="@style/Dialog.TextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="0"
+            tools:text="4" />
+    </LinearLayout>
+
 
 </LinearLayout>

@@ -63,6 +63,15 @@ class HomeListsDialogFragment : DialogFragment() {
             updatePosition(view)
         }
 
+        view.mcb_trending.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                viewModel.addToGenderList("trending")
+            } else {
+                viewModel.removeFromGenderList("trending")
+            }
+            updatePosition(view)
+        }
+
         return view
     }
 
@@ -70,11 +79,12 @@ class HomeListsDialogFragment : DialogFragment() {
         view.tv_film_position.text = (viewModel.modelList.indexOf("films") + 1).toString()
         view.tv_serie_position.text = (viewModel.modelList.indexOf("series") + 1).toString()
         view.tv_actor_position.text = (viewModel.modelList.indexOf("actors") + 1).toString()
+        view.tv_trending_position.text = (viewModel.modelList.indexOf("trending") + 1).toString()
     }
 
     private fun allChecked(view: View): Boolean {
         view.apply {
-            return mcb_filmes.isChecked && mcb_series.isChecked && mcb_actors.isChecked
+            return mcb_filmes.isChecked && mcb_series.isChecked && mcb_actors.isChecked && mcb_trending.isChecked
         }
     }
 }
