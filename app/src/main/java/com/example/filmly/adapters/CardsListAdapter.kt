@@ -40,7 +40,6 @@ class CardsListAdapter(val data: List<Card>, val cardNavigation: CardDetailNavig
 
 
 
-
         Glide.with(holder.view).asBitmap()
             .load("https://image.tmdb.org/t/p/w500${item.image}")
             .placeholder(circularProgressDrawable)

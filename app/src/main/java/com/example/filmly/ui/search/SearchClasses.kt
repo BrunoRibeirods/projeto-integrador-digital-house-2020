@@ -56,20 +56,25 @@ data class Person(
     val popularity: Double? = null
 ){
     fun convertToActor(): Actor {
-        return Actor(id = id, name = name, image = profile_path, null)
+        val over = known_for.map {
+            it.title ?: it.name
+
+        }
+        return Actor(id = id, name = name, image = profile_path, descricao = over.joinToString(prefix = "Conhecido por:  \n", separator = "\n"))
     }
 }
 
 @Serializable
 data class KnownFor(
+    val title: String? = null,
     val poster_path: String? = null,
     val overview: String? = null,
     val media_type: String? = null,
-    val id: Int?,
+    val id: Double?,
     val name: String? = null,
     val first_air_date: String? = null,
     val popularity: Double? = null,
-    val genre_ids: List<Int>?,
+    val genre_ids: List<Double>?,
     val vote_average: Double?
 )
 
