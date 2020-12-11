@@ -44,8 +44,9 @@ class SearchFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
         
         repository = ServicesRepository.getInstance(requireContext())
-        
+
         val listavazia = emptyList<HeadLists>()
+
 
         view.searchView.requestFocus()
 
@@ -175,7 +176,7 @@ class SearchFragment : Fragment() {
             return@Comparator roles[t.titleMessage]!! - roles[t2.titleMessage]!!
         })
 
-        return viewModel.headLists
+        return viewModel.headLists.distinctBy { it.titleMessage }
     }
 
 
