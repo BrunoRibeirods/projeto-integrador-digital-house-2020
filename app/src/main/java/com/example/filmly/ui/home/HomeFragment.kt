@@ -1,25 +1,35 @@
 package com.example.filmly.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+
+import androidx.navigation.findNavController
+
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.R
 import com.example.filmly.adapters.HomeListsAdapter
+import com.example.filmly.adapters.SearchListsAdapter
 import com.example.filmly.data.model.Card
 import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.HeadLists
+
 import com.example.filmly.repository.ServicesRepository
+
 import com.example.filmly.repository.StatesRepository
+import com.example.filmly.ui.search.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment() {
+
     private lateinit var repository: ServicesRepository
     private var clickNum = 1
 
@@ -37,6 +47,16 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+        val listavazia = emptyList<HeadLists>()
+        listaH = mutableListOf()
+
+
+
+
+    
+
+
+
 
         repository = ServicesRepository.getInstance(requireContext())
 
@@ -53,6 +73,7 @@ class HomeFragment : Fragment() {
         view.civ_profileImage.setOnClickListener {
             findNavController().navigate(R.id.profileFragment)
         }
+
 
         val recyclerView = view.rv_homeLists
 
@@ -93,6 +114,7 @@ class HomeFragment : Fragment() {
                 setHasFixedSize(true)
             }
         }
+
         return view
     }
 
@@ -110,6 +132,7 @@ class HomeFragment : Fragment() {
             "day" -> "do dia"
             else -> "da semana"
         }
+
 
         val order = StatesRepository.homeListsOrder
 

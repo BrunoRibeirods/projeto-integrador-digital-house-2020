@@ -106,7 +106,9 @@ class SearchFragment : Fragment() {
             if(it.results.isNotEmpty()){
             view.rv_searchResults.adapter = SearchListsAdapter(getResultsLists(
                 it.results.map { it.convertToFilm() },
+
                 CardDetail.FILM
+
             ), SearchListsAdapter.SeeMoreNavigation { headLists ->
                 val action =
                     SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
@@ -126,7 +128,9 @@ class SearchFragment : Fragment() {
             if(it.results.isNotEmpty())
             view.rv_searchResults.adapter = SearchListsAdapter(getResultsLists(
                 it.results.map { it.convertToSerie() },
+
                 CardDetail.SERIE
+
             ), SearchListsAdapter.SeeMoreNavigation { headLists ->
                 val action =
                     SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
@@ -138,7 +142,9 @@ class SearchFragment : Fragment() {
             if(it.results.isNotEmpty())
             view.rv_searchResults.adapter = SearchListsAdapter(getResultsLists(
                 it.results.map { it.convertToActor() },
+
                 CardDetail.ACTOR
+
             ), SearchListsAdapter.SeeMoreNavigation { headLists ->
                 val action =
                     SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
@@ -148,6 +154,7 @@ class SearchFragment : Fragment() {
 
         return view
     }
+
 
     fun getResultsLists(listaFilmes: List<Card>, cardInfo: Int): List<HeadLists> {
         val tipo = when(cardInfo) {

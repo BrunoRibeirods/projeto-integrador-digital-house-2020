@@ -1,6 +1,7 @@
 package com.example.filmly.ui.home
 
 import android.util.Log
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,6 +21,7 @@ class HomeViewModel(val repository: ServicesRepository): ViewModel() {
         viewModelScope.launch {
             try {
                 _trendingLive.value = repository.getTrending(type)
+
             }catch (e:Exception){
                 Log.e("HomeViewModel", e.toString())
             }

@@ -6,6 +6,7 @@ import android.graphics.drawable.LayerDrawable
 import android.graphics.text.LineBreaker.JUSTIFICATION_MODE_INTER_WORD
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +19,18 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.filmly.R
+
 import com.example.filmly.data.model.*
 import com.example.filmly.repository.ServicesRepository
 import com.google.android.material.appbar.AppBarLayout
+
+import com.example.filmly.data.model.CardDetail
+import com.example.filmly.data.model.FastBlur
+import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
+import kotlinx.android.synthetic.main.fragment_card_detail.*
+
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
+
 
 class CardDetailFragment : Fragment() {
     private lateinit var repository: ServicesRepository
@@ -59,6 +68,7 @@ class CardDetailFragment : Fragment() {
 
         view.tv_titleDetail.text = detail.card.name
 
+
         Glide.with(view).asBitmap()
             .load("https://image.tmdb.org/t/p/w500${detail.card.image}")
             .placeholder(circularProgressDrawable)
@@ -74,6 +84,7 @@ class CardDetailFragment : Fragment() {
                 }
 
             })
+
 
         view.tv_sinopseCardDetail.text = detail.card.descricao
 
