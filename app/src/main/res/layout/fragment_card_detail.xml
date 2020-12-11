@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:orientation="vertical"
-    android:fitsSystemWindows="true"
     android:overScrollMode="never"
     android:background="@color/black101010"
     tools:context=".ui.cardDetail.CardDetailFragment">
@@ -14,7 +13,6 @@
         <com.google.android.material.appbar.AppBarLayout
             android:background="@android:color/transparent"
             android:id="@+id/app_bar"
-            android:fitsSystemWindows="true"
             android:overScrollMode="never"
             android:layout_height="500dp"
             android:layout_width="match_parent"
