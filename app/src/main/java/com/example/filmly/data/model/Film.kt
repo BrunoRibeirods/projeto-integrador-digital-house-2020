@@ -10,10 +10,10 @@ data class Film(
     override val descricao: String?
 ) : Card, Watchable {
     fun asFilmDatabase(): Film {
-        return Film(id = id, name = name, image = image, description = descricao)
+        return Film(name = name, image = image, description = descricao, marvel_id = id)
     }
 
     override fun asWatched(): Watched {
-        return Watched(id = id, name = name, image = image, description = descricao)
+        return Watched( name = name, image = image, description = descricao, marvel_id = id)
     }
 }

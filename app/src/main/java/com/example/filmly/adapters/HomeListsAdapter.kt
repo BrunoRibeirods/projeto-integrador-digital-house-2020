@@ -21,7 +21,7 @@ class HomeListsAdapter(val data: List<HeadLists>, val seeMoreNavigation: SeeMore
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = CardsListAdapter(item.data, CardsListAdapter.CardDetailNavigation { cardDetail ->
+            adapter = CardsListAdapter(item.data, item.cardInfo, CardsListAdapter.CardDetailNavigation { cardDetail ->
                 val action = HomeFragmentDirections.actionHomeFragmentToCardDetailFragment(cardDetail)
                 findNavController().navigate(action)
             })

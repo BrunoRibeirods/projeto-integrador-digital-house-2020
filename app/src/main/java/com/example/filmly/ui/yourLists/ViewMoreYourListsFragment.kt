@@ -33,7 +33,7 @@ class ViewMoreYourListsFragment : Fragment() {
         view.toolbar_favoriteLists.setNavigationOnClickListener {
             activity?.onBackPressed()
         }
-        rc_favorite.adapter = ViewMoreAdapter(args.data, ViewMoreAdapter.CardDetailNavigation{
+        rc_favorite.adapter = ViewMoreAdapter(args.data, args.cardInfo, ViewMoreAdapter.CardDetailNavigation{
             val action =
                 ViewMoreYourListsFragmentDirections.actionFavoriteListsFragmentToCardDetailFragment(
                     it

@@ -10,10 +10,10 @@ data class Serie(
     override val descricao: String?
 ) : Card, Watchable {
     fun asSerieDatabase(): Serie {
-        return Serie(id = id, name = name, image = image, description = descricao)
+        return Serie(marvel_id = id, name = name, image = image, description = descricao)
     }
 
     override fun asWatched(): Watched {
-        return Watched(id = id, name = name, image = image, description = descricao)
+        return Watched(marvel_id = id, name = name, image = image, description = descricao)
     }
 }

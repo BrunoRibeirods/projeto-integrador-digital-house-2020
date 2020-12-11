@@ -1,6 +1,5 @@
 package com.example.filmly.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -19,15 +18,15 @@ interface FilmlyDao {
     @Insert
     suspend fun insert(watched: Watched)
 
-    @Query("SELECT * FROM favorite_films ORDER BY id DESC")
-    suspend fun getFavoriteFilms(): LiveData<List<Film>>
+    @Query("SELECT * FROM favorite_films")
+    suspend fun getFavoriteFilms(): List<Film>
 
-    @Query("SELECT * FROM favorite_series ORDER BY id DESC")
-    suspend fun getFavoriteSeries(): LiveData<List<Serie>>
+    @Query("SELECT * FROM favorite_series")
+    suspend fun getFavoriteSeries(): List<Serie>
 
-    @Query("SELECT * FROM favorite_actors ORDER BY id DESC")
-    suspend fun getFavoriteActors(): LiveData<List<Actor>>
+    @Query("SELECT * FROM favorite_actors")
+    suspend fun getFavoriteActors(): List<Actor>
 
-    @Query("SELECT * FROM watcheds ORDER BY id DESC")
-    suspend fun getWatcheds(): LiveData<List<Watched>>
+    @Query("SELECT * FROM watcheds")
+    suspend fun getWatcheds(): List<Watched>
 }

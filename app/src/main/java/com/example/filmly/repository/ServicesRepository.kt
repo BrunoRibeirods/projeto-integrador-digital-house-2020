@@ -2,16 +2,33 @@ package com.example.filmly.repository
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.filmly.data.model.Actor
 import com.example.filmly.data.model.Film
 import com.example.filmly.data.model.Serie
 import com.example.filmly.data.model.Watchable
 import com.example.filmly.database.FilmlyDatabase
-import com.example.filmly.database.Watched
+import com.example.filmly.database.asActorDomain
+import com.example.filmly.database.asFilmDomain
+import com.example.filmly.database.asSerieDomain
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 abstract class ServicesRepository {
     abstract val database: FilmlyDatabase
+
+    private val _favoriteFilms = MutableLiveData<List<Film>>()
+    val favoriteFilms: LiveData<List<Film>>
+        get() = _favoriteFilms
+
+    private val _favoriteSeries = MutableLiveData<List<Serie>>()
+    val favoriteSeries: LiveData<List<Serie>>
+        get() = _favoriteSeries
+
+    private val _favoriteActors = MutableLiveData<List<Actor>>()
+    val favoriteActors: LiveData<List<Actor>>
+        get() = _favoriteActors
 
     suspend fun insertFilm(film: Film) {
         database.FilmlyDatabaseDao.insert(film.asFilmDatabase())
@@ -29,20 +46,22 @@ abstract class ServicesRepository {
         database.FilmlyDatabaseDao.insert(watchable.asWatched())
     }
 
-    suspend fun getFavoriteFilms(): LiveData<List<com.example.filmly.database.Film>> {
-        return database.FilmlyDatabaseDao.getFavoriteFilms()
+    suspend fun updateFavoriteFilms() {
+        withContext(Dispatchers.IO) {
+            _favoriteFilms.postValue(database.FilmlyDatabaseDao.getFavoriteFilms().asFilmDomain())
+        }
     }
 
-    suspend fun getFavoriteSeries(): LiveData<List<com.example.filmly.database.Serie>> {
-        return database.FilmlyDatabaseDao.getFavoriteSeries()
+    suspend fun updateFavoriteSeries() {
+        withContext(Dispatchers.IO) {
+            _favoriteSeries.postValue(database.FilmlyDatabaseDao.getFavoriteSeries().asSerieDomain())
+        }
     }
 
-    suspend fun getFavoriteActors(): LiveData<List<com.example.filmly.database.Actor>> {
-        return database.FilmlyDatabaseDao.getFavoriteActors()
-    }
-
-    suspend fun getWatcheds(): LiveData<List<Watched>> {
-        return database.FilmlyDatabaseDao.getWatcheds()
+    suspend fun updateFavoriteActors() {
+        withContext(Dispatchers.IO) {
+            _favoriteActors.postValue(database.FilmlyDatabaseDao.getFavoriteActors().asActorDomain())
+        }
     }
 
     companion object {

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.R
 import com.example.filmly.adapters.HomeListsAdapter
 import com.example.filmly.data.model.Card
+import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.HeadLists
 import com.example.filmly.repository.StatesRepository
 import kotlinx.android.synthetic.main.fragment_home.view.*
@@ -48,7 +49,7 @@ class HomeFragment : Fragment() {
 
     fun getContent(list: List<Card>, tipo:String): List<HeadLists>{
         val heads = mutableListOf<HeadLists>()
-        heads.add(HeadLists("Resultado para $tipo", list))
+        heads.add(HeadLists("Resultado para $tipo", list, CardDetail.FILM))
 
         return heads
     }

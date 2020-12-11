@@ -9,10 +9,9 @@ import com.bumptech.glide.Glide
 import com.example.filmly.R
 import com.example.filmly.data.model.Card
 import com.example.filmly.data.model.CardDetail
-import kotlinx.android.synthetic.main.cards_list_item.view.*
 import kotlinx.android.synthetic.main.item_view_more.view.*
 
-class ViewMoreAdapter(private val listaDeCards: List<Card>, val cardNavigation: CardDetailNavigation): RecyclerView.Adapter<ViewMoreAdapter.CardListViewHolder>() {
+class ViewMoreAdapter(private val listaDeCards: List<Card>, val cardInfo: Int, val cardNavigation: CardDetailNavigation): RecyclerView.Adapter<ViewMoreAdapter.CardListViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardListViewHolder {
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.item_view_more, parent, false)
@@ -21,10 +20,10 @@ class ViewMoreAdapter(private val listaDeCards: List<Card>, val cardNavigation: 
     }
 
     override fun onBindViewHolder(holder: CardListViewHolder, position: Int) {
-        val currentItem = listaDeCards[position]
-        val cardDetail = CardDetail(currentItem.name, currentItem.image, currentItem.descricao)
+        val item = listaDeCards[position]
+        val cardDetail = CardDetail(cardInfo, item)
 
-        holder.title.text = currentItem.name
+        holder.title.text = item.name
 
         val circularProgressDrawable = CircularProgressDrawable(holder.itemView.context)
         circularProgressDrawable.strokeWidth = 5f
@@ -32,7 +31,7 @@ class ViewMoreAdapter(private val listaDeCards: List<Card>, val cardNavigation: 
         circularProgressDrawable.start()
 
         Glide.with(holder.itemView).asBitmap()
-            .load("https://image.tmdb.org/t/p/w500${currentItem.image}")
+            .load("https://image.tmdb.org/t/p/w500${item.image}")
             .placeholder(circularProgressDrawable)
             .error(circularProgressDrawable)
             .fallback(circularProgressDrawable)

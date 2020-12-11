@@ -9,6 +9,6 @@ data class Actor(
     override val descricao: String?
 ) : Card {
     fun asActorDatabase(): Actor {
-        return Actor(id = id, name = name, image = image, description = descricao)
+        return Actor(marvel_id = id, name = name, image = image, description = descricao)
     }
 }

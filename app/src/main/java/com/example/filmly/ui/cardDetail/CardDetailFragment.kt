@@ -19,7 +19,7 @@ import com.example.filmly.repository.ServicesRepository
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
 
 class CardDetailFragment : Fragment() {
-    private val repository = ServicesRepository.getInstance(requireContext())
+    private lateinit var repository: ServicesRepository
     private val viewModel: CardDetailViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -34,6 +34,8 @@ class CardDetailFragment : Fragment() {
 
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_card_detail, container, false)
+
+        repository = ServicesRepository.getInstance(requireContext())
 
         val circularProgressDrawable = CircularProgressDrawable(view.context)
         circularProgressDrawable.strokeWidth = 5f

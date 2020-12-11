@@ -8,6 +8,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 
 import retrofit2.Retrofit
 import retrofit2.http.GET
@@ -60,17 +61,17 @@ object TmdbApiteste{
 
     val httpClient = OkHttpClient.Builder()
 
-//    fun getHttp() {
-//        val logging = HttpLoggingInterceptor()
-//        logging.level = HttpLoggingInterceptor.Level.BODY
-//        httpClient.addInterceptor(logging)
-//    }
+    fun getHttp() {
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        httpClient.addInterceptor(logging)
+    }
 
 
 
     fun retrofitCreate(): Retrofit {
         val contentType = "application/json".toMediaType()
-//        getHttp()
+        getHttp()
         return Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
             .addConverterFactory(Json{ignoreUnknownKeys = true}.asConverterFactory(contentType))
