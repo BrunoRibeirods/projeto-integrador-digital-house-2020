@@ -1,41 +1,53 @@
 package com.example.filmly.ui.search
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.filmly.network.TmdbApi
+import com.example.filmly.data.model.HeadLists
+import com.example.filmly.repository.ServicesRepository
 import kotlinx.coroutines.launch
 
-class SearchViewModel(val repository: TmdbApi): ViewModel() {
-    val moviesLive = MutableLiveData<MovieResults>()
-    val tvLive = MutableLiveData<TvResults>()
-    val personLive = MutableLiveData<PersonResults>()
+class SearchViewModel(val repository: ServicesRepository): ViewModel() {
+    private val _moviesLive = MutableLiveData<MovieResults>()
+    val moviesLive: LiveData<MovieResults>
+        get() = _moviesLive
 
-    fun getMoviesModel(query: String){
+    private val _tvLive = MutableLiveData<TvResults>()
+    val tvLive: LiveData<TvResults>
+        get() = _tvLive
+
+    private val _personLive = MutableLiveData<PersonResults>()
+    val personLive: LiveData<PersonResults>
+        get() = _personLive
+
+    var headLists = mutableListOf<HeadLists>()
+
+    fun updateMoviesLive(query: String){
         try {
             viewModelScope.launch {
-                moviesLive.value = repository.getSearchMovie("0d3ca7edae2d9cb14c86ce991530aee6", 1, query)
+                _moviesLive.value = repository.getMoviesModel(query)
             }
         }catch (e: Exception){
             Log.e("SearchViewModel", e.toString())
         }
     }
 
-    fun getTvModel(query: String){
+    fun updateTvLive(query: String){
         try {
             viewModelScope.launch {
-                tvLive.value = repository.getSearchTv("0d3ca7edae2d9cb14c86ce991530aee6", 1, query)
+                _tvLive.value = repository.getTvModel(query)
             }
         }catch (e: Exception){
             Log.e("SearchViewModel", e.toString())
         }
     }
 
-    fun getPersonModel(query: String){
+    fun updatePersonLive(query: String){
         try {
             viewModelScope.launch {
-                personLive.value = repository.getSearchPerson("0d3ca7edae2d9cb14c86ce991530aee6", 1, query)
+                _personLive.value = repository.getPersonModel(query)
             }
         }catch (e: Exception){
             Log.e("SearchViewModel", e.toString())

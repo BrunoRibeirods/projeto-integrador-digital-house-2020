@@ -11,12 +11,17 @@ import com.example.filmly.database.FilmlyDatabase
 import com.example.filmly.database.asActorDomain
 import com.example.filmly.database.asFilmDomain
 import com.example.filmly.database.asSerieDomain
+import com.example.filmly.network.TmdbApiteste
+import com.example.filmly.ui.search.MovieResults
+import com.example.filmly.ui.search.PersonResults
+import com.example.filmly.ui.search.TvResults
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
 abstract class ServicesRepository {
     abstract val database: FilmlyDatabase
+    private val retrofitService = TmdbApiteste.retrofitService
 
     private val _favoriteFilms = MutableLiveData<List<Film>>()
     val favoriteFilms: LiveData<List<Film>>
@@ -30,6 +35,7 @@ abstract class ServicesRepository {
     val favoriteActors: LiveData<List<Actor>>
         get() = _favoriteActors
 
+    //Room calls
     suspend fun insertFilm(film: Film) {
         database.FilmlyDatabaseDao.insert(film.asFilmDatabase())
     }
@@ -63,7 +69,21 @@ abstract class ServicesRepository {
             _favoriteActors.postValue(database.FilmlyDatabaseDao.getFavoriteActors().asActorDomain())
         }
     }
+    
+    //Retrofit2 calls
+    suspend fun getMoviesModel(query: String): MovieResults {
+        return retrofitService.getSearchMovie("0d3ca7edae2d9cb14c86ce991530aee6", 1, query)
+    }
 
+    suspend fun getTvModel(query: String): TvResults {
+        return retrofitService.getSearchTv("0d3ca7edae2d9cb14c86ce991530aee6", 1, query)
+    }
+
+    suspend fun getPersonModel(query: String): PersonResults {
+        return retrofitService.getSearchPerson("0d3ca7edae2d9cb14c86ce991530aee6", 1, query)
+    }
+
+    //Singleton
     companion object {
         private var INSTANCE: ServicesRepository? = null
 
