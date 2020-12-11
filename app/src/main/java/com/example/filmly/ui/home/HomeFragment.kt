@@ -42,10 +42,10 @@ class HomeFragment : Fragment() {
 
         val listavazia = emptyList<HeadLists>()
 
-        viewModel.getTrendingLive("all", "day")
-        viewModel.getTrendingLive("tv", "day")
-        viewModel.getTrendingLive("movie", "day")
-        viewModel.getTrendingLive("person", "day")
+        viewModel.getTrendingLive("all")
+        viewModel.getTrendingLive("tv")
+        viewModel.getTrendingLive("movie")
+        viewModel.getTrendingLive("person")
 
         view.tv_greetings.text =
             getString(R.string.hello_wil, StatesRepository.userInformation.value?.name)
@@ -106,16 +106,21 @@ class HomeFragment : Fragment() {
             else -> "outros"
         }
 
+        val timeString = when(StatesRepository.searchTime) {
+            "day" -> "do dia"
+            else -> "da semana"
+        }
+
         val order = StatesRepository.homeListsOrder
 
         val roles: HashMap<String, Int> = hashMapOf(
-            "Top trending de hoje" to order.indexOf("trending"),
-            "Top séries de hoje" to order.indexOf("series"),
-            "Top filmes de hoje" to order.indexOf("films"),
-            "Top pessoas de hoje" to order.indexOf("actors")
+            "Top trending $timeString" to order.indexOf("trending"),
+            "Top séries $timeString" to order.indexOf("series"),
+            "Top filmes $timeString" to order.indexOf("films"),
+            "Top pessoas $timeString" to order.indexOf("actors")
         )
 
-        viewModel.headLists.add(HeadLists("Top $tipo de hoje", listaFilmes, cardInfo))
+        viewModel.headLists.add(HeadLists("Top $tipo $timeString", listaFilmes, cardInfo))
         viewModel.headLists.sortWith(Comparator { t, t2 ->
             return@Comparator roles[t.titleMessage]!! - roles[t2.titleMessage]!!
         })

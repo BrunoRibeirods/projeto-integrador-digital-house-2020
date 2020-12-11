@@ -18,6 +18,8 @@ class ProfileViewModel : ViewModel() {
     val navigateToAccountDialog: LiveData<Boolean>
         get() = _navigateToAccountDialog
 
+    fun updateSearchPreference(time: Int) = StatesRepository.updateSearchTime(time)
+
     fun updateSearchItem(value: Int) {
         _searchItemSelected.value = value
     }

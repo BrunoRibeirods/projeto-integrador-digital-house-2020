@@ -73,8 +73,8 @@ abstract class ServicesRepository {
     
     //Retrofit2 calls
 
-    suspend fun getTrending(type: String, time: String): TrendingResults {
-        return retrofitService.getTrending(type, time, "0d3ca7edae2d9cb14c86ce991530aee6")
+    suspend fun getTrending(type: String): TrendingResults {
+        return retrofitService.getTrending(type, StatesRepository.searchTime, "0d3ca7edae2d9cb14c86ce991530aee6")
     }
 
     suspend fun getMoviesModel(query: String): MovieResults {

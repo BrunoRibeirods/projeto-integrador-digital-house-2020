@@ -54,6 +54,7 @@ class ProfileFragment : Fragment() {
                 .setPositiveButton("Ok") { dialog, which ->
                     // Respond to positive button press
                     viewModel.updateSearchItem(positionSelected)
+                    viewModel.updateSearchPreference(positionSelected)
                     viewModel.showChangesToast()
                 }
                 // Single-choice items (initialized with checked item)

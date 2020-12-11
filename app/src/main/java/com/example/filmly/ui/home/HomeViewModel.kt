@@ -16,10 +16,10 @@ class HomeViewModel(val repository: ServicesRepository): ViewModel() {
 
     val headLists = mutableListOf<HeadLists>()
 
-    fun getTrendingLive(type: String, time: String){
+    fun getTrendingLive(type: String){
         viewModelScope.launch {
             try {
-                _trendingLive.value = repository.getTrending(type, time)
+                _trendingLive.value = repository.getTrending(type)
             }catch (e:Exception){
                 Log.e("HomeViewModel", e.toString())
             }

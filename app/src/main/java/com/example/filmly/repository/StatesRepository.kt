@@ -17,9 +17,20 @@ object StatesRepository {
     val yourListsOrder: List<String>
         get() = _yourListsOrder
 
+    var searchTime = "day"
+        private set
+
     private val _showChangesToast = MutableLiveData<Boolean>()
     val showChangesToast: LiveData<Boolean>
         get() = _showChangesToast
+
+    fun updateSearchTime(time: Int) {
+        when(time) {
+            0 -> "day"
+            1 -> "week"
+            else -> "day"
+        }.let { searchTime = it }
+    }
 
     fun updateUserInformation(user: UserInformation) {
         if (user.name != "null") _userInformation.value?.name = user.name
