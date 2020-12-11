@@ -11,5 +11,6 @@ data class CardDetail(
         val FILM = 1
         val ACTOR = 2
         val SERIE = 3
+        val TRENDING = 4
     }
 }

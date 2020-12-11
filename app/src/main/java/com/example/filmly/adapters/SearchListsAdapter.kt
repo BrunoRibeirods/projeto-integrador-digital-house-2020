@@ -24,10 +24,14 @@ class SearchListsAdapter(
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = CardsListAdapter(item.data, item.cardInfo, CardsListAdapter.CardDetailNavigation { cardDetail ->
-                val action = SearchFragmentDirections.actionSearchFragmentToCardDetailFragment(cardDetail)
-                findNavController().navigate(action)
-            })
+            adapter = CardsListAdapter(
+                item.data,
+                item.cardInfo,
+                CardsListAdapter.CardDetailNavigation { cardDetail ->
+                    val action =
+                        SearchFragmentDirections.actionSearchFragmentToCardDetailFragment(cardDetail)
+                    findNavController().navigate(action)
+                })
             setHasFixedSize(true)
         }
 
@@ -37,13 +41,15 @@ class SearchListsAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeadSearchViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.title_and_cards_list_item, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.title_and_cards_list_item, parent, false)
         return HeadSearchViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
+
     class HeadSearchViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
     class SeeMoreNavigation(val click: (headLists: HeadLists) -> Unit) {
