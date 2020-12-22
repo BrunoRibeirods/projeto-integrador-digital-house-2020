@@ -33,7 +33,7 @@ class SearchListsAdapter(
         companion object {
             fun from(parent: ViewGroup): HeadSearchViewHolder {
                 val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.cards_list_item, parent, false)
+                    .inflate(R.layout.title_and_cards_list_item, parent, false)
                 return HeadSearchViewHolder(view)
             }
         }
