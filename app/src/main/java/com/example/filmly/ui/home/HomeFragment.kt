@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.R
@@ -24,7 +23,6 @@ import kotlinx.android.synthetic.main.fragment_home.view.*
 class HomeFragment : Fragment() {
 
     private lateinit var repository: ServicesRepository
-    private var clickNum = 1
 
     val viewModel by viewModels<HomeViewModel>() {
         object : ViewModelProvider.Factory {
@@ -41,9 +39,16 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-
-
         repository = ServicesRepository.getInstance(requireContext())
+        val homeAdapter = HomeListsAdapter(SeeMoreNavigation { trending ->
+            val action = HomeFragmentDirections.actionHomeFragmentToViewMoreFragment(trending)
+            findNavController().navigate(action)
+        })
+
+        view.rv_homeLists.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = homeAdapter
+        }
 
         val listavazia = emptyList<HeadLists>()
 
@@ -59,45 +64,20 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.profileFragment)
         }
 
-
-        val recyclerView = view.rv_homeLists
-
-        recyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = HomeListsAdapter(listavazia, SeeMoreNavigation { trending ->
-                val action = HomeFragmentDirections.actionHomeFragmentToViewMoreFragment(trending)
-                findNavController().navigate(action)
-            })
-            setHasFixedSize(true)
-        }
-
         viewModel.trendingLive.observe(viewLifecycleOwner) {
-            recyclerView.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                adapter = HomeListsAdapter(
-                    getResultsLists(
-                        it.results.map {
-                            when (it.media_type) {
-                                "movie" -> it.convertToCard()
-                                "tv" -> it.convertToTv()
-                                "person" -> it.convertToPerson()
-                                else -> it.convertToCard()
-                            }
-                        },
-                        when (it.results.map { it.media_type }.distinct().joinToString()) {
-                            "movie" -> CardDetail.FILM
-                            "tv" -> CardDetail.SERIE
-                            "person" -> CardDetail.ACTOR
-                            else -> CardDetail.TRENDING
-                        }
-
-                    ), SeeMoreNavigation { trending ->
-                        val action =
-                            HomeFragmentDirections.actionHomeFragmentToViewMoreFragment(trending)
-                        findNavController().navigate(action)
-                    })
-                setHasFixedSize(true)
-            }
+            homeAdapter.submitList(getResultsLists(it.results.map {
+                when (it.media_type) {
+                    "movie" -> it.convertToCard()
+                    "tv" -> it.convertToTv()
+                    "person" -> it.convertToPerson()
+                    else -> it.convertToCard()
+                }
+            }, when (it.results.map { it.media_type }.distinct().joinToString()) {
+                "movie" -> CardDetail.FILM
+                "tv" -> CardDetail.SERIE
+                "person" -> CardDetail.ACTOR
+                else -> CardDetail.TRENDING
+            }))
         }
 
         return view
@@ -113,11 +93,10 @@ class HomeFragment : Fragment() {
             else -> "outros"
         }
 
-        val timeString = when(StatesRepository.searchTime) {
+        val timeString = when (StatesRepository.searchTime) {
             "day" -> "do dia"
             else -> "da semana"
         }
-
 
         val order = StatesRepository.homeListsOrder
 
@@ -135,6 +114,4 @@ class HomeFragment : Fragment() {
 
         return viewModel.headLists.distinctBy { it.titleMessage }
     }
-
-
 }
