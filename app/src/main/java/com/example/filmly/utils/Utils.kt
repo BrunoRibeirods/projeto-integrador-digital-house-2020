@@ -24,3 +24,14 @@ class CardDiffCallback : DiffUtil.ItemCallback<Card>() {
         return oldItem == newItem
     }
 }
+
+class HeadListsDiffCallback : DiffUtil.ItemCallback<HeadLists>() {
+    override fun areItemsTheSame(oldItem: HeadLists, newItem: HeadLists): Boolean {
+        return oldItem.cardInfo == newItem.cardInfo
+    }
+
+    @SuppressLint("DiffUtilEquals")
+    override fun areContentsTheSame(oldItem: HeadLists, newItem: HeadLists): Boolean {
+        return oldItem == newItem
+    }
+}
