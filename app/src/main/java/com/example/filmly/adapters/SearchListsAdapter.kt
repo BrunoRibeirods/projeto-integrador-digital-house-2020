@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.filmly.R
 import com.example.filmly.data.model.HeadLists
 import com.example.filmly.ui.search.SearchFragmentDirections
+import com.example.filmly.utils.CardDetailNavigation
+import com.example.filmly.utils.SeeMoreNavigation
 import kotlinx.android.synthetic.main.title_and_cards_list_item.view.*
 
 class SearchListsAdapter(
@@ -25,14 +27,12 @@ class SearchListsAdapter(
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = CardsListAdapter(
-                item.data,
                 item.cardInfo,
-                CardsListAdapter.CardDetailNavigation { cardDetail ->
+                CardDetailNavigation { cardDetail ->
                     val action =
                         SearchFragmentDirections.actionSearchFragmentToCardDetailFragment(cardDetail)
                     findNavController().navigate(action)
-                })
-            setHasFixedSize(true)
+                }).also { it.submitList(item.data) }
         }
 
         holder.view.tv_seeMore.setOnClickListener {
@@ -51,8 +51,4 @@ class SearchListsAdapter(
     }
 
     class HeadSearchViewHolder(val view: View) : RecyclerView.ViewHolder(view)
-
-    class SeeMoreNavigation(val click: (headLists: HeadLists) -> Unit) {
-        fun onClick(headLists: HeadLists) = click(headLists)
-    }
 }

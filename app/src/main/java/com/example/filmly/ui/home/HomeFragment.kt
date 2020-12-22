@@ -1,31 +1,24 @@
 package com.example.filmly.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-
 import androidx.navigation.findNavController
-
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.R
 import com.example.filmly.adapters.HomeListsAdapter
-import com.example.filmly.adapters.SearchListsAdapter
 import com.example.filmly.data.model.Card
 import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.HeadLists
-
 import com.example.filmly.repository.ServicesRepository
-
 import com.example.filmly.repository.StatesRepository
-import com.example.filmly.ui.search.SearchViewModel
+import com.example.filmly.utils.SeeMoreNavigation
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment() {
@@ -71,7 +64,7 @@ class HomeFragment : Fragment() {
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = HomeListsAdapter(listavazia, HomeListsAdapter.SeeMoreNavigation { trending ->
+            adapter = HomeListsAdapter(listavazia, SeeMoreNavigation { trending ->
                 val action = HomeFragmentDirections.actionHomeFragmentToViewMoreFragment(trending)
                 findNavController().navigate(action)
             })
@@ -98,7 +91,7 @@ class HomeFragment : Fragment() {
                             else -> CardDetail.TRENDING
                         }
 
-                    ), HomeListsAdapter.SeeMoreNavigation { trending ->
+                    ), SeeMoreNavigation { trending ->
                         val action =
                             HomeFragmentDirections.actionHomeFragmentToViewMoreFragment(trending)
                         findNavController().navigate(action)

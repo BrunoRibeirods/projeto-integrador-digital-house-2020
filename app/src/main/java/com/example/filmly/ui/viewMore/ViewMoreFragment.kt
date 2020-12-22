@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.filmly.R
 import com.example.filmly.adapters.ViewMoreAdapter
 import com.example.filmly.data.model.HeadLists
+import com.example.filmly.utils.CardDetailNavigation
 import kotlinx.android.synthetic.main.fragment_view_more.view.*
 
 
@@ -31,10 +32,11 @@ class ViewMoreFragment : Fragment() {
 
 
         val rc_viewMore = view.findViewById<RecyclerView>(R.id.rc_view_more)
-        rc_viewMore.adapter = ViewMoreAdapter(args.data, args.cardInfo, ViewMoreAdapter.CardDetailNavigation {
+        rc_viewMore.adapter = ViewMoreAdapter(args.cardInfo, CardDetailNavigation {
             val action = ViewMoreFragmentDirections.actionViewMoreFragmentToCardDetailFragment(it)
             findNavController().navigate(action)
-        })
+        }).also { it.submitList(args.data) }
+
         rc_viewMore.layoutManager = GridLayoutManager(context, 2)
         rc_viewMore.setHasFixedSize(true)
 

@@ -20,6 +20,7 @@ import com.example.filmly.data.model.Card
 import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.HeadLists
 import com.example.filmly.repository.ServicesRepository
+import com.example.filmly.utils.SeeMoreNavigation
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
 
@@ -61,13 +62,11 @@ class SearchFragment : Fragment() {
             viewModel.updatePersonLive("T")
         }
 
-
-
             view.rv_searchResults.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = SearchListsAdapter(
                     listavazia,
-                    SearchListsAdapter.SeeMoreNavigation { headLists ->
+                    SeeMoreNavigation { headLists ->
                         val action =
                             SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(
                                 headLists
@@ -76,7 +75,6 @@ class SearchFragment : Fragment() {
                     })
                 setHasFixedSize(true)
              }
-
 
         view.searchView.setOnKeyListener { view, i, keyEvent ->
             if(i == KeyEvent.KEYCODE_ENTER && keyEvent.action == KeyEvent.ACTION_UP && !view.searchView.text.isEmpty()){
@@ -102,7 +100,6 @@ class SearchFragment : Fragment() {
 
         }
 
-
         viewModel.moviesLive.observe(viewLifecycleOwner){
             if(it.results.isNotEmpty()){
             view.rv_searchResults.adapter = SearchListsAdapter(getResultsLists(
@@ -110,14 +107,14 @@ class SearchFragment : Fragment() {
 
                 CardDetail.FILM
 
-            ), SearchListsAdapter.SeeMoreNavigation { headLists ->
+            ), SeeMoreNavigation { headLists ->
                 val action =
                     SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
                 findNavController().navigate(action)
             })
-            }else{
+            } else {
                 view.rv_searchResults.adapter = SearchListsAdapter(
-                    listavazia, SearchListsAdapter.SeeMoreNavigation { headLists ->
+                    listavazia, SeeMoreNavigation { headLists ->
                     val action =
                         SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
                     findNavController().navigate(action)
@@ -132,7 +129,7 @@ class SearchFragment : Fragment() {
 
                 CardDetail.SERIE
 
-            ), SearchListsAdapter.SeeMoreNavigation { headLists ->
+            ), SeeMoreNavigation { headLists ->
                 val action =
                     SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
                 findNavController().navigate(action)
@@ -146,7 +143,7 @@ class SearchFragment : Fragment() {
 
                 CardDetail.ACTOR
 
-            ), SearchListsAdapter.SeeMoreNavigation { headLists ->
+            ), SeeMoreNavigation { headLists ->
                 val action =
                     SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
                 findNavController().navigate(action)
@@ -179,5 +176,11 @@ class SearchFragment : Fragment() {
         return viewModel.headLists.distinctBy { it.titleMessage }
     }
 
+    override fun onStop() {
+
+        val imm: InputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(searchView.windowToken, 0)
+        super.onStop()
+    }
 
 }

@@ -10,6 +10,8 @@ import com.example.filmly.R
 import com.example.filmly.data.model.HeadLists
 import com.example.filmly.ui.yourLists.YourListsFragmentDirections
 import com.example.filmly.ui.yourLists.YourListsViewModel
+import com.example.filmly.utils.CardDetailNavigation
+import com.example.filmly.utils.SeeMoreNavigation
 import kotlinx.android.synthetic.main.title_and_cards_list_item.view.*
 
 class YourListsAdapter(
@@ -29,10 +31,10 @@ class YourListsAdapter(
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter =
                 item?.data?.let {
-                    CardsListAdapter(it, item.cardInfo, CardsListAdapter.CardDetailNavigation { id ->
+                    CardsListAdapter(item.cardInfo, CardDetailNavigation { id ->
                         val action = YourListsFragmentDirections.actionYourListsFragmentToCardDetailFragment(id)
                         findNavController().navigate(action)
-                    })
+                    }).also { adapter -> adapter.submitList(it) }
                 }
             setHasFixedSize(true)
         }
@@ -54,9 +56,4 @@ class YourListsAdapter(
     }
 
     class HeadYourListsViewHolder(val view: View) : RecyclerView.ViewHolder(view)
-
-    class SeeMoreNavigation(val click: (HeadLists) -> Unit) {
-        fun onClick(headLists: HeadLists) = click(headLists)
-    }
-
 }

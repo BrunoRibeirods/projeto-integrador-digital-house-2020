@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.R
 import com.example.filmly.adapters.YourListsAdapter
 import com.example.filmly.repository.ServicesRepository
+import com.example.filmly.utils.SeeMoreNavigation
 import kotlinx.android.synthetic.main.fragment_your_lists.view.*
 
 class YourListsFragment : Fragment() {
@@ -42,7 +43,7 @@ class YourListsFragment : Fragment() {
         viewModel.refreshLists()
         Log.i("Antes", "passou")
 
-            val yourListsAdapter = YourListsAdapter(viewModel, YourListsAdapter.SeeMoreNavigation { headLists ->
+            val yourListsAdapter = YourListsAdapter(viewModel, SeeMoreNavigation { headLists ->
             val action =
                 YourListsFragmentDirections.actionYourListsFragmentToFavoriteListsFragment(
                     headLists
