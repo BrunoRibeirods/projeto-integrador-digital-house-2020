@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.R
@@ -45,6 +44,18 @@ class SearchFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
         
         repository = ServicesRepository.getInstance(requireContext())
+        val searchAdapter = SearchListsAdapter(SeeMoreNavigation { headLists ->
+            val action =
+                SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(
+                    headLists
+                )
+            findNavController().navigate(action)
+        })
+
+        view.rv_searchResults.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = searchAdapter
+        }
 
         val listavazia = emptyList<HeadLists>()
 
@@ -61,20 +72,6 @@ class SearchFragment : Fragment() {
             viewModel.updateTvLive("Game of")
             viewModel.updatePersonLive("T")
         }
-
-            view.rv_searchResults.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = SearchListsAdapter(
-                    listavazia,
-                    SeeMoreNavigation { headLists ->
-                        val action =
-                            SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(
-                                headLists
-                            )
-                        findNavController().navigate(action)
-                    })
-                setHasFixedSize(true)
-             }
 
         view.searchView.setOnKeyListener { view, i, keyEvent ->
             if(i == KeyEvent.KEYCODE_ENTER && keyEvent.action == KeyEvent.ACTION_UP && !view.searchView.text.isEmpty()){
@@ -102,52 +99,20 @@ class SearchFragment : Fragment() {
 
         viewModel.moviesLive.observe(viewLifecycleOwner){
             if(it.results.isNotEmpty()){
-            view.rv_searchResults.adapter = SearchListsAdapter(getResultsLists(
-                it.results.map { it.convertToFilm() },
-
-                CardDetail.FILM
-
-            ), SeeMoreNavigation { headLists ->
-                val action =
-                    SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
-                findNavController().navigate(action)
-            })
-            } else {
-                view.rv_searchResults.adapter = SearchListsAdapter(
-                    listavazia, SeeMoreNavigation { headLists ->
-                    val action =
-                        SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
-                    findNavController().navigate(action)
-                })
+                searchAdapter.submitList(getResultsLists(it.results.map { it.convertToFilm() }, CardDetail.FILM))
             }
         }
 
         viewModel.tvLive.observe(viewLifecycleOwner){
-            if(it.results.isNotEmpty())
-            view.rv_searchResults.adapter = SearchListsAdapter(getResultsLists(
-                it.results.map { it.convertToSerie() },
-
-                CardDetail.SERIE
-
-            ), SeeMoreNavigation { headLists ->
-                val action =
-                    SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
-                findNavController().navigate(action)
-            })
+            if(it.results.isNotEmpty()) {
+                searchAdapter.submitList(getResultsLists(it.results.map { it.convertToSerie() }, CardDetail.SERIE))
+            }
         }
 
         viewModel.personLive.observe(viewLifecycleOwner){
-            if(it.results.isNotEmpty())
-            view.rv_searchResults.adapter = SearchListsAdapter(getResultsLists(
-                it.results.map { it.convertToActor() },
-
-                CardDetail.ACTOR
-
-            ), SeeMoreNavigation { headLists ->
-                val action =
-                    SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(headLists)
-                findNavController().navigate(action)
-            })
+            if(it.results.isNotEmpty()) {
+                searchAdapter.submitList(getResultsLists(it.results.map { it.convertToActor() }, CardDetail.ACTOR))
+            }
         }
 
         return view
