@@ -1,7 +1,6 @@
 package com.example.filmly.ui.yourLists
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,15 +40,15 @@ class YourListsFragment : Fragment() {
 
         repository = ServicesRepository.getInstance(requireContext())
         viewModel.refreshLists()
-        Log.i("Antes", "passou")
 
-            val yourListsAdapter = YourListsAdapter(viewModel, SeeMoreNavigation { headLists ->
+        val yourListsAdapter = YourListsAdapter(SeeMoreNavigation { headLists ->
             val action =
                 YourListsFragmentDirections.actionYourListsFragmentToFavoriteListsFragment(
                     headLists
                 )
             findNavController().navigate(action)
         })
+
         view.rv_yourLists.apply {
             adapter = yourListsAdapter
             layoutManager = LinearLayoutManager(context)
@@ -69,11 +68,9 @@ class YourListsFragment : Fragment() {
 
         viewModel.headLists.observe(viewLifecycleOwner) {
             it?.let {
-                yourListsAdapter.data = it
-                view.rv_yourLists.adapter = yourListsAdapter
+                yourListsAdapter.submitList(it)
             }
         }
-        Log.i("Depois", "não passou")
 
         return view
     }
