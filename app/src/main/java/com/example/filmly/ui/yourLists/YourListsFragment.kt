@@ -1,7 +1,6 @@
 package com.example.filmly.ui.yourLists
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmly.R
 import com.example.filmly.adapters.YourListsAdapter
 import com.example.filmly.repository.ServicesRepository
+import com.example.filmly.utils.SeeMoreNavigation
 import kotlinx.android.synthetic.main.fragment_your_lists.view.*
 
 class YourListsFragment : Fragment() {
@@ -40,15 +40,15 @@ class YourListsFragment : Fragment() {
 
         repository = ServicesRepository.getInstance(requireContext())
         viewModel.refreshLists()
-        Log.i("Antes", "passou")
 
-            val yourListsAdapter = YourListsAdapter(viewModel, YourListsAdapter.SeeMoreNavigation { headLists ->
+        val yourListsAdapter = YourListsAdapter(SeeMoreNavigation { headLists ->
             val action =
                 YourListsFragmentDirections.actionYourListsFragmentToFavoriteListsFragment(
                     headLists
                 )
             findNavController().navigate(action)
         })
+
         view.rv_yourLists.apply {
             adapter = yourListsAdapter
             layoutManager = LinearLayoutManager(context)
@@ -68,11 +68,9 @@ class YourListsFragment : Fragment() {
 
         viewModel.headLists.observe(viewLifecycleOwner) {
             it?.let {
-                yourListsAdapter.data = it
-                view.rv_yourLists.adapter = yourListsAdapter
+                yourListsAdapter.submitList(it)
             }
         }
-        Log.i("Depois", "não passou")
 
         return view
     }
