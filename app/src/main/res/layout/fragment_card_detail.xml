@@ -64,6 +64,7 @@
                     android:layout_height="50dp"
                     android:layout_width="match_parent"
                     app:navigationIcon="@drawable/arrow_bg"
+                    app:menu="@menu/toolbar_card_detail"
                     />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -71,6 +72,16 @@
 
 
         </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_addToLists"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/app_bar"
+        android:src="@drawable/ic_baseline_favorite_border_24"
+        app:layout_anchorGravity="bottom|end"
+        android:layout_margin="18dp"
+        />
 
         <androidx.core.widget.NestedScrollView
             android:overScrollMode="never"
@@ -85,47 +96,18 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
+
+            <TextView
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="48dp"
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@+id/iv_cardDetailImage"
-                tools:layout_editor_absoluteX="16dp">
-
-                <TextView
-                    android:id="@+id/tv_titleDetail"
-                    android:text="Mr.Robot"
-                    android:textColor="@color/white"
-                    android:textSize="28sp"
-                    android:textStyle="bold"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
-
-                <ImageButton
-                    android:backgroundTint="@color/black101010"
-                    android:src="@drawable/ic_share"
-                    android:layout_marginEnd="8dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <ImageButton
-                    android:id="@+id/btn_addToLists"
-                    android:backgroundTint="@color/black101010"
-                    android:src="@drawable/ic_add"
-                    android:layout_marginEnd="8dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <ImageButton
-                    android:backgroundTint="@color/black101010"
-                    android:src="@drawable/ic_baseline_visibility_24"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
+                android:id="@+id/tv_titleDetail"
+                android:text="Mr.Robot"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
 
 
             <TextView
@@ -145,6 +127,8 @@
 
 
     </androidx.core.widget.NestedScrollView>
+
+
 
 
 
