@@ -1,5 +1,7 @@
 package com.example.filmly.network
 
+import com.example.filmly.ui.cardDetail.TvDetailsResults
+import com.example.filmly.ui.cardDetail.TvSeasonResults
 import com.example.filmly.ui.home.TrendingResults
 import com.example.filmly.ui.search.MovieResults
 import com.example.filmly.ui.search.PersonResults
@@ -16,8 +18,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TmdbApi {
-
-
 
     @GET("trending/{type}/{time}?language=pt-BR")
     suspend fun getTrending(
@@ -47,8 +47,20 @@ interface TmdbApi {
         @Query("query") query: String,
     ): PersonResults
 
+    @GET("tv/{tv_id}?language=pt-BR")
+    suspend fun getTvDetail(
+        @Path("tv_id") tv_id: Int,
+        @Query("api_key") api_key: String
+    ): TvDetailsResults
 
 
+
+    @GET("tv/{tv_id}/season/{season_number}?language=pt-BR")
+    suspend fun getTvSeason(
+        @Path("tv_id") tv_id: Int,
+        @Path("season_number") season_number: Int,
+        @Query("api_key") api_key: String
+    ): TvSeasonResults
 
 }
 

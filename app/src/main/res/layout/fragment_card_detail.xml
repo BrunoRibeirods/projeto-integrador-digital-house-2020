@@ -107,7 +107,7 @@
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:layout_height="wrap_content" />
+                android:layout_height="0dp" />
 
 
             <TextView
@@ -122,8 +122,40 @@
                 android:layout_height="wrap_content" />
 
 
+            <LinearLayout
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="48dp"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_title_rc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Temporadas"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="@color/yellow"
+                    />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rc_serie_seasons"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/item_serie_season"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="horizontal"
+                    tools:itemCount="6"
+                    />
+
+            </LinearLayout>
+
+
+
+
 
         </LinearLayout>
+
 
 
     </androidx.core.widget.NestedScrollView>

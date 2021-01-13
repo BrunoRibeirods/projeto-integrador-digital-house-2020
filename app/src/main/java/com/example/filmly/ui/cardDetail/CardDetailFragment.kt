@@ -10,16 +10,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.filmly.R
+import com.example.filmly.adapters.CardDetailListsAdapter
 
 import com.example.filmly.data.model.*
 import com.example.filmly.repository.ServicesRepository
@@ -65,9 +68,48 @@ class CardDetailFragment : Fragment() {
         circularProgressDrawable.centerRadius = 30f
         circularProgressDrawable.start()
 
+        val listaEmpty = mutableListOf<TvSeasonResults>()
+
+
+        view.rc_serie_seasons.layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
+        view.rc_serie_seasons.setHasFixedSize(true)
+
         val detail = arguments?.getSerializable("detail") as CardDetail
 
+        if (detail.cardInfo == 3){
+        detail.card.id?.let { viewModel.getSeasonsNumbers(it) }
+
+
+
+
+        viewModel.tvDetailsLive.observe(viewLifecycleOwner){ it ->
+
+
+            for(i in 1..it.number_of_seasons!!){
+                viewModel.getSeasonsDetail(detail.card.id!!, i)
+                Log.i("count", i.toString())
+
+            }
+
+            viewModel.tvSeasonLive.observe(viewLifecycleOwner){season ->
+                listaEmpty.add(season)
+                view.rc_serie_seasons.adapter = CardDetailListsAdapter(listaEmpty.distinct())
+            }
+
+
+
+            view.tv_title_rc.text = "Temporadas"
+
+            }
+        }else{
+            view.tv_title_rc.text = ""
+        }
+
+
         view.tv_titleDetail.text = detail.card.name
+
+
+
 
 
         Glide.with(view).asBitmap()
@@ -105,4 +147,15 @@ class CardDetailFragment : Fragment() {
 
         return view
     }
+
+    fun testeSeason(size: Int): List<TvSeasonResults>{
+        val list = mutableListOf<TvSeasonResults>()
+
+        for(i in 1..size){
+            list.add(TvSeasonResults(null, i))
+        }
+
+        return list
+    }
+
 }
