@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -19,8 +20,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.filmly.R
-import com.example.filmly.data.model.CardDetail
-import com.example.filmly.data.model.FastBlur
+import com.example.filmly.data.model.*
 import com.example.filmly.repository.ServicesRepository
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
@@ -59,6 +59,8 @@ class CardDetailFragment : Fragment() {
         circularProgressDrawable.start()
 
         val detail = arguments?.getSerializable("detail") as CardDetail
+
+        controlFavoriteState(detail, view)
 
         view.tv_titleDetail.text = detail.card.name
 
@@ -100,5 +102,13 @@ class CardDetailFragment : Fragment() {
         }
 
         return view
+    }
+
+    fun controlFavoriteState(detail: CardDetail, view: View) {
+        viewModel.isFavorited.observe(viewLifecycleOwner) { isFavorited ->
+            view.btn_addToLists.isSelected = isFavorited
+        }
+
+        viewModel.isFavorited(detail)
     }
 }

@@ -3,10 +3,7 @@ package com.example.filmly.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.filmly.data.model.Actor
-import com.example.filmly.data.model.Film
-import com.example.filmly.data.model.Serie
-import com.example.filmly.data.model.Watchable
+import com.example.filmly.data.model.*
 import com.example.filmly.database.FilmlyDatabase
 import com.example.filmly.database.asActorDomain
 import com.example.filmly.database.asFilmDomain
@@ -87,6 +84,17 @@ abstract class ServicesRepository {
 
     suspend fun getPersonModel(query: String): PersonResults {
         return retrofitService.getSearchPerson("0d3ca7edae2d9cb14c86ce991530aee6", 1, query)
+    }
+
+    suspend fun isFavorited(card: Card): Boolean {
+        when (card) {
+            is Film -> favoriteFilms.value?.contains(card)
+            is Serie -> favoriteSeries.value?.contains(card)
+            is Actor -> favoriteActors.value?.contains(card)
+            else -> false
+        }?.let { return it }
+
+        return false
     }
 
     //Singleton
