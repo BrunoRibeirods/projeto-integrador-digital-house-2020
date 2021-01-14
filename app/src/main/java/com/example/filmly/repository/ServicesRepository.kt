@@ -86,14 +86,24 @@ abstract class ServicesRepository {
         return retrofitService.getSearchPerson("0d3ca7edae2d9cb14c86ce991530aee6", 1, query)
     }
 
-    suspend fun isFavorited(card: Card): Boolean {
-        when (card) {
-            is Film -> favoriteFilms.value?.contains(card)
-            is Serie -> favoriteSeries.value?.contains(card)
-            is Actor -> favoriteActors.value?.contains(card)
-            else -> false
-        }?.let { return it }
+    fun isFavorited(detail: CardDetail): Boolean? {
+        when (detail.cardInfo) {
+            CardDetail.FILM -> favoriteFilms.value?.contains(detail.card)
+            CardDetail.SERIE -> favoriteSeries.value?.contains(detail.card)
+            CardDetail.ACTOR -> favoriteActors.value?.contains(detail.card)
+            else -> checkTrending(detail.card)
+        }.let { return it }
+    }
 
+    fun checkTrending(card: Card): Boolean {
+        favoriteFilms.value?.forEach {
+            if (it.id == card.id)
+                return true
+        }
+        favoriteSeries.value?.forEach {
+            if (it.id == card.id)
+                return true
+        }
         return false
     }
 

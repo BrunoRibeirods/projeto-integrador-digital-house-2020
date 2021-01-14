@@ -29,14 +29,8 @@ class CardDetailViewModel(private val repository: ServicesRepository) : ViewMode
     }
 
     fun isFavorited(detail: CardDetail) {
-        when (detail.cardInfo) {
-            CardDetail.FILM -> detail.card as Film
-            CardDetail.SERIE -> detail.card as Serie
-            else -> detail.card as Actor
-        }.let { card ->
-            viewModelScope.launch {
-                isFavorited.postValue(repository.isFavorited(card))
-            }
+        viewModelScope.launch {
+            isFavorited.postValue(repository.isFavorited(detail))
         }
     }
 
