@@ -23,6 +23,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.filmly.R
 import com.example.filmly.adapters.CardDetailListsAdapter
+import com.example.filmly.adapters.CardDetailProvidersAdapter
 
 import com.example.filmly.data.model.*
 import com.example.filmly.repository.ServicesRepository
@@ -98,7 +99,11 @@ class CardDetailFragment : Fragment() {
 
             viewModel.getProvidersDetail(detail.card.id!!)
             viewModel.tvProvidersLive.observe(viewLifecycleOwner){
-                Log.i("provider", it.toString())
+                view.rc_serie_watch.apply {
+                    adapter = it.results?.BR?.flatrate?.let { it1 -> CardDetailProvidersAdapter(it1) }
+                    layoutManager = LinearLayoutManager(view.context)
+                    setHasFixedSize(true)
+                }
             }
 
 
