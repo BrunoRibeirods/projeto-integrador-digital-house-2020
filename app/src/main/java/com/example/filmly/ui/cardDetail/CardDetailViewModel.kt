@@ -22,6 +22,10 @@ class CardDetailViewModel(private val repository: ServicesRepository): ViewModel
     val tvSeasonLive: LiveData<TvSeasonResults>
         get() = _tvSeasonLive
 
+    private val _tvProvidersLive = MutableLiveData<TvWatchProvidersResults>()
+    val tvProvidersLive: LiveData<TvWatchProvidersResults>
+        get() = _tvProvidersLive
+
     fun getSeasonsNumbers(id: Int){
         try {
             viewModelScope.launch {
@@ -36,6 +40,16 @@ class CardDetailViewModel(private val repository: ServicesRepository): ViewModel
         try {
             viewModelScope.launch {
                 _tvSeasonLive.value = repository.getTvSeasonModel(id, seasonNumber)
+            }
+        }catch (e: Exception){
+            Log.e("CardDetailViewModel", e.toString())
+        }
+    }
+
+    fun getProvidersDetail(id: Int){
+        try {
+            viewModelScope.launch {
+                _tvProvidersLive.value = repository.getTvWatchProvidersModel(id)
             }
         }catch (e: Exception){
             Log.e("CardDetailViewModel", e.toString())

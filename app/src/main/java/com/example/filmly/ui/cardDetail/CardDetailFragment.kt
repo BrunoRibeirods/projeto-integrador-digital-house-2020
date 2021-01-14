@@ -76,19 +76,15 @@ class CardDetailFragment : Fragment() {
 
         val detail = arguments?.getSerializable("detail") as CardDetail
 
+        //Serie Configuration START
+
         if (detail.cardInfo == 3){
         detail.card.id?.let { viewModel.getSeasonsNumbers(it) }
 
-
-
-
         viewModel.tvDetailsLive.observe(viewLifecycleOwner){ it ->
-
 
             for(i in 1..it.number_of_seasons!!){
                 viewModel.getSeasonsDetail(detail.card.id!!, i)
-                Log.i("count", i.toString())
-
             }
 
             viewModel.tvSeasonLive.observe(viewLifecycleOwner){season ->
@@ -96,20 +92,23 @@ class CardDetailFragment : Fragment() {
                 view.rc_serie_seasons.adapter = CardDetailListsAdapter(listaEmpty.distinct())
             }
 
-
-
             view.tv_title_rc.text = "Temporadas"
 
             }
+
+            viewModel.getProvidersDetail(detail.card.id!!)
+            viewModel.tvProvidersLive.observe(viewLifecycleOwner){
+                Log.i("provider", it.toString())
+            }
+
+
         }else{
             view.tv_title_rc.text = ""
         }
 
+        //END
 
         view.tv_titleDetail.text = detail.card.name
-
-
-
 
 
         Glide.with(view).asBitmap()

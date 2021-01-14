@@ -2,6 +2,7 @@ package com.example.filmly.network
 
 import com.example.filmly.ui.cardDetail.TvDetailsResults
 import com.example.filmly.ui.cardDetail.TvSeasonResults
+import com.example.filmly.ui.cardDetail.TvWatchProvidersResults
 import com.example.filmly.ui.home.TrendingResults
 import com.example.filmly.ui.search.MovieResults
 import com.example.filmly.ui.search.PersonResults
@@ -54,13 +55,25 @@ interface TmdbApi {
     ): TvDetailsResults
 
 
-
     @GET("tv/{tv_id}/season/{season_number}?language=pt-BR")
     suspend fun getTvSeason(
         @Path("tv_id") tv_id: Int,
         @Path("season_number") season_number: Int,
         @Query("api_key") api_key: String
     ): TvSeasonResults
+
+//    @GET("movie/{movie_id}/watch/providers?language=pt-BR")
+//    suspend fun getMovieProviders(
+//        @Path("movie_id") movie_id: Int,
+//        @Query("api_key") api_key: String
+//    ):
+
+    @GET("tv/{tv_id}/watch/providers")
+    suspend fun getTvProviders(
+        @Path("tv_id") tv_id: Int,
+        @Query("api_key") api_key: String
+    ): TvWatchProvidersResults
+
 
 }
 
@@ -86,7 +99,7 @@ object TmdbApiteste{
         getHttp()
         return Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
-            .addConverterFactory(Json{ignoreUnknownKeys = true}.asConverterFactory(contentType))
+            .addConverterFactory(Json{ignoreUnknownKeys = true; isLenient = true}.asConverterFactory(contentType))
             .client(httpClient.build())
             .build()
     }
