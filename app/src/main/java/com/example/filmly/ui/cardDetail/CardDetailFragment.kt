@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -20,16 +19,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.filmly.R
-
-import com.example.filmly.data.model.*
-import com.example.filmly.repository.ServicesRepository
-import com.google.android.material.appbar.AppBarLayout
-
 import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.FastBlur
-import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
-import kotlinx.android.synthetic.main.fragment_card_detail.*
-
+import com.example.filmly.repository.ServicesRepository
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
 
 
@@ -90,6 +83,9 @@ class CardDetailFragment : Fragment() {
         view.tv_sinopseCardDetail.text = detail.card.descricao
 
         view.btn_addToLists.setOnClickListener {
+            Log.i("Button", "antes: ${it.isSelected}")
+            it.isSelected = !it.btn_addToLists.isSelected
+            Log.i("Button", "depois: ${it.isSelected}")
 
             when (detail.cardInfo) {
                 CardDetail.FILM -> viewModel.insertFilm(detail.card as Film)
