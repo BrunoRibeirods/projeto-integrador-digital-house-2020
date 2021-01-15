@@ -6,12 +6,16 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TvDetailsResults(
     @SerialName("watch/providers") val watch: TvWatchProvidersResults? = null,
-    val seasons: List<TvSeasonResults>? = null
+    val seasons: List<TvSeasonResults>? = null,
+    val name: String? = null,
+    val overview: String? = null,
 )
 
 @Serializable
 data class MovieDetailsResults(
     @SerialName("watch/providers") val watch: TvWatchProvidersResults? = null,
+    val title: String? = null,
+    val overview: String? = null
 )
 
 

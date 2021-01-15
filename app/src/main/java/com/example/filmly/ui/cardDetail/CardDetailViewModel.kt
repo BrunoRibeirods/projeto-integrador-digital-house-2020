@@ -14,33 +14,21 @@ import kotlinx.coroutines.launch
 
 class CardDetailViewModel(private val repository: ServicesRepository): ViewModel() {
 
-    private val _tvSeasonLive = MutableLiveData<List<TvSeasonResults>>()
-    val tvSeasonLive: LiveData<List<TvSeasonResults>>
-        get() = _tvSeasonLive
 
-    private val _tvProvidersLive = MutableLiveData<TvWatchProvidersResults>()
-    val tvProvidersLive: LiveData<TvWatchProvidersResults>
+    private val _tvProvidersLive = MutableLiveData<TvDetailsResults>()
+    val tvProvidersLive: LiveData<TvDetailsResults>
         get() = _tvProvidersLive
 
-    private val _movieProvidersLive = MutableLiveData<TvWatchProvidersResults>()
-    val movieProvidersLive: LiveData<TvWatchProvidersResults>
+    private val _movieProvidersLive = MutableLiveData<MovieDetailsResults>()
+    val movieProvidersLive: LiveData<MovieDetailsResults>
         get() = _movieProvidersLive
 
 
-    fun getSeasonsDetail(id: Int){
-        try {
-            viewModelScope.launch {
-                _tvSeasonLive.value = repository.getTvSeasonModel(id).seasons
-            }
-        }catch (e: Exception){
-            Log.e("CardDetailViewModel", e.toString())
-        }
-    }
 
     fun getProvidersDetail(id: Int){
         try {
             viewModelScope.launch {
-                _tvProvidersLive.value = repository.getTvWatchProvidersModel(id).watch
+                _tvProvidersLive.value = repository.getTvWatchProvidersModel(id)
             }
         }catch (e: Exception){
             Log.e("CardDetailViewModel", e.toString())
@@ -50,7 +38,7 @@ class CardDetailViewModel(private val repository: ServicesRepository): ViewModel
     fun getProvidersMovieDetail(id: Int){
         try {
             viewModelScope.launch {
-                _movieProvidersLive.value = repository.getMovieWatchProvidersModel(id).watch
+                _movieProvidersLive.value = repository.getMovieWatchProvidersModel(id)
             }
         }catch (e: Exception){
             Log.e("CardDetailViewModel", e.toString())

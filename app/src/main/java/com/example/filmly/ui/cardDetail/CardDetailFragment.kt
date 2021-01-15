@@ -72,7 +72,6 @@ class CardDetailFragment : Fragment() {
         circularProgressDrawable.centerRadius = 30f
         circularProgressDrawable.start()
 
-        val listaEmpty = mutableListOf<TvSeasonResults>()
 
 
         view.rc_serie_seasons.layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
@@ -80,27 +79,30 @@ class CardDetailFragment : Fragment() {
 
         val detail = arguments?.getSerializable("detail") as CardDetail
 
+        view.tv_titleDetail.text = ""
+        view.tv_sinopseCardDetail.text = ""
+
 
         //Serie Configuration START ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
         when(detail.card.type){
              "tv" -> {
-                viewModel.getSeasonsDetail(detail.card.id!!)
                  viewModel.getProvidersDetail(detail.card.id!!)
 
-                 viewModel.tvSeasonLive.observe(viewLifecycleOwner){
-                     view.rc_serie_seasons.apply {
 
-                         adapter = CardDetailListsAdapter(it)
+                 viewModel.tvProvidersLive.observe(viewLifecycleOwner){
+                     view.rc_serie_seasons.apply {
+                         adapter = it.seasons?.let { it1 -> CardDetailListsAdapter(it1) }
                          layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
                          setHasFixedSize(true)
                      }
-                 }
 
-                 viewModel.tvProvidersLive.observe(viewLifecycleOwner){
                      view.rc_serie_watch.apply {
-                         if (it.results?.BR != null) {
-                         adapter = CardDetailProvidersAdapter(it.results.BR.flatrate!!.plus(it.results.BR.buy!!).plus(it.results.BR.rent!!).plus(it.results.BR.ads!!).distinct())
+                         view.tv_titleDetail.text = it.name
+                         view.tv_sinopseCardDetail.text = it.overview
+
+                         if (it.watch?.results?.BR != null) {
+                         adapter = CardDetailProvidersAdapter(it.watch.results.BR.flatrate!!.plus(it.watch.results.BR.buy!!).plus(it.watch.results.BR.rent!!).plus(it.watch.results.BR.ads!!).distinct())
                          layoutManager = LinearLayoutManager(view.context)
                          setHasFixedSize(true)
                         }else{
@@ -115,13 +117,15 @@ class CardDetailFragment : Fragment() {
                 viewModel.getProvidersMovieDetail(detail.card.id!!)
 
 
-
                 viewModel.movieProvidersLive.observe(viewLifecycleOwner) {
+                    view.tv_titleDetail.text = it.title
+                    view.tv_sinopseCardDetail.text = it.overview
+
                     view.rc_serie_watch.apply {
-                        if (it.results?.BR != null) {
+                        if (it.watch?.results?.BR != null) {
                             adapter = CardDetailProvidersAdapter(
-                                it.results.BR.flatrate!!.plus(it.results.BR.buy!!)
-                                    .plus(it.results.BR.rent!!).plus(it.results.BR.ads!!).distinct()
+                                it.watch.results.BR.flatrate!!.plus(it.watch.results.BR.buy!!)
+                                    .plus(it.watch.results.BR.rent!!).plus(it.watch.results.BR.ads!!).distinct()
                             )
                             layoutManager = LinearLayoutManager(view.context)
                             setHasFixedSize(true)
@@ -136,6 +140,9 @@ class CardDetailFragment : Fragment() {
                 view.tv_title_rc.visibility = View.GONE
                 view.tv_title_provider.visibility = View.GONE
 
+                view.tv_sinopseCardDetail.text = detail.card.descricao
+                view.tv_titleDetail.text = detail.card.name
+
             }
 
 
@@ -144,7 +151,7 @@ class CardDetailFragment : Fragment() {
 
         //END ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-        view.tv_titleDetail.text = detail.card.name
+
 
 
         Glide.with(view).asBitmap()
@@ -164,7 +171,7 @@ class CardDetailFragment : Fragment() {
             })
 
 
-        view.tv_sinopseCardDetail.text = detail.card.descricao
+
 
         view.btn_addToLists.setOnClickListener {
 

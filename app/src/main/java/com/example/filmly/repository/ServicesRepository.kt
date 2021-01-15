@@ -91,9 +91,6 @@ abstract class ServicesRepository {
     }
 
 
-    suspend fun getTvSeasonModel(id: Int): TvDetailsResults{
-        return retrofitService.getTvDetail(id, "0d3ca7edae2d9cb14c86ce991530aee6")
-    }
 
     suspend fun getTvWatchProvidersModel(id: Int): TvDetailsResults{
         return retrofitService.getTvDetail(id, "0d3ca7edae2d9cb14c86ce991530aee6")
