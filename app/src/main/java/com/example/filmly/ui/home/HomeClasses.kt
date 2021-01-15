@@ -34,7 +34,7 @@ data class Trending(
     }
 
     fun convertToPerson(): Actor {
-        val over = known_for?.map { it.title }
+        val over = known_for?.map { it.title ?: it.name}
         return Actor(id = id, name = name, image = profile_path, descricao =  over?.joinToString(prefix = "Conhecido por:  \n", separator = "\n"), type = media_type)
     }
 }
