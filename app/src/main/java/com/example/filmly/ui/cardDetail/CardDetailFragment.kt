@@ -20,7 +20,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.filmly.R
-import com.example.filmly.data.model.*
+import com.example.filmly.data.model.CardDetail
+import com.example.filmly.data.model.FastBlur
 import com.example.filmly.repository.ServicesRepository
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
@@ -91,18 +92,7 @@ class CardDetailFragment : Fragment() {
 
             viewModel.isFavorited.value?.let { isFavorited ->
                 if (!isFavorited) {
-                    when (detail.cardInfo) {
-                        CardDetail.FILM -> viewModel.insertFilm(detail.card as Film)
-                        CardDetail.SERIE -> viewModel.insertSerie(detail.card as Serie)
-                        CardDetail.ACTOR -> viewModel.insertActor(detail.card as Actor)
-                        CardDetail.TRENDING -> {
-                            when (detail.card) {
-                                is Film -> viewModel.insertFilm(detail.card)
-                                is Serie -> viewModel.insertSerie(detail.card)
-                                is Actor -> viewModel.insertActor(detail.card)
-                            }
-                        }
-                    }
+                    viewModel.addCard(detail)
                     Toast.makeText(context, "Adicionado", Toast.LENGTH_SHORT).show()
                 } else {
                     viewModel.deleteCard(detail)

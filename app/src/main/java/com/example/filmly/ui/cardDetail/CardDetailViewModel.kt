@@ -58,6 +58,21 @@ class CardDetailViewModel(private val repository: ServicesRepository) : ViewMode
         }
     }
 
+    fun addCard(detail: CardDetail) {
+        when (detail.cardInfo) {
+            CardDetail.FILM -> insertFilm(detail.card as Film)
+            CardDetail.SERIE -> insertSerie(detail.card as Serie)
+            CardDetail.ACTOR -> insertActor(detail.card as Actor)
+            CardDetail.TRENDING -> {
+                when (detail.card) {
+                    is Film -> insertFilm(detail.card)
+                    is Serie -> insertSerie(detail.card)
+                    is Actor -> insertActor(detail.card)
+                }
+            }
+        }
+    }
+
     fun deleteCard(detail: CardDetail) {
         when (detail.cardInfo) {
             CardDetail.FILM -> deleteFilm(detail.card as Film)
