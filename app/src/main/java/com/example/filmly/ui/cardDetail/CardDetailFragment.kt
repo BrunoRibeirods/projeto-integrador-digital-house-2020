@@ -1,5 +1,6 @@
 package com.example.filmly.ui.cardDetail
 
+
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
@@ -10,10 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.core.view.isGone
-import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -24,23 +22,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.filmly.R
-
-import com.example.filmly.data.model.Card
-
-
 import com.example.filmly.adapters.CardDetailListsAdapter
 import com.example.filmly.adapters.CardDetailProvidersAdapter
-
-import com.example.filmly.data.model.*
-import com.example.filmly.repository.ServicesRepository
-import com.google.android.material.appbar.AppBarLayout
-
+import com.example.filmly.data.model.Card
 import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.FastBlur
-import com.google.android.material.appbar.AppBarLayout.LAYOUT_DIRECTION_INHERIT
-import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
-import kotlinx.android.synthetic.main.fragment_card_detail.*
-
+import com.example.filmly.repository.ServicesRepository
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
 
 
@@ -179,14 +167,14 @@ class CardDetailFragment : Fragment() {
 
 
         view.btn_addToLists.setOnClickListener {
-            it.isSelected = !it.btn_addToLists.isSelected
-
             viewModel.isFavorited.value?.let { isFavorited ->
                 if (!isFavorited) {
                     viewModel.addCard(detail.card)
+                    viewModel.isFavorited()
                     Toast.makeText(context, "Adicionado", Toast.LENGTH_SHORT).show()
                 } else {
                     viewModel.deleteCard(detail.card)
+                    viewModel.isNotFavorited()
                     Toast.makeText(context, "Item removido", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -201,10 +189,11 @@ class CardDetailFragment : Fragment() {
 
     fun controlFavoriteState(card: Card, view: View) {
         viewModel.isFavorited.observe(viewLifecycleOwner) { isFavorited ->
+            Log.i("LiveData", "$isFavorited")
             view.btn_addToLists.isSelected = isFavorited
         }
 
-        viewModel.isFavorited(card)
+        viewModel.checkCardisFavorited(card)
     }
 
 }

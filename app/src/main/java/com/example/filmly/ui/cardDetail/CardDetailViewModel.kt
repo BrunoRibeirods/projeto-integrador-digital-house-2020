@@ -63,10 +63,18 @@ class CardDetailViewModel(private val repository: ServicesRepository) : ViewMode
         }
     }
 
-    fun isFavorited(card: Card) {
+    fun checkCardisFavorited(card: Card) {
         viewModelScope.launch {
-            isFavorited.postValue(repository.isFavorited(card))
+            isFavorited.postValue(repository.checkCardIsFavorited(card))
         }
+    }
+
+    fun isFavorited() {
+        isFavorited.value = true
+    }
+
+    fun isNotFavorited() {
+        isFavorited.value = false
     }
 
     suspend fun insertWatched(watchable: Watchable) {

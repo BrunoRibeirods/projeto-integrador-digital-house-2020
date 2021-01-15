@@ -110,7 +110,7 @@ abstract class ServicesRepository {
     }
 
     // Checking if a card is contained in one list
-    fun isFavorited(card: Card): Boolean? {
+    fun checkCardIsFavorited(card: Card): Boolean? {
 
         return when (card) {
             is Film -> favoriteFilms.value?.contains(card)
