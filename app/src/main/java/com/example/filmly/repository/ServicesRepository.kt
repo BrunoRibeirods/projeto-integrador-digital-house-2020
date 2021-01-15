@@ -9,6 +9,7 @@ import com.example.filmly.database.asActorDomain
 import com.example.filmly.database.asFilmDomain
 import com.example.filmly.database.asSerieDomain
 import com.example.filmly.network.TmdbApiteste
+import com.example.filmly.ui.cardDetail.*
 import com.example.filmly.ui.home.TrendingResults
 import com.example.filmly.ui.search.MovieResults
 import com.example.filmly.ui.search.PersonResults
@@ -107,6 +108,7 @@ abstract class ServicesRepository {
         return retrofitService.getSearchPerson("0d3ca7edae2d9cb14c86ce991530aee6", 1, query)
     }
 
+    // Checking if a card is contained in one list
     fun isFavorited(card: Card): Boolean? {
 
         return when (card) {
@@ -114,6 +116,16 @@ abstract class ServicesRepository {
             is Serie -> favoriteSeries.value?.contains(card)
             else -> favoriteActors.value?.contains(card)
         }
+
+
+
+    suspend fun getTvWatchProvidersModel(id: Int): TvDetailsResults{
+        return retrofitService.getTvDetail(id, "0d3ca7edae2d9cb14c86ce991530aee6")
+    }
+
+    suspend fun getMovieWatchProvidersModel(id: Int): MovieDetailsResults {
+        return retrofitService.getMovieDetail(id, "0d3ca7edae2d9cb14c86ce991530aee6")
+
     }
 
     //Singleton

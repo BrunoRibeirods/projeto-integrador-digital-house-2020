@@ -45,18 +45,18 @@ data class Watched(
 
 fun List<Film>.asFilmDomain(): List<com.example.filmly.data.model.Film> {
     return this.map {
-        com.example.filmly.data.model.Film(id = it.marvel_id, name = it.name, image = it.image, descricao = it.description)
+        com.example.filmly.data.model.Film(id = it.marvel_id, name = it.name, image = it.image, descricao = it.description, type = "movie")
     }
 }
 
 fun List<Serie>.asSerieDomain(): List<com.example.filmly.data.model.Serie> {
     return this.map {
-        com.example.filmly.data.model.Serie(id = it.marvel_id, name = it.name, image = it.image, descricao = it.description)
+        com.example.filmly.data.model.Serie(id = it.marvel_id, name = it.name, image = it.image, descricao = it.description, type = "tv")
     }
 }
 
 fun List<Actor>.asActorDomain(): List<com.example.filmly.data.model.Actor> {
     return this.map {
-        com.example.filmly.data.model.Actor(id = it.marvel_id, name = it.name, image = it.image, descricao = it.description)
+        com.example.filmly.data.model.Actor(id = it.marvel_id, name = it.name, image = it.image, descricao = it.description, type = "person")
     }
 }
