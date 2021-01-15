@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.example.filmly.R
 import com.example.filmly.adapters.HomeListsAdapter
 import com.example.filmly.data.model.Card
@@ -19,6 +20,7 @@ import com.example.filmly.repository.ServicesRepository
 import com.example.filmly.repository.StatesRepository
 import com.example.filmly.utils.SeeMoreNavigation
 import kotlinx.android.synthetic.main.fragment_home.view.*
+
 
 class HomeFragment : Fragment() {
 
@@ -45,12 +47,19 @@ class HomeFragment : Fragment() {
             findNavController().navigate(action)
         })
 
+        homeAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                if (!view.rv_homeLists.canScrollVertically(-1)) {
+                    view.rv_homeLists.scrollToPosition(0)
+                }
+            }
+        })
+
         view.rv_homeLists.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = homeAdapter
         }
-
-        val listavazia = emptyList<HeadLists>()
 
         viewModel.getTrendingLive("all")
         viewModel.getTrendingLive("tv")
@@ -77,7 +86,9 @@ class HomeFragment : Fragment() {
                 "tv" -> CardDetail.SERIE
                 "person" -> CardDetail.ACTOR
                 else -> CardDetail.TRENDING
-            }))
+            }
+            )
+            )
         }
 
         return view
