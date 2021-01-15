@@ -3,16 +3,14 @@ package com.example.filmly.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.filmly.data.model.Actor
-import com.example.filmly.data.model.Film
-import com.example.filmly.data.model.Serie
-import com.example.filmly.data.model.Watchable
+import com.example.filmly.data.model.*
 import com.example.filmly.database.FilmlyDatabase
 import com.example.filmly.database.asActorDomain
 import com.example.filmly.database.asFilmDomain
 import com.example.filmly.database.asSerieDomain
 import com.example.filmly.network.TmdbApiteste
-import com.example.filmly.ui.cardDetail.*
+import com.example.filmly.ui.cardDetail.MovieDetailsResults
+import com.example.filmly.ui.cardDetail.TvDetailsResults
 import com.example.filmly.ui.home.TrendingResults
 import com.example.filmly.ui.search.MovieResults
 import com.example.filmly.ui.search.PersonResults
@@ -71,6 +69,27 @@ abstract class ServicesRepository {
             _favoriteActors.postValue(database.FilmlyDatabaseDao.getFavoriteActors().asActorDomain())
         }
     }
+
+    suspend fun deleteFavoriteFilm(film: Film) {
+        withContext(Dispatchers.IO) {
+            film.id?.let { database.FilmlyDatabaseDao.deleteFilm(it) }
+            updateFavoriteFilms()
+        }
+    }
+
+    suspend fun deleteFavoriteSerie( serie: Serie) {
+        withContext(Dispatchers.IO) {
+            serie.id?.let { database.FilmlyDatabaseDao.deleteSerie(it) }
+            updateFavoriteSeries()
+        }
+    }
+
+    suspend fun deleteFavoriteActor(actor: Actor) {
+        withContext(Dispatchers.IO) {
+            actor.id?.let { database.FilmlyDatabaseDao.deleteActor(it) }
+            updateFavoriteActors()
+        }
+    }
     
     //Retrofit2 calls
 
@@ -90,7 +109,15 @@ abstract class ServicesRepository {
         return retrofitService.getSearchPerson("0d3ca7edae2d9cb14c86ce991530aee6", 1, query)
     }
 
+    // Checking if a card is contained in one list
+    fun checkCardIsFavorited(card: Card): Boolean? {
 
+        return when (card) {
+            is Film -> favoriteFilms.value?.contains(card)
+            is Serie -> favoriteSeries.value?.contains(card)
+            else -> favoriteActors.value?.contains(card)
+        }
+    }
 
     suspend fun getTvWatchProvidersModel(id: Int): TvDetailsResults{
         return retrofitService.getTvDetail(id, "0d3ca7edae2d9cb14c86ce991530aee6")
@@ -98,6 +125,7 @@ abstract class ServicesRepository {
 
     suspend fun getMovieWatchProvidersModel(id: Int): MovieDetailsResults {
         return retrofitService.getMovieDetail(id, "0d3ca7edae2d9cb14c86ce991530aee6")
+
     }
 
     //Singleton

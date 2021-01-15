@@ -28,6 +28,16 @@ class HomeViewModel(val repository: ServicesRepository): ViewModel() {
         }
     }
 
+    fun refreshLists() {
+        viewModelScope.launch {
+            repository.updateFavoriteFilms()
+            repository.updateFavoriteSeries()
+            repository.updateFavoriteActors()
+        }
+    }
+
+
+
 
 
 

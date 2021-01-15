@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
             adapter = homeAdapter
         }
 
-        val listavazia = emptyList<HeadLists>()
+        viewModel.refreshLists()
 
         viewModel.getTrendingLive("all")
         viewModel.getTrendingLive("tv")

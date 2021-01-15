@@ -29,4 +29,13 @@ interface FilmlyDao {
 
     @Query("SELECT * FROM watcheds")
     suspend fun getWatcheds(): List<Watched>
+
+    @Query("DELETE FROM favorite_films WHERE marvel_id = :id")
+    fun deleteFilm(id: Int)
+
+    @Query("DELETE FROM favorite_series WHERE marvel_id = :id")
+    fun deleteSerie(id: Int)
+
+    @Query("DELETE FROM favorite_actors WHERE marvel_id = :id")
+    fun deleteActor(id: Int)
 }
