@@ -89,12 +89,26 @@ class CardDetailFragment : Fragment() {
             it.isSelected = !it.btn_addToLists.isSelected
             Log.i("Button", "depois: ${it.isSelected}")
 
-            when (detail.cardInfo) {
-                CardDetail.FILM -> viewModel.insertFilm(detail.card as Film)
-                CardDetail.SERIE -> viewModel.insertSerie(detail.card as Serie)
-                CardDetail.ACTOR -> viewModel.insertActor(detail.card as Actor)
+            viewModel.isFavorited.value?.let { isFavorited ->
+                if (!isFavorited) {
+                    when (detail.cardInfo) {
+                        CardDetail.FILM -> viewModel.insertFilm(detail.card as Film)
+                        CardDetail.SERIE -> viewModel.insertSerie(detail.card as Serie)
+                        CardDetail.ACTOR -> viewModel.insertActor(detail.card as Actor)
+                        CardDetail.TRENDING -> {
+                            when (detail.card) {
+                                is Film -> viewModel.insertFilm(detail.card)
+                                is Serie -> viewModel.insertSerie(detail.card)
+                                is Actor -> viewModel.insertActor(detail.card)
+                            }
+                        }
+                    }
+                    Toast.makeText(context, "Adicionado", Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.deleteCard(detail)
+                    Toast.makeText(context, "Item removido", Toast.LENGTH_SHORT).show()
+                }
             }
-            Toast.makeText(context, "Adicionado", Toast.LENGTH_SHORT).show()
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -39,4 +39,37 @@ class CardDetailViewModel(private val repository: ServicesRepository) : ViewMode
             repository.insertWatched(watchable)
         }
     }
+
+    fun deleteFilm(film: Film) {
+        viewModelScope.launch {
+            repository.deleteFavoriteFilm(film)
+        }
+    }
+
+    fun deleteSerie(serie: Serie) {
+        viewModelScope.launch {
+            repository.deleteFavoriteSerie(serie)
+        }
+    }
+
+    fun deleteActor(actor: Actor) {
+        viewModelScope.launch {
+            repository.deleteFavoriteActor(actor)
+        }
+    }
+
+    fun deleteCard(detail: CardDetail) {
+        when (detail.cardInfo) {
+            CardDetail.FILM -> deleteFilm(detail.card as Film)
+            CardDetail.SERIE -> deleteSerie(detail.card as Serie)
+            CardDetail.ACTOR -> deleteActor(detail.card as Actor)
+            CardDetail.TRENDING -> {
+                when (detail.card) {
+                    is Film -> deleteFilm(detail.card)
+                    is Serie -> deleteSerie(detail.card)
+                    is Actor -> deleteActor(detail.card)
+                }
+            }
+        }
+    }
 }

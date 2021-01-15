@@ -67,6 +67,27 @@ abstract class ServicesRepository {
             _favoriteActors.postValue(database.FilmlyDatabaseDao.getFavoriteActors().asActorDomain())
         }
     }
+
+    suspend fun deleteFavoriteFilm(film: Film) {
+        withContext(Dispatchers.IO) {
+            film.id?.let { database.FilmlyDatabaseDao.deleteFilm(it) }
+            updateFavoriteFilms()
+        }
+    }
+
+    suspend fun deleteFavoriteSerie( serie: Serie) {
+        withContext(Dispatchers.IO) {
+            serie.id?.let { database.FilmlyDatabaseDao.deleteSerie(it) }
+            updateFavoriteSeries()
+        }
+    }
+
+    suspend fun deleteFavoriteActor(actor: Actor) {
+        withContext(Dispatchers.IO) {
+            actor.id?.let { database.FilmlyDatabaseDao.deleteActor(it) }
+            updateFavoriteActors()
+        }
+    }
     
     //Retrofit2 calls
 
