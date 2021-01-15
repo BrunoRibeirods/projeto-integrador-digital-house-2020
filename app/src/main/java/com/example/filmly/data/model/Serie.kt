@@ -7,7 +7,8 @@ data class Serie(
     override val id: Int?,
     override val name: String?,
     override val image: String?,
-    override val descricao: String?
+    override val descricao: String?,
+    override val type: String?
 ) : Card, Watchable {
     fun asSerieDatabase(): Serie {
         return Serie(marvel_id = id, name = name, image = image, description = descricao)

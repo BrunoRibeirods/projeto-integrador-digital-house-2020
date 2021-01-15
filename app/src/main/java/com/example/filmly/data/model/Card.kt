@@ -5,4 +5,5 @@ interface Card {
     val name: String?
     val image: String?
     val descricao: String?
+    val type: String?
 }

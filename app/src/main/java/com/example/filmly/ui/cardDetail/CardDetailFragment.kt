@@ -10,16 +10,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.view.isGone
+import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.filmly.R
+import com.example.filmly.adapters.CardDetailListsAdapter
+import com.example.filmly.adapters.CardDetailProvidersAdapter
 
 import com.example.filmly.data.model.*
 import com.example.filmly.repository.ServicesRepository
@@ -27,6 +33,7 @@ import com.google.android.material.appbar.AppBarLayout
 
 import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.FastBlur
+import com.google.android.material.appbar.AppBarLayout.LAYOUT_DIRECTION_INHERIT
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import kotlinx.android.synthetic.main.fragment_card_detail.*
 
@@ -65,9 +72,86 @@ class CardDetailFragment : Fragment() {
         circularProgressDrawable.centerRadius = 30f
         circularProgressDrawable.start()
 
+
+
+        view.rc_serie_seasons.layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
+        view.rc_serie_seasons.setHasFixedSize(true)
+
         val detail = arguments?.getSerializable("detail") as CardDetail
 
-        view.tv_titleDetail.text = detail.card.name
+        view.tv_titleDetail.text = ""
+        view.tv_sinopseCardDetail.text = ""
+
+
+        //Serie Configuration START ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+        when(detail.card.type){
+             "tv" -> {
+                 viewModel.getProvidersDetail(detail.card.id!!)
+
+
+                 viewModel.tvProvidersLive.observe(viewLifecycleOwner){
+                     view.rc_serie_seasons.apply {
+                         adapter = it.seasons?.let { it1 -> CardDetailListsAdapter(it1) }
+                         layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
+                         setHasFixedSize(true)
+                     }
+
+                     view.rc_serie_watch.apply {
+                         view.tv_titleDetail.text = it.name
+                         view.tv_sinopseCardDetail.text = it.overview
+
+                         if (it.watch?.results?.BR != null) {
+                         adapter = CardDetailProvidersAdapter(it.watch.results.BR.flatrate!!.plus(it.watch.results.BR.buy!!).plus(it.watch.results.BR.rent!!).plus(it.watch.results.BR.ads!!).distinct())
+                         layoutManager = LinearLayoutManager(view.context)
+                         setHasFixedSize(true)
+                        }else{
+                            view.tv_title_provider.visibility = View.GONE
+                         }
+                     }
+                 }
+
+            }
+            "movie" -> {
+                view.tv_title_rc.visibility = View.GONE
+                viewModel.getProvidersMovieDetail(detail.card.id!!)
+
+
+                viewModel.movieProvidersLive.observe(viewLifecycleOwner) {
+                    view.tv_titleDetail.text = it.title
+                    view.tv_sinopseCardDetail.text = it.overview
+
+                    view.rc_serie_watch.apply {
+                        if (it.watch?.results?.BR != null) {
+                            adapter = CardDetailProvidersAdapter(
+                                it.watch.results.BR.flatrate!!.plus(it.watch.results.BR.buy!!)
+                                    .plus(it.watch.results.BR.rent!!).plus(it.watch.results.BR.ads!!).distinct()
+                            )
+                            layoutManager = LinearLayoutManager(view.context)
+                            setHasFixedSize(true)
+                        } else {
+                            view.tv_title_provider.visibility = View.GONE
+                        }
+                    }
+
+                }
+            }
+            "person" ->{
+                view.tv_title_rc.visibility = View.GONE
+                view.tv_title_provider.visibility = View.GONE
+
+                view.tv_sinopseCardDetail.text = detail.card.descricao
+                view.tv_titleDetail.text = detail.card.name
+
+            }
+
+
+
+        }
+
+        //END ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
 
 
         Glide.with(view).asBitmap()
@@ -87,7 +171,7 @@ class CardDetailFragment : Fragment() {
             })
 
 
-        view.tv_sinopseCardDetail.text = detail.card.descricao
+
 
         view.btn_addToLists.setOnClickListener {
 
@@ -105,4 +189,6 @@ class CardDetailFragment : Fragment() {
 
         return view
     }
+
+
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="90dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="@color/purple_700"
+    app:cardCornerRadius="6dp"
+    android:layout_margin="5dp"
+    android:layout_height="135dp">
+
+    <ImageView
+        android:id="@+id/iv_season"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/mr_robot"
+      />
+
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/triangle"
+        android:layout_gravity="bottom"/>
+
+
+
+
+
+    <TextView
+        android:id="@+id/tv_season_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40sp"
+        android:text="1"
+        android:fontFamily="@font/lato"
+        android:layout_margin="8dp"
+        android:textColor="@color/yellow"
+        android:layout_gravity="bottom|end"/>
+
+
+
+
+</androidx.cardview.widget.CardView>
