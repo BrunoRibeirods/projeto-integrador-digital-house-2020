@@ -1,5 +1,6 @@
 package com.example.filmly.ui.cardDetail
 
+
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
@@ -10,10 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.core.view.isGone
-import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -26,17 +24,11 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.filmly.R
 import com.example.filmly.adapters.CardDetailListsAdapter
 import com.example.filmly.adapters.CardDetailProvidersAdapter
-
-import com.example.filmly.data.model.*
-import com.example.filmly.repository.ServicesRepository
-import com.google.android.material.appbar.AppBarLayout
-
+import com.example.filmly.data.model.Card
 import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.FastBlur
-import com.google.android.material.appbar.AppBarLayout.LAYOUT_DIRECTION_INHERIT
-import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
-import kotlinx.android.synthetic.main.fragment_card_detail.*
-
+import com.example.filmly.repository.ServicesRepository
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
 
 
@@ -78,6 +70,9 @@ class CardDetailFragment : Fragment() {
         view.rc_serie_seasons.setHasFixedSize(true)
 
         val detail = arguments?.getSerializable("detail") as CardDetail
+
+      
+        controlFavoriteState(detail.card, view)
 
         view.tv_titleDetail.text = ""
         view.tv_sinopseCardDetail.text = ""
@@ -152,8 +147,6 @@ class CardDetailFragment : Fragment() {
         //END ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-
-
         Glide.with(view).asBitmap()
             .load("https://image.tmdb.org/t/p/w500${detail.card.image}")
             .placeholder(circularProgressDrawable)
@@ -174,13 +167,17 @@ class CardDetailFragment : Fragment() {
 
 
         view.btn_addToLists.setOnClickListener {
-
-            when (detail.cardInfo) {
-                CardDetail.FILM -> viewModel.insertFilm(detail.card as Film)
-                CardDetail.SERIE -> viewModel.insertSerie(detail.card as Serie)
-                CardDetail.ACTOR -> viewModel.insertActor(detail.card as Actor)
+            viewModel.isFavorited.value?.let { isFavorited ->
+                if (!isFavorited) {
+                    viewModel.addCard(detail.card)
+                    viewModel.isFavorited()
+                    Toast.makeText(context, "Adicionado", Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.deleteCard(detail.card)
+                    viewModel.isNotFavorited()
+                    Toast.makeText(context, "Item removido", Toast.LENGTH_SHORT).show()
+                }
             }
-            Toast.makeText(context, "Adicionado", Toast.LENGTH_SHORT).show()
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -190,5 +187,13 @@ class CardDetailFragment : Fragment() {
         return view
     }
 
+    fun controlFavoriteState(card: Card, view: View) {
+        viewModel.isFavorited.observe(viewLifecycleOwner) { isFavorited ->
+            Log.i("LiveData", "$isFavorited")
+            view.btn_addToLists.isSelected = isFavorited
+        }
+
+        viewModel.checkCardisFavorited(card)
+    }
 
 }

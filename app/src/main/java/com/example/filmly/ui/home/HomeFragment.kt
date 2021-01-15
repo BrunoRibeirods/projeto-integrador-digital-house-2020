@@ -61,6 +61,10 @@ class HomeFragment : Fragment() {
             adapter = homeAdapter
         }
 
+
+        viewModel.refreshLists()
+
+
         viewModel.getTrendingLive("all")
         viewModel.getTrendingLive("tv")
         viewModel.getTrendingLive("movie")
