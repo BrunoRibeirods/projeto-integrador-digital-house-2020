@@ -20,7 +20,7 @@ data class Movie(
     val vote_average: Double?
 ){
     fun convertToFilm(): Film {
-        return Film(id = id, name = title, image = poster_path, descricao = overview)
+        return Film(id = id, name = title, image = poster_path, descricao = overview, type = "movie")
     }
 }
 
@@ -39,7 +39,7 @@ data class TvShow(
     val vote_average: Double?
 ){
     fun convertToSerie(): Serie {
-        return Serie(id = id, name = name, image = poster_path, descricao = overview)
+        return Serie(id = id, name = name, image = poster_path, descricao = overview, type = "tv")
     }
 }
 
@@ -60,7 +60,7 @@ data class Person(
             it.title ?: it.name
 
         }
-        return Actor(id = id, name = name, image = profile_path, descricao = over.joinToString(prefix = "Conhecido por:  \n", separator = "\n"))
+        return Actor(id = id, name = name, image = profile_path, descricao = over.joinToString(prefix = "Conhecido por:  \n", separator = "\n"), type = "person")
     }
 }
 

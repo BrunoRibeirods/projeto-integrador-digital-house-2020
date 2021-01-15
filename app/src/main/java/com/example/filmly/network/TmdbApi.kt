@@ -1,5 +1,6 @@
 package com.example.filmly.network
 
+import com.example.filmly.ui.cardDetail.MovieDetailsResults
 import com.example.filmly.ui.cardDetail.TvDetailsResults
 import com.example.filmly.ui.cardDetail.TvSeasonResults
 import com.example.filmly.ui.cardDetail.TvWatchProvidersResults
@@ -48,31 +49,18 @@ interface TmdbApi {
         @Query("query") query: String,
     ): PersonResults
 
-    @GET("tv/{tv_id}?language=pt-BR")
+    @GET("tv/{tv_id}?language=pt-BR&append_to_response=watch/providers,season")
     suspend fun getTvDetail(
         @Path("tv_id") tv_id: Int,
         @Query("api_key") api_key: String
     ): TvDetailsResults
 
-
-    @GET("tv/{tv_id}/season/{season_number}?language=pt-BR")
-    suspend fun getTvSeason(
-        @Path("tv_id") tv_id: Int,
-        @Path("season_number") season_number: Int,
+    @GET("movie/{movie_id}?language=pt-BR&append_to_response=watch/providers")
+    suspend fun getMovieDetail(
+        @Path("movie_id") movie_id: Int,
         @Query("api_key") api_key: String
-    ): TvSeasonResults
+    ): MovieDetailsResults
 
-//    @GET("movie/{movie_id}/watch/providers?language=pt-BR")
-//    suspend fun getMovieProviders(
-//        @Path("movie_id") movie_id: Int,
-//        @Query("api_key") api_key: String
-//    ):
-
-    @GET("tv/{tv_id}/watch/providers")
-    suspend fun getTvProviders(
-        @Path("tv_id") tv_id: Int,
-        @Query("api_key") api_key: String
-    ): TvWatchProvidersResults
 
 
 }

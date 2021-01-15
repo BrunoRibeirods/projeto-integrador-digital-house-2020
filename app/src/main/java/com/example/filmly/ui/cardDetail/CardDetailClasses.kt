@@ -1,23 +1,34 @@
 package com.example.filmly.ui.cardDetail
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class TvDetailsResults(
-    var number_of_episode: Int? = null,
-    var number_of_seasons: Int? = null,
+    @SerialName("watch/providers") val watch: TvWatchProvidersResults? = null,
+    val seasons: List<TvSeasonResults>? = null
 )
+
+@Serializable
+data class MovieDetailsResults(
+    @SerialName("watch/providers") val watch: TvWatchProvidersResults? = null,
+)
+
 
 @Serializable
 data class TvSeasonResults(
-    var poster_path: String? = null,
-    var season_number: Int? = null
+    val air_date: String? = null,
+    val episode_count: Int? = null,
+    val id: Int? = null,
+    val name: String? = null,
+    val overview: String? = null,
+    val poster_path: String? = null,
+    val season_number: Int? = null
 )
 
 
-
 @Serializable
-data class TvWatchProvidersResults(val id: Int? = null, val results: TvProvidersCountries? = null)
+data class TvWatchProvidersResults(val results: TvProvidersCountries? = null)
 
 @Serializable
 data class TvProvidersCountries(
@@ -27,7 +38,10 @@ data class TvProvidersCountries(
 @Serializable
 data class TvProviders(
     val link: String? = null,
-    val flatrate: List<Provider>? = null
+    val flatrate: List<Provider>? = emptyList(),
+    val buy: List<Provider>? = emptyList(),
+    val rent: List<Provider>? = emptyList(),
+    val ads: List<Provider>? = emptyList()
 )
 
 @Serializable

@@ -25,6 +25,8 @@
     <color name="gray25">#22FFFFFF</color>
     <color name="black101010">#FF101010</color>
     <color name="yellow">#FFFFCC18</color>
+    <color name="transparent">#99000000</color>
+
 
 
 </resources>

@@ -26,15 +26,15 @@ data class Trending(
     val vote_average: Double? = null
 ){
     fun convertToCard(): Film {
-        return Film(id = id, name = title, image = poster_path, descricao = overview)
+        return Film(id = id, name = title, image = poster_path, descricao = overview, type = media_type)
     }
 
     fun convertToTv(): Serie {
-        return Serie(id = id, name = name, image = poster_path, descricao = overview)
+        return Serie(id = id, name = name, image = poster_path, descricao = overview, type = media_type)
     }
 
     fun convertToPerson(): Actor {
         val over = known_for?.map { it.title }
-        return Actor(id = id, name = name, image = profile_path, descricao =  over?.joinToString(prefix = "Conhecido por:  \n", separator = "\n"))
+        return Actor(id = id, name = name, image = profile_path, descricao =  over?.joinToString(prefix = "Conhecido por:  \n", separator = "\n"), type = media_type)
     }
 }

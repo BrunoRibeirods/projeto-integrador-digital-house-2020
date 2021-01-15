@@ -12,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.view.isGone
+import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -31,6 +33,7 @@ import com.google.android.material.appbar.AppBarLayout
 
 import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.FastBlur
+import com.google.android.material.appbar.AppBarLayout.LAYOUT_DIRECTION_INHERIT
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import kotlinx.android.synthetic.main.fragment_card_detail.*
 
@@ -77,41 +80,69 @@ class CardDetailFragment : Fragment() {
 
         val detail = arguments?.getSerializable("detail") as CardDetail
 
-        //Serie Configuration START
 
-        if (detail.cardInfo == 3){
-        detail.card.id?.let { viewModel.getSeasonsNumbers(it) }
+        //Serie Configuration START ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-        viewModel.tvDetailsLive.observe(viewLifecycleOwner){ it ->
+        when(detail.card.type){
+             "tv" -> {
+                viewModel.getSeasonsDetail(detail.card.id!!)
+                 viewModel.getProvidersDetail(detail.card.id!!)
 
-            for(i in 1..it.number_of_seasons!!){
-                viewModel.getSeasonsDetail(detail.card.id!!, i)
+                 viewModel.tvSeasonLive.observe(viewLifecycleOwner){
+                     view.rc_serie_seasons.apply {
+
+                         adapter = CardDetailListsAdapter(it)
+                         layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
+                         setHasFixedSize(true)
+                     }
+                 }
+
+                 viewModel.tvProvidersLive.observe(viewLifecycleOwner){
+                     view.rc_serie_watch.apply {
+                         if (it.results?.BR != null) {
+                         adapter = CardDetailProvidersAdapter(it.results.BR.flatrate!!.plus(it.results.BR.buy!!).plus(it.results.BR.rent!!).plus(it.results.BR.ads!!).distinct())
+                         layoutManager = LinearLayoutManager(view.context)
+                         setHasFixedSize(true)
+                        }else{
+                            view.tv_title_provider.visibility = View.GONE
+                         }
+                     }
+                 }
+
             }
+            "movie" -> {
+                view.tv_title_rc.visibility = View.GONE
+                viewModel.getProvidersMovieDetail(detail.card.id!!)
 
-            viewModel.tvSeasonLive.observe(viewLifecycleOwner){season ->
-                listaEmpty.add(season)
-                view.rc_serie_seasons.adapter = CardDetailListsAdapter(listaEmpty.distinct())
-            }
 
-            view.tv_title_rc.text = "Temporadas"
 
-            }
+                viewModel.movieProvidersLive.observe(viewLifecycleOwner) {
+                    view.rc_serie_watch.apply {
+                        if (it.results?.BR != null) {
+                            adapter = CardDetailProvidersAdapter(
+                                it.results.BR.flatrate!!.plus(it.results.BR.buy!!)
+                                    .plus(it.results.BR.rent!!).plus(it.results.BR.ads!!).distinct()
+                            )
+                            layoutManager = LinearLayoutManager(view.context)
+                            setHasFixedSize(true)
+                        } else {
+                            view.tv_title_provider.visibility = View.GONE
+                        }
+                    }
 
-            viewModel.getProvidersDetail(detail.card.id!!)
-            viewModel.tvProvidersLive.observe(viewLifecycleOwner){
-                view.rc_serie_watch.apply {
-                    adapter = it.results?.BR?.flatrate?.let { it1 -> CardDetailProvidersAdapter(it1) }
-                    layoutManager = LinearLayoutManager(view.context)
-                    setHasFixedSize(true)
                 }
             }
+            "person" ->{
+                view.tv_title_rc.visibility = View.GONE
+                view.tv_title_provider.visibility = View.GONE
+
+            }
 
 
-        }else{
-            view.tv_title_rc.text = ""
+
         }
 
-        //END
+        //END ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
         view.tv_titleDetail.text = detail.card.name
 
@@ -152,14 +183,5 @@ class CardDetailFragment : Fragment() {
         return view
     }
 
-    fun testeSeason(size: Int): List<TvSeasonResults>{
-        val list = mutableListOf<TvSeasonResults>()
-
-        for(i in 1..size){
-            list.add(TvSeasonResults(null, i))
-        }
-
-        return list
-    }
 
 }

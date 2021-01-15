@@ -30,7 +30,9 @@ class CardDetailListsAdapter(private val listDetailCard: List<TvSeasonResults>):
     override fun onBindViewHolder(holder: CardDetailListsViewHolder, position: Int) {
         val current = listDetailCard[position]
 
-        holder.num_season_item.text = current.season_number.toString()
+
+
+        holder.num_season_item.text = if (current.season_number == 0) "E" else current.season_number.toString()
 
         val circularProgressDrawable = CircularProgressDrawable(holder.itemView.context)
         circularProgressDrawable.strokeWidth = 5f
@@ -49,16 +51,7 @@ class CardDetailListsAdapter(private val listDetailCard: List<TvSeasonResults>):
             .placeholder(circularProgressDrawable)
             .error(R.drawable.placeholder)
             .fallback(R.drawable.placeholder)
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    holder.iv_season_item.setImageBitmap(resource)
-                    holder.iv_season_item_blur.setImageBitmap(FastBlur.doBlur(resource, 12, false))
-                }
-                override fun onLoadCleared(placeholder: Drawable?) {
-
-                }
-
-            })
+            .into(holder.iv_season_item)
 
 
         ////////////////////////////
@@ -69,7 +62,6 @@ class CardDetailListsAdapter(private val listDetailCard: List<TvSeasonResults>):
     class CardDetailListsViewHolder(view: View): RecyclerView.ViewHolder(view){
         val num_season_item = view.tv_season_number
         val iv_season_item = view.iv_season
-        val iv_season_item_blur = view.iv_season_blur
     }
 
 

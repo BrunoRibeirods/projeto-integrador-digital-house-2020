@@ -10,36 +10,27 @@ import com.example.filmly.data.model.Film
 import com.example.filmly.data.model.Serie
 import com.example.filmly.data.model.Watchable
 import com.example.filmly.repository.ServicesRepository
-import com.example.filmly.ui.search.MovieResults
 import kotlinx.coroutines.launch
 
 class CardDetailViewModel(private val repository: ServicesRepository): ViewModel() {
-    private val _tvDetailsLive = MutableLiveData<TvDetailsResults>()
-    val tvDetailsLive: LiveData<TvDetailsResults>
-        get() = _tvDetailsLive
 
-    private val _tvSeasonLive = MutableLiveData<TvSeasonResults>()
-    val tvSeasonLive: LiveData<TvSeasonResults>
+    private val _tvSeasonLive = MutableLiveData<List<TvSeasonResults>>()
+    val tvSeasonLive: LiveData<List<TvSeasonResults>>
         get() = _tvSeasonLive
 
     private val _tvProvidersLive = MutableLiveData<TvWatchProvidersResults>()
     val tvProvidersLive: LiveData<TvWatchProvidersResults>
         get() = _tvProvidersLive
 
-    fun getSeasonsNumbers(id: Int){
-        try {
-            viewModelScope.launch {
-                _tvDetailsLive.value = repository.getTvDetailsModel(id)
-            }
-        }catch (e: Exception){
-            Log.e("CardDetailViewModel", e.toString())
-        }
-    }
+    private val _movieProvidersLive = MutableLiveData<TvWatchProvidersResults>()
+    val movieProvidersLive: LiveData<TvWatchProvidersResults>
+        get() = _movieProvidersLive
 
-    fun getSeasonsDetail(id: Int, seasonNumber: Int){
+
+    fun getSeasonsDetail(id: Int){
         try {
             viewModelScope.launch {
-                _tvSeasonLive.value = repository.getTvSeasonModel(id, seasonNumber)
+                _tvSeasonLive.value = repository.getTvSeasonModel(id).seasons
             }
         }catch (e: Exception){
             Log.e("CardDetailViewModel", e.toString())
@@ -49,7 +40,17 @@ class CardDetailViewModel(private val repository: ServicesRepository): ViewModel
     fun getProvidersDetail(id: Int){
         try {
             viewModelScope.launch {
-                _tvProvidersLive.value = repository.getTvWatchProvidersModel(id)
+                _tvProvidersLive.value = repository.getTvWatchProvidersModel(id).watch
+            }
+        }catch (e: Exception){
+            Log.e("CardDetailViewModel", e.toString())
+        }
+    }
+
+    fun getProvidersMovieDetail(id: Int){
+        try {
+            viewModelScope.launch {
+                _movieProvidersLive.value = repository.getMovieWatchProvidersModel(id).watch
             }
         }catch (e: Exception){
             Log.e("CardDetailViewModel", e.toString())
