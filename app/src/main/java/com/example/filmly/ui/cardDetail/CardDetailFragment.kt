@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.filmly.R
+import com.example.filmly.data.model.Card
 import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.FastBlur
 import com.example.filmly.repository.ServicesRepository
@@ -61,7 +62,7 @@ class CardDetailFragment : Fragment() {
 
         val detail = arguments?.getSerializable("detail") as CardDetail
 
-        controlFavoriteState(detail, view)
+        controlFavoriteState(detail.card, view)
 
         view.tv_titleDetail.text = detail.card.name
 
@@ -86,16 +87,14 @@ class CardDetailFragment : Fragment() {
         view.tv_sinopseCardDetail.text = detail.card.descricao
 
         view.btn_addToLists.setOnClickListener {
-            Log.i("Button", "antes: ${it.isSelected}")
             it.isSelected = !it.btn_addToLists.isSelected
-            Log.i("Button", "depois: ${it.isSelected}")
 
             viewModel.isFavorited.value?.let { isFavorited ->
                 if (!isFavorited) {
-                    viewModel.addCard(detail)
+                    viewModel.addCard(detail.card)
                     Toast.makeText(context, "Adicionado", Toast.LENGTH_SHORT).show()
                 } else {
-                    viewModel.deleteCard(detail)
+                    viewModel.deleteCard(detail.card)
                     Toast.makeText(context, "Item removido", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -108,11 +107,11 @@ class CardDetailFragment : Fragment() {
         return view
     }
 
-    fun controlFavoriteState(detail: CardDetail, view: View) {
+    fun controlFavoriteState(card: Card, view: View) {
         viewModel.isFavorited.observe(viewLifecycleOwner) { isFavorited ->
             view.btn_addToLists.isSelected = isFavorited
         }
 
-        viewModel.isFavorited(detail)
+        viewModel.isFavorited(card)
     }
 }

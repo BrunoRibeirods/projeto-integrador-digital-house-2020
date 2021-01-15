@@ -28,9 +28,9 @@ class CardDetailViewModel(private val repository: ServicesRepository) : ViewMode
         }
     }
 
-    fun isFavorited(detail: CardDetail) {
+    fun isFavorited(card: Card) {
         viewModelScope.launch {
-            isFavorited.postValue(repository.isFavorited(detail))
+            isFavorited.postValue(repository.isFavorited(card))
         }
     }
 
@@ -58,33 +58,19 @@ class CardDetailViewModel(private val repository: ServicesRepository) : ViewMode
         }
     }
 
-    fun addCard(detail: CardDetail) {
-        when (detail.cardInfo) {
-            CardDetail.FILM -> insertFilm(detail.card as Film)
-            CardDetail.SERIE -> insertSerie(detail.card as Serie)
-            CardDetail.ACTOR -> insertActor(detail.card as Actor)
-            CardDetail.TRENDING -> {
-                when (detail.card) {
-                    is Film -> insertFilm(detail.card)
-                    is Serie -> insertSerie(detail.card)
-                    is Actor -> insertActor(detail.card)
-                }
-            }
+    fun addCard(card: Card) {
+        when (card) {
+            is Film -> insertFilm(card)
+            is Serie -> insertSerie(card)
+            is Actor -> insertActor(card)
         }
     }
 
-    fun deleteCard(detail: CardDetail) {
-        when (detail.cardInfo) {
-            CardDetail.FILM -> deleteFilm(detail.card as Film)
-            CardDetail.SERIE -> deleteSerie(detail.card as Serie)
-            CardDetail.ACTOR -> deleteActor(detail.card as Actor)
-            CardDetail.TRENDING -> {
-                when (detail.card) {
-                    is Film -> deleteFilm(detail.card)
-                    is Serie -> deleteSerie(detail.card)
-                    is Actor -> deleteActor(detail.card)
-                }
-            }
+    fun deleteCard(card: Card) {
+        when (card) {
+            is Film -> deleteFilm(card)
+            is Serie -> deleteSerie(card)
+            is Actor -> deleteActor(card)
         }
     }
 }
