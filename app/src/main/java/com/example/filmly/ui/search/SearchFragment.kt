@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.filmly.R
 import com.example.filmly.adapters.SearchListsAdapter
 import com.example.filmly.data.model.Card
@@ -20,6 +21,7 @@ import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.HeadLists
 import com.example.filmly.repository.ServicesRepository
 import com.example.filmly.utils.SeeMoreNavigation
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
 
@@ -52,13 +54,19 @@ class SearchFragment : Fragment() {
             findNavController().navigate(action)
         })
 
+        searchAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                if (!view.rv_searchResults.canScrollVertically(-1)) {
+                    view.rv_searchResults.scrollToPosition(0)
+                }
+            }
+        })
+
         view.rv_searchResults.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = searchAdapter
         }
-
-        val listavazia = emptyList<HeadLists>()
-
 
         view.searchView.requestFocus()
 
