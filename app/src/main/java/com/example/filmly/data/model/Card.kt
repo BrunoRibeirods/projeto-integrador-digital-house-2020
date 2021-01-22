@@ -1,6 +1,8 @@
 package com.example.filmly.data.model
 
-interface Card {
+import java.io.Serializable
+
+interface Card: Serializable {
     val id: Int?
     val name: String?
     val image: String?
