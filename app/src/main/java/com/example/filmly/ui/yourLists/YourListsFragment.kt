@@ -31,8 +31,8 @@ class YourListsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
         val view = inflater.inflate(R.layout.fragment_your_lists, container, false)
+
 
         view.civ_profileImage.setOnClickListener {
             findNavController().navigate(R.id.profileFragment)
@@ -56,10 +56,11 @@ class YourListsFragment : Fragment() {
 
         viewModel.favoriteFilms.observe(viewLifecycleOwner) {
             viewModel.refreshHeadLists()
+
         }
 
         viewModel.favoriteSeries.observe(viewLifecycleOwner) {
-            viewModel.refreshHeadLists()
+                viewModel.refreshHeadLists()
         }
 
         viewModel.favoriteActors.observe(viewLifecycleOwner) {
@@ -74,4 +75,6 @@ class YourListsFragment : Fragment() {
 
         return view
     }
+
+
 }

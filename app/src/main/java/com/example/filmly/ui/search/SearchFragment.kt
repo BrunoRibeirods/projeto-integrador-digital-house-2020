@@ -1,7 +1,10 @@
 package com.example.filmly.ui.search
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -44,82 +47,108 @@ class SearchFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_search, container, false)
-        
-        repository = ServicesRepository.getInstance(requireContext())
-        val searchAdapter = SearchListsAdapter(SeeMoreNavigation { headLists ->
-            val action =
-                SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(
-                    headLists
-                )
-            findNavController().navigate(action)
-        })
 
-        searchAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                if (!view.rv_searchResults.canScrollVertically(-1)) {
-                    view.rv_searchResults.scrollToPosition(0)
+        if (isOnline(view.context)){
+
+            repository = ServicesRepository.getInstance(requireContext())
+            val searchAdapter = SearchListsAdapter(SeeMoreNavigation { headLists ->
+                val action =
+                    SearchFragmentDirections.actionSearchFragmentToViewMoreFragment(
+                        headLists
+                    )
+                findNavController().navigate(action)
+            })
+
+            searchAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                    super.onItemRangeInserted(positionStart, itemCount)
+                    if (!view.rv_searchResults.canScrollVertically(-1)) {
+                        view.rv_searchResults.scrollToPosition(0)
+                    }
                 }
+            })
+
+            view.rv_searchResults.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = searchAdapter
             }
-        })
 
-        view.rv_searchResults.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = searchAdapter
-        }
+            view.searchView.requestFocus()
 
-        view.searchView.requestFocus()
+            if (view.searchView.requestFocus() && clickNum == 1) {
+                clickNum += 2
+                (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).toggleSoftInput(
+                    InputMethodManager.SHOW_FORCED,
+                    InputMethodManager.HIDE_IMPLICIT_ONLY
+                )
+                viewModel.updateMoviesLive("Vingadores")
+                viewModel.updateTvLive("Game of")
+                viewModel.updatePersonLive("T")
+            }
 
-        if (view.searchView.requestFocus() && clickNum == 1) {
-                clickNum+= 2
-            (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).toggleSoftInput(
-                InputMethodManager.SHOW_FORCED,
-                InputMethodManager.HIDE_IMPLICIT_ONLY
-            )
-            viewModel.updateMoviesLive("Vingadores")
-            viewModel.updateTvLive("Game of")
-            viewModel.updatePersonLive("T")
-        }
+            view.searchView.setOnKeyListener { view, i, keyEvent ->
+                if (i == KeyEvent.KEYCODE_ENTER && keyEvent.action == KeyEvent.ACTION_UP && !view.searchView.text.isEmpty()) {
+                    viewModel.headLists = mutableListOf()
+                    viewModel.updateMoviesLive(searchView.text.toString())
+                    viewModel.updateTvLive(searchView.text.toString())
+                    viewModel.updatePersonLive(searchView.text.toString())
+                    val imm: InputMethodManager =
+                        context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(searchView.windowToken, 0)
+                    return@setOnKeyListener true
+                }
+                false
+            }
 
-        view.searchView.setOnKeyListener { view, i, keyEvent ->
-            if(i == KeyEvent.KEYCODE_ENTER && keyEvent.action == KeyEvent.ACTION_UP && !view.searchView.text.isEmpty()){
-                viewModel.headLists = mutableListOf()
+            view.btn_search.setOnClickListener {
+                if (!view.searchView.text.isEmpty())
+                    viewModel.headLists = mutableListOf()
                 viewModel.updateMoviesLive(searchView.text.toString())
                 viewModel.updateTvLive(searchView.text.toString())
                 viewModel.updatePersonLive(searchView.text.toString())
-                val imm: InputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val imm: InputMethodManager =
+                    context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(searchView.windowToken, 0)
-                return@setOnKeyListener true
+
             }
-            false
-        }
 
-        view.btn_search.setOnClickListener {
-            if(!view.searchView.text.isEmpty())
-            viewModel.headLists = mutableListOf()
-            viewModel.updateMoviesLive(searchView.text.toString())
-            viewModel.updateTvLive(searchView.text.toString())
-            viewModel.updatePersonLive(searchView.text.toString())
-            val imm: InputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(searchView.windowToken, 0)
-
-        }
-
-        viewModel.moviesLive.observe(viewLifecycleOwner){
-            if(it.results.isNotEmpty()){
-                searchAdapter.submitList(getResultsLists(it.results.map { it.convertToFilm() }, CardDetail.FILM))
+            viewModel.moviesLive.observe(viewLifecycleOwner) {
+                if (it.results.isNotEmpty()) {
+                    searchAdapter.submitList(
+                        getResultsLists(
+                            it.results.map { it.convertToFilm() },
+                            CardDetail.FILM
+                        )
+                    )
+                } else {
+                    searchAdapter.submitList(emptyList())
+                }
             }
-        }
 
-        viewModel.tvLive.observe(viewLifecycleOwner){
-            if(it.results.isNotEmpty()) {
-                searchAdapter.submitList(getResultsLists(it.results.map { it.convertToSerie() }, CardDetail.SERIE))
+            viewModel.tvLive.observe(viewLifecycleOwner) {
+                if (it.results.isNotEmpty()) {
+                    searchAdapter.submitList(
+                        getResultsLists(
+                            it.results.map { it.convertToSerie() },
+                            CardDetail.SERIE
+                        )
+                    )
+                } else {
+                    searchAdapter.submitList(emptyList())
+                }
             }
-        }
 
-        viewModel.personLive.observe(viewLifecycleOwner){
-            if(it.results.isNotEmpty()) {
-                searchAdapter.submitList(getResultsLists(it.results.map { it.convertToActor() }, CardDetail.ACTOR))
+            viewModel.personLive.observe(viewLifecycleOwner) {
+                if (it.results.isNotEmpty()) {
+                    searchAdapter.submitList(
+                        getResultsLists(
+                            it.results.map { it.convertToActor() },
+                            CardDetail.ACTOR
+                        )
+                    )
+                } else {
+                    searchAdapter.submitList(emptyList())
+                }
             }
         }
 
@@ -154,6 +183,29 @@ class SearchFragment : Fragment() {
         val imm: InputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(searchView.windowToken, 0)
         super.onStop()
+    }
+
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+
+
+        if (capabilities != null) {
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                return true
+            }
+        }
+
+        return false
     }
 
 }
