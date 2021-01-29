@@ -87,6 +87,7 @@
                     android:theme="@style/Theme.Filmly.Overlay.Button" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_signOut"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/buttonHeight"
                     android:layout_marginTop="24dp"

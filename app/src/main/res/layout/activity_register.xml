@@ -59,7 +59,7 @@
                 app:boxBackgroundColor="@android:color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/name"
+                    android:id="@+id/re_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -90,7 +90,7 @@
                 app:boxBackgroundColor="@android:color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/username"
+                    android:id="@+id/re_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
@@ -121,7 +121,7 @@
                 app:boxBackgroundColor="@android:color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/password"
+                    android:id="@+id/re_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeActionLabel="@string/action_sign_in_short"
@@ -154,7 +154,7 @@
                 app:boxBackgroundColor="@android:color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/repassword"
+                    android:id="@+id/re_password_confirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeActionLabel="@string/action_sign_in_short"
@@ -166,7 +166,7 @@
         </androidx.cardview.widget.CardView>
 
         <Button
-            android:id="@+id/register"
+            android:id="@+id/btn_register"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_gravity="start"
@@ -179,24 +179,24 @@
             android:text="@string/create_account"
             android:textColor="@android:color/black"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/facebook"
+            app:layout_constraintBottom_toTopOf="@+id/re_facebook"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cvRePassword"
             app:layout_constraintVertical_bias="0.2" />
 
         <ImageView
-            android:id="@+id/google"
+            android:id="@+id/re_google"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="29dp"
             android:layout_marginBottom="28dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/facebook"
+            app:layout_constraintEnd_toStartOf="@+id/re_facebook"
             app:srcCompat="@drawable/ic_google" />
 
         <ImageView
-            android:id="@+id/facebook"
+            android:id="@+id/re_facebook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="28dp"
@@ -206,13 +206,13 @@
             app:srcCompat="@drawable/ic_facebook" />
 
         <ImageView
-            android:id="@+id/twitter"
+            android:id="@+id/re_twitter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="27dp"
             android:layout_marginBottom="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/facebook"
+            app:layout_constraintStart_toEndOf="@+id/re_facebook"
             app:srcCompat="@drawable/ic_twitter" />
 
         <ProgressBar
@@ -239,10 +239,10 @@
             android:layout_marginBottom="14dp"
             android:text="@string/or_create"
             android:textColor="@android:color/white"
-            app:layout_constraintBottom_toTopOf="@+id/facebook"
+            app:layout_constraintBottom_toTopOf="@+id/re_facebook"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/register" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_register" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

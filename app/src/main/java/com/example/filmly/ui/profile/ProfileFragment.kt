@@ -1,5 +1,6 @@
 package com.example.filmly.ui.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +10,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.filmly.R
+import com.example.filmly.ui.login.LoginActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 class ProfileFragment : Fragment() {
     val viewModel: ProfileViewModel by viewModels()
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,6 +30,14 @@ class ProfileFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
+        auth = FirebaseAuth.getInstance()
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(view.context, gso)
 
         viewModel.showChangesToast.observe(viewLifecycleOwner) {
             it?.let {
@@ -73,6 +90,14 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.action_profileFragment_to_yourListsDialogFragment)
         }
 
+        view.btn_signOut.setOnClickListener { signOut() }
+
         return view
+    }
+
+    private fun signOut() {
+        auth.signOut()
+        googleSignInClient.signOut()
+        startActivity(Intent(context, LoginActivity::class.java))
     }
 }
