@@ -27,13 +27,19 @@ class YourListsViewModel(val repository: ServicesRepository) : ViewModel() {
     }
 
     fun refreshHeadLists() {
-        listOf(
-            favoriteFilms.value?.let { HeadLists("Filmes favoritos", it, CardDetail.FILM) },
-            favoriteSeries.value?.let { HeadLists("Séries favoritas", it, CardDetail.SERIE) },
-            favoriteActors.value?.let { HeadLists("Atores favoritos", it, CardDetail.ACTOR) }
-        ).let {
-            _headLists.value = it
+        val list = mutableListOf<HeadLists>()
+
+        if (favoriteFilms.value?.isNotEmpty() == true){
+            list.add(favoriteFilms.value!!.let { HeadLists("Filmes favoritos", it, CardDetail.FILM) })
         }
+        if (favoriteSeries.value?.isNotEmpty() == true){
+            list.add(favoriteSeries.value!!.let { HeadLists("Séries favoritas", it, CardDetail.SERIE) })
+        }
+        if (favoriteActors.value?.isNotEmpty() == true){
+            list.add(favoriteActors.value!!.let { HeadLists("Atores favoritos", it, CardDetail.ACTOR) })
+        }
+        list.let { _headLists.value = it }
+
     }
 
 }

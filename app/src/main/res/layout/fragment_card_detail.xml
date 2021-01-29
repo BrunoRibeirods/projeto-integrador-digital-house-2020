@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/black101010"
     android:fillViewport="true"
-
     android:orientation="vertical"
     android:overScrollMode="never"
     tools:context=".ui.cardDetail.CardDetailFragment">
@@ -38,9 +37,10 @@
                     android:id="@+id/iv_cardDetailImage"
                     android:layout_width="match_parent"
                     android:layout_height="500dp"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
                     android:src="@drawable/placeholder"
                     app:layout_collapseMode="parallax"
+                    android:adjustViewBounds="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -49,9 +49,10 @@
                     android:id="@+id/iv_cardDetailImageBlur"
                     android:layout_width="match_parent"
                     android:layout_height="500dp"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
                     android:src="@drawable/placeholder"
                     app:layout_collapseMode="parallax"
+                    android:adjustViewBounds="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

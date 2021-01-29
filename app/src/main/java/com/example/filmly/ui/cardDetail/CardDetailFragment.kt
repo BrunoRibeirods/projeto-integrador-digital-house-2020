@@ -1,22 +1,33 @@
 package com.example.filmly.ui.cardDetail
 
 
+import android.app.Dialog
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.text.LineBreaker.JUSTIFICATION_MODE_INTER_WORD
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -24,6 +35,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.filmly.R
 import com.example.filmly.adapters.CardDetailListsAdapter
 import com.example.filmly.adapters.CardDetailProvidersAdapter
+import com.example.filmly.adapters.SeasonEpisodeAdapter
 import com.example.filmly.data.model.Card
 import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.FastBlur
@@ -32,8 +44,9 @@ import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
 
 
-class CardDetailFragment : Fragment() {
+class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListener {
     private lateinit var repository: ServicesRepository
+    lateinit var season: CardDetail
     private val viewModel: CardDetailViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -70,6 +83,7 @@ class CardDetailFragment : Fragment() {
         view.rc_serie_seasons.setHasFixedSize(true)
 
         val detail = arguments?.getSerializable("detail") as CardDetail
+        season = detail
 
       
         controlFavoriteState(detail.card, view)
@@ -80,68 +94,83 @@ class CardDetailFragment : Fragment() {
 
         //Serie Configuration START ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-        when(detail.card.type){
-             "tv" -> {
-                 viewModel.getProvidersDetail(detail.card.id!!)
+        if(isOnline(view.context)) {
+            when (detail.card.type) {
+                "tv" -> {
+                    viewModel.getProvidersDetail(detail.card.id!!)
 
 
-                 viewModel.tvProvidersLive.observe(viewLifecycleOwner){
-                     view.rc_serie_seasons.apply {
-                         adapter = it.seasons?.let { it1 -> CardDetailListsAdapter(it1) }
-                         layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
-                         setHasFixedSize(true)
-                     }
-
-                     view.rc_serie_watch.apply {
-                         view.tv_titleDetail.text = it.name
-                         view.tv_sinopseCardDetail.text = it.overview
-
-                         if (it.watch?.results?.BR != null) {
-                         adapter = CardDetailProvidersAdapter(it.watch.results.BR.flatrate!!.plus(it.watch.results.BR.buy!!).plus(it.watch.results.BR.rent!!).plus(it.watch.results.BR.ads!!).distinct())
-                         layoutManager = LinearLayoutManager(view.context)
-                         setHasFixedSize(true)
-                        }else{
-                            view.tv_title_provider.visibility = View.GONE
-                         }
-                     }
-                 }
-
-            }
-            "movie" -> {
-                view.tv_title_rc.visibility = View.GONE
-                viewModel.getProvidersMovieDetail(detail.card.id!!)
-
-
-                viewModel.movieProvidersLive.observe(viewLifecycleOwner) {
-                    view.tv_titleDetail.text = it.title
-                    view.tv_sinopseCardDetail.text = it.overview
-
-                    view.rc_serie_watch.apply {
-                        if (it.watch?.results?.BR != null) {
-                            adapter = CardDetailProvidersAdapter(
-                                it.watch.results.BR.flatrate!!.plus(it.watch.results.BR.buy!!)
-                                    .plus(it.watch.results.BR.rent!!).plus(it.watch.results.BR.ads!!).distinct()
+                    viewModel.tvProvidersLive.observe(viewLifecycleOwner) {
+                        view.rc_serie_seasons.apply {
+                            adapter = it.seasons?.let { it1 -> CardDetailListsAdapter(it1, this@CardDetailFragment) }
+                            layoutManager = LinearLayoutManager(
+                                view.context,
+                                LinearLayoutManager.HORIZONTAL,
+                                false
                             )
-                            layoutManager = LinearLayoutManager(view.context)
                             setHasFixedSize(true)
-                        } else {
-                            view.tv_title_provider.visibility = View.GONE
+                        }
+
+                        view.rc_serie_watch.apply {
+                            view.tv_titleDetail.text = it.name
+                            view.tv_sinopseCardDetail.text = it.overview
+
+                            if (it.watch?.results?.BR != null) {
+                                adapter = CardDetailProvidersAdapter(
+                                    it.watch.results.BR.flatrate!!.plus(it.watch.results.BR.buy!!)
+                                        .plus(it.watch.results.BR.rent!!)
+                                        .plus(it.watch.results.BR.ads!!).distinct()
+                                )
+                                layoutManager = LinearLayoutManager(view.context)
+                                setHasFixedSize(true)
+                            } else {
+                                view.tv_title_provider.visibility = View.GONE
+                            }
                         }
                     }
 
                 }
+                "movie" -> {
+                    view.tv_title_rc.visibility = View.GONE
+                    viewModel.getProvidersMovieDetail(detail.card.id!!)
+
+
+                    viewModel.movieProvidersLive.observe(viewLifecycleOwner) {
+                        view.tv_titleDetail.text = it.title
+                        view.tv_sinopseCardDetail.text = it.overview
+
+                        view.rc_serie_watch.apply {
+                            if (it.watch?.results?.BR != null) {
+                                adapter = CardDetailProvidersAdapter(
+                                    it.watch.results.BR.flatrate!!.plus(it.watch.results.BR.buy!!)
+                                        .plus(it.watch.results.BR.rent!!)
+                                        .plus(it.watch.results.BR.ads!!).distinct()
+                                )
+                                layoutManager = LinearLayoutManager(view.context)
+                                setHasFixedSize(true)
+                            } else {
+                                view.tv_title_provider.visibility = View.GONE
+                            }
+                        }
+
+                    }
+                }
+                "person" -> {
+                    view.tv_title_rc.visibility = View.GONE
+                    view.tv_title_provider.visibility = View.GONE
+
+                    view.tv_sinopseCardDetail.text = detail.card.descricao
+                    view.tv_titleDetail.text = detail.card.name
+
+                }
+
+
             }
-            "person" ->{
-                view.tv_title_rc.visibility = View.GONE
-                view.tv_title_provider.visibility = View.GONE
-
-                view.tv_sinopseCardDetail.text = detail.card.descricao
-                view.tv_titleDetail.text = detail.card.name
-
-            }
-
-
-
+        }else{
+            view.tv_titleDetail.text = detail.card.name.toString()
+            view.tv_sinopseCardDetail.text = detail.card.descricao.toString()
+            view.tv_title_rc.visibility = View.GONE
+            view.tv_title_provider.visibility = View.GONE
         }
 
         //END ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -194,6 +223,47 @@ class CardDetailFragment : Fragment() {
         }
 
         viewModel.checkCardisFavorited(card)
+    }
+
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+
+
+        if (capabilities != null) {
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                return true
+            }
+        }
+
+        return false
+    }
+
+
+    override fun onClickSeason(position: Int) {
+
+
+
+        viewModel.tvProvidersLive.observe(viewLifecycleOwner){ tvDetailsResults ->
+            tvDetailsResults.seasons.let {
+            val bundle = bundleOf("id" to season.card.id,
+                    "season_number" to it!![position].season_number
+                )
+
+                findNavController().navigate(R.id.action_cardDetailFragment_to_seasonDetailFragment, bundle)
+            }
+        }
+
+
     }
 
 }

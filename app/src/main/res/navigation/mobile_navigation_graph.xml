@@ -25,6 +25,9 @@
         <argument
             android:name="detail"
             app:argType="com.example.filmly.data.model.CardDetail" />
+        <action
+            android:id="@+id/action_cardDetailFragment_to_seasonDetailFragment"
+            app:destination="@id/seasonDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -108,4 +111,9 @@
         android:id="@+id/yourListsDialogFragment"
         android:name="com.example.filmly.ui.profile.dialog.YourListsDialogFragment"
         android:label="YourListsDialogFragment" />
+    <fragment
+        android:id="@+id/seasonDetailFragment"
+        android:name="com.example.filmly.ui.episode.SeasonDetailFragment"
+        android:label="fragment_season_detail"
+        tools:layout="@layout/fragment_season_detail" />
 </navigation>
