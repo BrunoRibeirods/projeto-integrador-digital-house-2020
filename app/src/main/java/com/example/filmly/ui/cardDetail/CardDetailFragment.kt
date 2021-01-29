@@ -1,6 +1,7 @@
 package com.example.filmly.ui.cardDetail
 
 
+import android.app.Dialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -14,12 +15,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -27,6 +35,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.filmly.R
 import com.example.filmly.adapters.CardDetailListsAdapter
 import com.example.filmly.adapters.CardDetailProvidersAdapter
+import com.example.filmly.adapters.SeasonEpisodeAdapter
 import com.example.filmly.data.model.Card
 import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.FastBlur
@@ -35,8 +44,9 @@ import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
 
 
-class CardDetailFragment : Fragment() {
+class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListener {
     private lateinit var repository: ServicesRepository
+    lateinit var season: CardDetail
     private val viewModel: CardDetailViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -73,6 +83,7 @@ class CardDetailFragment : Fragment() {
         view.rc_serie_seasons.setHasFixedSize(true)
 
         val detail = arguments?.getSerializable("detail") as CardDetail
+        season = detail
 
       
         controlFavoriteState(detail.card, view)
@@ -91,7 +102,7 @@ class CardDetailFragment : Fragment() {
 
                     viewModel.tvProvidersLive.observe(viewLifecycleOwner) {
                         view.rc_serie_seasons.apply {
-                            adapter = it.seasons?.let { it1 -> CardDetailListsAdapter(it1) }
+                            adapter = it.seasons?.let { it1 -> CardDetailListsAdapter(it1, this@CardDetailFragment) }
                             layoutManager = LinearLayoutManager(
                                 view.context,
                                 LinearLayoutManager.HORIZONTAL,
@@ -235,6 +246,24 @@ class CardDetailFragment : Fragment() {
         }
 
         return false
+    }
+
+
+    override fun onClickSeason(position: Int) {
+
+
+
+        viewModel.tvProvidersLive.observe(viewLifecycleOwner){ tvDetailsResults ->
+            tvDetailsResults.seasons.let {
+            val bundle = bundleOf("id" to season.card.id,
+                    "season_number" to it!![position].season_number
+                )
+
+                findNavController().navigate(R.id.action_cardDetailFragment_to_seasonDetailFragment, bundle)
+            }
+        }
+
+
     }
 
 }

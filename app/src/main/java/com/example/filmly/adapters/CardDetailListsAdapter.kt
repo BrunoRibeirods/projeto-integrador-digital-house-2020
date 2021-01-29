@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.cards_list_item.view.*
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
 import kotlinx.android.synthetic.main.item_serie_season.view.*
 
-class CardDetailListsAdapter(private val listDetailCard: List<TvSeasonResults>): RecyclerView.Adapter<CardDetailListsAdapter.CardDetailListsViewHolder>() {
+class CardDetailListsAdapter(private val listDetailCard: List<TvSeasonResults>, val listener: OnClickSeasonListener): RecyclerView.Adapter<CardDetailListsAdapter.CardDetailListsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardDetailListsViewHolder {
         val itemview = LayoutInflater.from(parent.context).inflate(R.layout.item_serie_season, parent, false)
 
@@ -36,13 +36,11 @@ class CardDetailListsAdapter(private val listDetailCard: List<TvSeasonResults>):
 
         val circularProgressDrawable = CircularProgressDrawable(holder.itemView.context)
         circularProgressDrawable.strokeWidth = 5f
+        circularProgressDrawable.setColorSchemeColors(
+            holder.itemView.context.resources.getColor(R.color.color_main)
+        )
         circularProgressDrawable.centerRadius = 30f
         circularProgressDrawable.start()
-
-
-
-        ////////////////////////
-
 
         Glide.with(holder.itemView).asBitmap()
             .load("https://image.tmdb.org/t/p/w500${current.poster_path}")
@@ -54,15 +52,30 @@ class CardDetailListsAdapter(private val listDetailCard: List<TvSeasonResults>):
             .into(holder.iv_season_item)
 
 
-        ////////////////////////////
     }
 
     override fun getItemCount() = listDetailCard.size
 
-    class CardDetailListsViewHolder(view: View): RecyclerView.ViewHolder(view){
+    interface OnClickSeasonListener{
+        fun onClickSeason(position: Int)
+    }
+
+    inner class CardDetailListsViewHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickListener{
+        init {
+            view.setOnClickListener(this)
+        }
+
         val num_season_item = view.tv_season_number
         val iv_season_item = view.iv_season
+
+        override fun onClick(p0: View?) {
+            val position = adapterPosition
+            if(position != RecyclerView.NO_POSITION)
+                listener.onClickSeason(position)
+        }
     }
+
+
 
 
 }
