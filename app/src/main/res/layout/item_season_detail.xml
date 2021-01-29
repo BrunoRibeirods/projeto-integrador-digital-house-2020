@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    android:backgroundTint="@color/blackcard"
+    app:cardElevation="0dp"
+    app:cardMaxElevation="0dp"
+    android:layout_height="110dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_season_detail"
+            android:layout_width="100dp"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:layout_height="match_parent"
+            android:src="@drawable/mr_robot"/>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_season_detail_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/yellow"
+                    android:fontFamily="@font/lato"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:text="S01"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/yellow"
+                    android:fontFamily="@font/lato"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:text=" | "/>
+
+                <TextView
+                    android:id="@+id/tv_season_detail_episode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/yellow"
+                    android:fontFamily="@font/lato"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:text="E01"/>
+
+            </LinearLayout>
+
+
+
+            <TextView
+                android:id="@+id/tv_season_detail_title"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/yellow"
+                android:textSize="16sp"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:text="Piloto"
+                android:singleLine="true"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center|end"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_baseline_visibility_24"
+        app:tint="@color/black101010"/>
+
+
+</androidx.cardview.widget.CardView>

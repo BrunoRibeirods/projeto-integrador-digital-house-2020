@@ -27,6 +27,21 @@ data class TvSeasonResults(
     val name: String? = null,
     val overview: String? = null,
     val poster_path: String? = null,
+    val season_number: Int? = null,
+)
+
+@Serializable
+data class TvEpisodesResult(
+    val air_date: String? = null,
+    val episodes: List<TvEpisodes>? = null
+)
+
+@Serializable
+data class TvEpisodes(
+    val air_date: String? = null,
+    val name: String? = null,
+    val episode_number: Int? = null,
+    val still_path: String? = null,
     val season_number: Int? = null
 )
 

@@ -1,9 +1,6 @@
 package com.example.filmly.network
 
-import com.example.filmly.ui.cardDetail.MovieDetailsResults
-import com.example.filmly.ui.cardDetail.TvDetailsResults
-import com.example.filmly.ui.cardDetail.TvSeasonResults
-import com.example.filmly.ui.cardDetail.TvWatchProvidersResults
+import com.example.filmly.ui.cardDetail.*
 import com.example.filmly.ui.home.TrendingResults
 import com.example.filmly.ui.search.MovieResults
 import com.example.filmly.ui.search.PersonResults
@@ -60,6 +57,13 @@ interface TmdbApi {
         @Path("movie_id") movie_id: Int,
         @Query("api_key") api_key: String
     ): MovieDetailsResults
+
+    @GET("tv/{tv_id}/season/{season_number}?language=pt-BR")
+    suspend fun getEpisodeDetail(
+        @Path("tv_id") tv_id: Int,
+        @Path("season_number") season_number: Int,
+        @Query("api_key") api_key: String
+    ): TvEpisodesResult
 
 
 

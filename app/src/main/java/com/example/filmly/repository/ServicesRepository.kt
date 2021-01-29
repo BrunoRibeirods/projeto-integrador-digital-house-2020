@@ -9,8 +9,7 @@ import com.example.filmly.database.asActorDomain
 import com.example.filmly.database.asFilmDomain
 import com.example.filmly.database.asSerieDomain
 import com.example.filmly.network.TmdbApiteste
-import com.example.filmly.ui.cardDetail.MovieDetailsResults
-import com.example.filmly.ui.cardDetail.TvDetailsResults
+import com.example.filmly.ui.cardDetail.*
 import com.example.filmly.ui.home.TrendingResults
 import com.example.filmly.ui.search.MovieResults
 import com.example.filmly.ui.search.PersonResults
@@ -125,6 +124,11 @@ abstract class ServicesRepository {
 
     suspend fun getMovieWatchProvidersModel(id: Int): MovieDetailsResults {
         return retrofitService.getMovieDetail(id, "0d3ca7edae2d9cb14c86ce991530aee6")
+
+    }
+
+    suspend fun getEpisodesModel(id: Int, season_number: Int): TvEpisodesResult {
+        return retrofitService.getEpisodeDetail(id, season_number, "0d3ca7edae2d9cb14c86ce991530aee6")
 
     }
 
