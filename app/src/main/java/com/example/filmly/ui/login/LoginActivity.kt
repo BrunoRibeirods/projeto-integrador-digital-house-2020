@@ -1,24 +1,17 @@
 package com.example.filmly.ui.login
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.text.TextUtils
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import com.example.filmly.ui.MainActivity
 import com.example.filmly.R
+import com.example.filmly.ui.MainActivity
 import com.example.filmly.ui.lostpassword.LostPasswordActivity
 import com.example.filmly.ui.register.RegisterActivity
 import com.facebook.AccessToken
@@ -30,18 +23,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.*
+import com.twitter.sdk.android.core.Callback
+import com.twitter.sdk.android.core.TwitterCore
+import com.twitter.sdk.android.core.TwitterException
+import com.twitter.sdk.android.core.TwitterSession
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.view.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.view.*
 
+
 class LoginActivity : AppCompatActivity() {
 
-    //private lateinit var loginViewModel: LoginViewModel
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var callbackManager: CallbackManager
@@ -89,6 +83,27 @@ class LoginActivity : AppCompatActivity() {
         })
         // [END initialize_fblogin]
 
+        //[START] Twitter config ----------------
+
+        //val providers = arrayListOf(AuthUI.IdpConfig.TwitterBuilder().build())
+
+        // Create and launch sign-in intent
+
+        /*twitter.setOnClickListener {
+            startActivityForResult(
+                AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .setAvailableProviders(providers)
+                    .build(),
+                RC_SIGN_INT)
+        }
+        */
+        //[END] Twitter config ----------------
+
+        initTwitterSignIn()
+
+        twitter.setOnClickListener { twitterLogInButton_init.performClick() }
+
 
         val login = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
@@ -98,10 +113,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
-        twitter.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
 
         login.setOnClickListener {
             loading.visibility = View.VISIBLE
@@ -119,6 +130,52 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+
+
+    private fun initTwitterSignIn() {
+        twitterLogInButton_init.callback = object : Callback<TwitterSession>() {
+            override fun failure(exception: TwitterException) {
+                Log.e(TAG, exception.toString())
+            }
+
+            override fun success(result: com.twitter.sdk.android.core.Result<TwitterSession>?) {
+                // Do something with result, which provides a TwitterSession for making API calls
+                val session = TwitterCore.getInstance().sessionManager.activeSession
+                handleTwitterLogin(session)
+            }
+        }
+    }
+
+    private fun handleTwitterLogin(session: TwitterSession) {
+        val credential = TwitterAuthProvider.getCredential(
+            session.authToken.token,
+            session.authToken.secret)
+
+
+
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener {task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                    val user = auth.currentUser
+                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        baseContext, "Email ou senha invalidos.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    updateUI(null)
+
+                }
+        }
+    }
+
+
+
 
     override fun onStart() {
         super.onStart()
@@ -156,8 +213,10 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    Toast.makeText(baseContext, "Email ou senha invalidos.",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        baseContext, "Email ou senha invalidos.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     updateUI(null)
 
                 }
@@ -214,6 +273,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        twitterLogInButton_init.onActivityResult(requestCode, resultCode, data)
+        callbackManager.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RC_SIGN_IN) {
@@ -229,7 +290,6 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
     //[END] Google login configuration
@@ -248,8 +308,10 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    Toast.makeText(baseContext, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        baseContext, "Authentication failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     updateUI(null)
                 }
 
@@ -259,6 +321,7 @@ class LoginActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "EmailPassword"
         private const val RC_SIGN_IN = 9001
+        //private const val RC_SIGN_INT = 123
     }
 
 

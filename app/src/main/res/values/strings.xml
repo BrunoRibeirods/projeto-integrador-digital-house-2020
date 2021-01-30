@@ -51,6 +51,8 @@
     <string name="your_lists_dialog">Configurar Suas Listas</string>
     <string name="trending">Trending</string>
     <string name="facebook_app_id">259681709061555</string>
+    <string name="twitter_api_key">G63PMYZPvJkJtFPHnNQkTIn38</string>
+    <string name="twitter_api_secret">HYhUwBhgf98eBrPK871JrYrJ5CiDWhdNHqpldKFC4VRuo2jzDO</string>
 
 
 </resources>
