@@ -41,7 +41,9 @@ data class TvEpisodes(
     val air_date: String? = null,
     val name: String? = null,
     val episode_number: Int? = null,
+    val vote_average: Double? = null,
     val still_path: String? = null,
+    val overview: String? = null,
     val season_number: Int? = null
 )
 
