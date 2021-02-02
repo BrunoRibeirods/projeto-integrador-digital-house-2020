@@ -274,7 +274,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         twitterLogInButton_init.onActivityResult(requestCode, resultCode, data)
-        callbackManager.onActivityResult(requestCode, resultCode, data)
+
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RC_SIGN_IN) {
@@ -290,6 +290,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
     //[END] Google login configuration
