@@ -48,7 +48,7 @@
     </style>
 
     <style name="Theme.Filmly.Overlay.Button" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/gray900</item>
+        <item name="colorPrimary">@color/black101010</item>
         <item name="colorOnPrimary">@color/white</item>
     </style>
 
