@@ -1,15 +1,20 @@
 package com.example.filmly.ui.register
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.filmly.R
+import com.example.filmly.data.model.UserInformation
+import com.example.filmly.repository.StatesRepository
 import com.example.filmly.ui.MainActivity
 import com.example.filmly.ui.login.LoginActivity
-import com.example.filmly.ui.login.LoginResult
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -18,12 +23,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.*
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.view.*
+
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -46,26 +50,28 @@ class RegisterActivity : AppCompatActivity() {
         re_facebook.setOnClickListener { buttonFacebookLogin.performClick() }
 
         buttonFacebookLogin.setReadPermissions("email", "public_profile")
-        buttonFacebookLogin.buttonFacebookLogin.registerCallback(callbackManager, object : FacebookCallback<com.facebook.login.LoginResult> {
-            override fun onSuccess(loginResult: com.facebook.login.LoginResult) {
-                Log.d(TAG, "facebook:onSuccess:$loginResult")
-                handleFacebookAccessToken(loginResult.accessToken)
-            }
+        buttonFacebookLogin.buttonFacebookLogin.registerCallback(
+            callbackManager,
+            object : FacebookCallback<com.facebook.login.LoginResult> {
+                override fun onSuccess(loginResult: com.facebook.login.LoginResult) {
+                    Log.d(TAG, "facebook:onSuccess:$loginResult")
+                    handleFacebookAccessToken(loginResult.accessToken)
+                }
 
-            override fun onCancel() {
-                Log.d(TAG, "facebook:onCancel")
-                // [START_EXCLUDE]
-                updateUI(null)
-                // [END_EXCLUDE]
-            }
+                override fun onCancel() {
+                    Log.d(TAG, "facebook:onCancel")
+                    // [START_EXCLUDE]
+                    updateUI(null)
+                    // [END_EXCLUDE]
+                }
 
-            override fun onError(error: FacebookException) {
-                Log.d(TAG, "facebook:onError", error)
-                // [START_EXCLUDE]
-                updateUI(null)
-                // [END_EXCLUDE]
-            }
-        })
+                override fun onError(error: FacebookException) {
+                    Log.d(TAG, "facebook:onError", error)
+                    // [START_EXCLUDE]
+                    updateUI(null)
+                    // [END_EXCLUDE]
+                }
+            })
         // [END initialize_fblogin]
 
 
@@ -82,7 +88,11 @@ class RegisterActivity : AppCompatActivity() {
         val google = findViewById<ImageView>(R.id.re_google)
 
         create.setOnClickListener {
-            createAccount(re_username.text.toString(), re_password.text.toString())
+            createAccount(
+                re_username.text.toString(),
+                re_password.text.toString(),
+                re_name.text.toString()
+            )
         }
 
         google.setOnClickListener {
@@ -103,24 +113,39 @@ class RegisterActivity : AppCompatActivity() {
         updateUI(currentUser)
     }
 
-    private fun createAccount(email: String, password: String) {
+    private fun createAccount(email: String, password: String, name: String) {
         Log.d(TAG, "createAccount:$email")
         if (!validateForm()) {
             return
         }
+
         // [START create_user_with_email]
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
+
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
+                    val profileUpdates = UserProfileChangeRequest.Builder()
+                        .setDisplayName(name)
+                        .build()
+
+                    user!!.updateProfile(profileUpdates)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Log.d(TAG, "User profile updated.")
+                            }
+                        }
+
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(baseContext, "Email ou senha invalidos.",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        baseContext, "Email ou senha invalidos.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     updateUI(null)
                 }
 
@@ -158,9 +183,11 @@ class RegisterActivity : AppCompatActivity() {
         return valid
     }
 
+
+
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         } else {
@@ -230,8 +257,10 @@ class RegisterActivity : AppCompatActivity() {
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    Toast.makeText(baseContext, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        baseContext, "Authentication failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     updateUI(null)
                 }
 
