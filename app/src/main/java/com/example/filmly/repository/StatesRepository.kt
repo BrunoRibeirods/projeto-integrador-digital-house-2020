@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.filmly.data.model.UserInformation
 
 object StatesRepository {
-    private val _userInformation = MutableLiveData(UserInformation("Will", "will@filmly.com", password = "12345", birthDate = "16/07/1997"))
+    private val _userInformation = MutableLiveData(UserInformation("Will", "will@filmly.com", img = null, password = "12345", birthDate = "16/07/1997"))
     val userInformation: LiveData<UserInformation>
         get() = _userInformation
 
@@ -35,6 +35,7 @@ object StatesRepository {
     fun updateUserInformation(user: UserInformation) {
         if (user.name != "null") _userInformation.value?.name = user.name
         if (user.email != "null") _userInformation.value?.email = user.email
+        if (user.img != "null") _userInformation.value?.img = user.img
         if (user.birthDate != "null") _userInformation.value?.birthDate = user.birthDate
         if (user.password != "null") _userInformation.value?.password = user.password
     }
