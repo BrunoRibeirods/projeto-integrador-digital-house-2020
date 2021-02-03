@@ -21,12 +21,13 @@ import com.example.filmly.ui.cardDetail.TvEpisodesResult
 import com.example.filmly.ui.home.PopularActor
 import com.example.filmly.ui.home.PopularMovie
 import com.example.filmly.ui.home.PopularTV
-import com.example.filmly.ui.home.TrendingResults
+import com.example.filmly.ui.home.Trending
 import com.example.filmly.ui.search.MovieResults
 import com.example.filmly.ui.search.PersonResults
 import com.example.filmly.ui.search.TvResults
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.withContext
 
 
@@ -104,8 +105,10 @@ abstract class ServicesRepository {
     
     //Retrofit2 calls
 
-    suspend fun getTrending(type: String): TrendingResults {
-        return retrofitService.getTrending(type, StatesRepository.searchTime, "0d3ca7edae2d9cb14c86ce991530aee6")
+    suspend fun getTrending(type: String): Flow<Trending> {
+        withContext(Dispatchers.IO) {
+            retrofitService.getTrending(type, StatesRepository.searchTime, "0d3ca7edae2d9cb14c86ce991530aee6").results.asFlow()
+        }.let { return it }
     }
 
     fun getAllPopularMovies(): Flow<PagingData<PopularMovie>> {
@@ -124,7 +127,7 @@ abstract class ServicesRepository {
                 pageSize = 20,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = {TVPagingSource(retrofitService)}
+            pagingSourceFactory = { TVPagingSource(retrofitService) }
         ).flow
     }
 

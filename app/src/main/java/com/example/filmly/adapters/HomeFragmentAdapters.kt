@@ -5,13 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.example.filmly.R
+import com.example.filmly.data.model.Card
 import com.example.filmly.data.model.CardDetail
+import com.example.filmly.ui.home.PopularActor
 import com.example.filmly.ui.home.PopularMovie
+import com.example.filmly.ui.home.PopularTV
 import com.example.filmly.utils.CardDetailNavigation
+import com.example.filmly.utils.CardDiffCallback
 import kotlinx.android.synthetic.main.cards_list_item.view.*
 
 class PopularMoviesAdapter(
@@ -77,7 +82,7 @@ class PopularMoviesAdapter(
 class PopularTVAdapter(
     val cardInfo: Int,
     val cardNavigation: CardDetailNavigation,
-) : PagingDataAdapter<PopularMovie, PopularTVAdapter.PopularTVViewHolder>(
+) : PagingDataAdapter<PopularTV, PopularTVAdapter.PopularTVViewHolder>(
     POPULAR_TV_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularTVViewHolder {
@@ -92,17 +97,17 @@ class PopularTVAdapter(
     }
 
     companion object {
-        private val POPULAR_TV_COMPARATOR = object : DiffUtil.ItemCallback<PopularMovie>() {
-            override fun areItemsTheSame(oldItem: PopularMovie, newItem: PopularMovie): Boolean =
+        private val POPULAR_TV_COMPARATOR = object : DiffUtil.ItemCallback<PopularTV>() {
+            override fun areItemsTheSame(oldItem: PopularTV, newItem: PopularTV): Boolean =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: PopularMovie, newItem: PopularMovie): Boolean =
+            override fun areContentsTheSame(oldItem: PopularTV, newItem: PopularTV): Boolean =
                 oldItem == newItem
         }
     }
 
     class PopularTVViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(item: PopularMovie, cardInfo: Int, cardNavigation: CardDetailNavigation) {
+        fun bind(item: PopularTV, cardInfo: Int, cardNavigation: CardDetailNavigation) {
 
             val circularProgressDrawable = CircularProgressDrawable(view.context)
             circularProgressDrawable.strokeWidth = 5f
@@ -119,7 +124,7 @@ class PopularTVAdapter(
                 .fallback(R.drawable.placeholder)
                 .into(view.iv_cardImage)
 
-            val cardDetail = CardDetail(cardInfo, item.convertToFilm())
+            val cardDetail = CardDetail(cardInfo, item.convertToSerie())
             view.iv_cardImage.setOnClickListener {
                 cardNavigation.onClick(cardDetail)
             }
@@ -137,7 +142,7 @@ class PopularTVAdapter(
 class PopularActorsAdapter(
     val cardInfo: Int,
     val cardNavigation: CardDetailNavigation,
-) : PagingDataAdapter<PopularMovie, PopularActorsAdapter.PopularActorsViewHolder>(
+) : PagingDataAdapter<PopularActor, PopularActorsAdapter.PopularActorsViewHolder>(
     POPULAR_ACTOR_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularActorsViewHolder {
@@ -152,17 +157,17 @@ class PopularActorsAdapter(
     }
 
     companion object {
-        private val POPULAR_ACTOR_COMPARATOR = object : DiffUtil.ItemCallback<PopularMovie>() {
-            override fun areItemsTheSame(oldItem: PopularMovie, newItem: PopularMovie): Boolean =
+        private val POPULAR_ACTOR_COMPARATOR = object : DiffUtil.ItemCallback<PopularActor>() {
+            override fun areItemsTheSame(oldItem: PopularActor, newItem: PopularActor): Boolean =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: PopularMovie, newItem: PopularMovie): Boolean =
+            override fun areContentsTheSame(oldItem: PopularActor, newItem: PopularActor): Boolean =
                 oldItem == newItem
         }
     }
 
     class PopularActorsViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(item: PopularMovie, cardInfo: Int, cardNavigation: CardDetailNavigation) {
+        fun bind(item: PopularActor, cardInfo: Int, cardNavigation: CardDetailNavigation) {
 
             val circularProgressDrawable = CircularProgressDrawable(view.context)
             circularProgressDrawable.strokeWidth = 5f
@@ -173,13 +178,13 @@ class PopularActorsAdapter(
             circularProgressDrawable.start()
 
             Glide.with(view).asBitmap()
-                .load("https://image.tmdb.org/t/p/w500${item.poster_path}")
+                .load("https://image.tmdb.org/t/p/w500${item.profile_path}")
                 .placeholder(circularProgressDrawable)
                 .error(R.drawable.placeholder)
                 .fallback(R.drawable.placeholder)
                 .into(view.iv_cardImage)
 
-            val cardDetail = CardDetail(cardInfo, item.convertToFilm())
+            val cardDetail = CardDetail(cardInfo, item.convertToActor())
             view.iv_cardImage.setOnClickListener {
                 cardNavigation.onClick(cardDetail)
             }
@@ -189,6 +194,55 @@ class PopularActorsAdapter(
             fun from(parent: ViewGroup): PopularActorsViewHolder {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.cards_list_item, parent, false)
                 return PopularActorsViewHolder(view)
+            }
+        }
+    }
+}
+
+class TrendingAdapter(
+    val cardInfo: Int,
+    val cardNavigation: CardDetailNavigation
+) : ListAdapter<Card, TrendingAdapter.TrendingViewHolder>(CardDiffCallback()) {
+
+    override fun onBindViewHolder(holder: TrendingViewHolder, position: Int) {
+        val item = getItem(position)
+
+        holder.bind(item, cardInfo, cardNavigation)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrendingViewHolder =
+        TrendingViewHolder.from(parent)
+
+    class TrendingViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+
+        companion object {
+            fun from(parent: ViewGroup): TrendingViewHolder {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.cards_list_item, parent, false)
+                return TrendingViewHolder(view)
+            }
+        }
+
+        fun bind(item: Card, cardInfo: Int, navigation: CardDetailNavigation) {
+
+            val circularProgressDrawable = CircularProgressDrawable(view.context)
+            circularProgressDrawable.strokeWidth = 5f
+            circularProgressDrawable.setColorSchemeColors(
+                view.resources.getColor(R.color.color_main)
+            )
+            circularProgressDrawable.centerRadius = 30f
+            circularProgressDrawable.start()
+
+            Glide.with(view).asBitmap()
+                .load("https://image.tmdb.org/t/p/w500${item.image}")
+                .placeholder(circularProgressDrawable)
+                .error(R.drawable.placeholder)
+                .fallback(R.drawable.placeholder)
+                .into(view.iv_cardImage)
+
+            val cardDetail = CardDetail(cardInfo, item)
+            view.iv_cardImage.setOnClickListener {
+                navigation.onClick(cardDetail)
             }
         }
     }

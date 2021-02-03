@@ -1,37 +1,43 @@
 package com.example.filmly.ui.home
 
-import android.util.Log
-
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.filmly.data.model.HeadLists
+import com.example.filmly.data.model.Card
 import com.example.filmly.repository.ServicesRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class HomeViewModel(val repository: ServicesRepository): ViewModel() {
-    private val _trendingLive = MutableLiveData<TrendingResults>()
-    val trendingLive: LiveData<TrendingResults>
-        get() = _trendingLive
+class HomeViewModel(val repository: ServicesRepository) : ViewModel() {
 
-    val headLists = mutableListOf<HeadLists>()
-
-    fun getTrendingLive(type: String){
+    fun getTrending(): MutableLiveData<MutableList<Card>> {
+        val mutableList = mutableListOf<Card>()
+        val mutableLiveData = MutableLiveData<MutableList<Card>>()
         viewModelScope.launch {
-            try {
-                _trendingLive.value = repository.getTrending(type)
-
-            }catch (e:Exception){
-                Log.e("HomeViewModel", e.toString())
+            repository.getTrending("all").collect {
+                when (it.media_type) {
+                    "movie" -> it.convertToCard()
+                    "tv" -> it.convertToTv()
+                    else -> it.convertToPerson()
+                }.let { mutableList.add(it) }
             }
+            mutableLiveData.postValue(mutableList)
         }
+
+        return mutableLiveData
     }
 
-    fun getAllPopularMovies(): Flow<PagingData<PopularMovie>> = repository.getAllPopularMovies().cachedIn(viewModelScope)
+    fun getAllPopularMovies(): Flow<PagingData<PopularMovie>> =
+        repository.getAllPopularMovies().cachedIn(viewModelScope)
+
+    fun getAllPopularSeries(): Flow<PagingData<PopularTV>> =
+        repository.getAllPopularSeries().cachedIn(viewModelScope)
+
+    fun getAllPopularActors(): Flow<PagingData<PopularActor>> =
+        repository.getAllPopularActors().cachedIn(viewModelScope)
 
     fun refreshLists() {
         viewModelScope.launch {
@@ -40,11 +46,6 @@ class HomeViewModel(val repository: ServicesRepository): ViewModel() {
             repository.updateFavoriteActors()
         }
     }
-
-
-
-
-
 
 
 }

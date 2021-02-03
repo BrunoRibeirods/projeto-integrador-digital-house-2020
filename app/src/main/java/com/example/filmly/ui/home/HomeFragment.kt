@@ -11,17 +11,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.example.filmly.R
-import com.example.filmly.adapters.HomeListsAdapter
+import com.example.filmly.adapters.PopularActorsAdapter
 import com.example.filmly.adapters.PopularMoviesAdapter
-import com.example.filmly.data.model.Card
+import com.example.filmly.adapters.PopularTVAdapter
+import com.example.filmly.adapters.TrendingAdapter
 import com.example.filmly.data.model.CardDetail
-import com.example.filmly.data.model.HeadLists
 import com.example.filmly.repository.ServicesRepository
 import com.example.filmly.repository.StatesRepository
 import com.example.filmly.utils.CardDetailNavigation
-import com.example.filmly.utils.SeeMoreNavigation
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -31,6 +29,21 @@ class HomeFragment : Fragment() {
 
     private lateinit var repository: ServicesRepository
     private val popularMoviesAdapter = PopularMoviesAdapter(CardDetail.FILM, CardDetailNavigation { detail ->
+        val action = HomeFragmentDirections.actionHomeFragmentToCardDetailFragment(detail)
+        findNavController().navigate(action)
+    })
+
+    private val popularTVAdapter = PopularTVAdapter(CardDetail.SERIE, CardDetailNavigation { detail ->
+        val action = HomeFragmentDirections.actionHomeFragmentToCardDetailFragment(detail)
+        findNavController().navigate(action)
+    })
+
+    private val popularActorsAdapter = PopularActorsAdapter(CardDetail.ACTOR, CardDetailNavigation { detail ->
+        val action = HomeFragmentDirections.actionHomeFragmentToCardDetailFragment(detail)
+        findNavController().navigate(action)
+    })
+
+    private val trendingAdapter = TrendingAdapter(CardDetail.TRENDING, CardDetailNavigation { detail ->
         val action = HomeFragmentDirections.actionHomeFragmentToCardDetailFragment(detail)
         findNavController().navigate(action)
     })
@@ -51,44 +64,22 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         repository = ServicesRepository.getInstance(requireContext())
-        val homeAdapter = HomeListsAdapter(SeeMoreNavigation { trending ->
-            val action = HomeFragmentDirections.actionHomeFragmentToViewMoreFragment(trending)
-            findNavController().navigate(action)
-        })
 
-        homeAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                if (!view.rv_homeLists.canScrollVertically(-1)) {
-                    view.rv_homeLists.scrollToPosition(0)
-                }
-            }
-        })
+        //ANTIGO
+//        homeAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
+//            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+//                super.onItemRangeInserted(positionStart, itemCount)
+//                if (!view.rv_homeLists.canScrollVertically(-1)) {
+//                    view.rv_homeLists.scrollToPosition(0)
+//                }
+//            }
+//        })
 
-        view.rv_homeLists.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = homeAdapter
-        }
 
-        //
-        view.rv_popular_movies.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = popularMoviesAdapter
-        }
+        setRecyclerViews(view)
 
-        lifecycleScope.launch {
-            viewModel.getAllPopularMovies().collect {
-                popularMoviesAdapter.submitData(it)
-            }
-        }
-        //
+        //Update database
         viewModel.refreshLists()
-
-
-        viewModel.getTrendingLive("all")
-        viewModel.getTrendingLive("tv")
-        viewModel.getTrendingLive("movie")
-        viewModel.getTrendingLive("person")
 
         view.tv_greetings.text =
             getString(R.string.hello_wil, StatesRepository.userInformation.value?.name)
@@ -97,56 +88,51 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.profileFragment)
         }
 
-        viewModel.trendingLive.observe(viewLifecycleOwner) {
-            homeAdapter.submitList(getResultsLists(it.results.map {
-                when (it.media_type) {
-                    "movie" -> it.convertToCard()
-                    "tv" -> it.convertToTv()
-                    "person" -> it.convertToPerson()
-                    else -> it.convertToCard()
-                }
-            }, when (it.results.map { it.media_type }.distinct().joinToString()) {
-                "movie" -> CardDetail.FILM
-                "tv" -> CardDetail.SERIE
-                "person" -> CardDetail.ACTOR
-                else -> CardDetail.TRENDING
-            }
-            )
-            )
-        }
-
         return view
     }
 
-    fun getResultsLists(listaFilmes: List<Card>, cardInfo: Int): List<HeadLists> {
-
-        val tipo = when (cardInfo) {
-            CardDetail.FILM -> "filmes"
-            CardDetail.ACTOR -> "pessoas"
-            CardDetail.SERIE -> "séries"
-            CardDetail.TRENDING -> "trending"
-            else -> "outros"
+    private fun setRecyclerViews(view: View) {
+        view.rv_trending.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = trendingAdapter
         }
 
-        val timeString = when (StatesRepository.searchTime) {
-            "day" -> "do dia"
-            else -> "da semana"
+        view.rv_popular_movies.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = popularMoviesAdapter
         }
 
-        val order = StatesRepository.homeListsOrder
+        view.rv_popular_atores.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = popularActorsAdapter
+        }
 
-        val roles: HashMap<String, Int> = hashMapOf(
-            "Top trending $timeString" to order.indexOf("trending"),
-            "Top séries $timeString" to order.indexOf("series"),
-            "Top filmes $timeString" to order.indexOf("films"),
-            "Top pessoas $timeString" to order.indexOf("actors")
-        )
+        view.rv_popular_series.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = popularTVAdapter
+        }
 
-        viewModel.headLists.add(HeadLists("Top $tipo $timeString", listaFilmes, cardInfo))
-        viewModel.headLists.sortWith(Comparator { t, t2 ->
-            return@Comparator roles[t.titleMessage]!! - roles[t2.titleMessage]!!
-        })
+        viewModel.getTrending().observe(viewLifecycleOwner) {
+            trendingAdapter.submitList(it)
+        }
 
-        return viewModel.headLists.distinctBy { it.titleMessage }
+        lifecycleScope.launch {
+            viewModel.getAllPopularSeries().collect {
+                popularTVAdapter.submitData(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.getAllPopularActors().collect {
+                popularActorsAdapter.submitData(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.getAllPopularMovies().collect {
+                popularMoviesAdapter.submitData(it)
+            }
+
+        }
     }
 }
