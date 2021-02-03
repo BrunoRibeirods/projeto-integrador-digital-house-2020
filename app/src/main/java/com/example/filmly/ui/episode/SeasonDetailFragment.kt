@@ -90,7 +90,6 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
         return view
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun showDialog(title: String?, url: String?, overview: String?, date: String?, votes: Double?, number: String?) {
 
         //Inicializa o Dialog

@@ -1,10 +1,13 @@
 package com.example.filmly.adapters
 
+import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
@@ -62,6 +65,7 @@ class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>, val lis
         val seasonNumEpisode = view.tv_season_detail_number
         val titleEpisode = view.tv_season_detail_title
         val imageEpisode = view.iv_season_detail
+        val btn_watched = view.btn_episode_watched
 
         override fun onClick(p0: View?) {
             val position = adapterPosition
