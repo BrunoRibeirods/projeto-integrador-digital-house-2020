@@ -49,7 +49,7 @@ class ProfileFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         auth = FirebaseAuth.getInstance()
         updateUI(auth.currentUser)
-        config()
+        auth.currentUser?.let { config(it) }
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -147,8 +147,8 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    fun config(){
-        storageReference = FirebaseStorage.getInstance().getReference("profile_pic")
+    fun config(user: FirebaseUser){
+        storageReference = FirebaseStorage.getInstance().getReference(user.uid)
     }
 
     fun setIntent(){
