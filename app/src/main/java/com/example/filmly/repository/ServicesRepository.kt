@@ -11,12 +11,16 @@ import com.example.filmly.database.FilmlyDatabase
 import com.example.filmly.database.asActorDomain
 import com.example.filmly.database.asFilmDomain
 import com.example.filmly.database.asSerieDomain
+import com.example.filmly.network.ActorsPagingSource
 import com.example.filmly.network.MoviesPagingSource
+import com.example.filmly.network.TVPagingSource
 import com.example.filmly.network.TmdbApiteste
 import com.example.filmly.ui.cardDetail.MovieDetailsResults
 import com.example.filmly.ui.cardDetail.TvDetailsResults
 import com.example.filmly.ui.cardDetail.TvEpisodesResult
+import com.example.filmly.ui.home.PopularActor
 import com.example.filmly.ui.home.PopularMovie
+import com.example.filmly.ui.home.PopularTV
 import com.example.filmly.ui.home.TrendingResults
 import com.example.filmly.ui.search.MovieResults
 import com.example.filmly.ui.search.PersonResults
@@ -111,6 +115,26 @@ abstract class ServicesRepository {
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { MoviesPagingSource(retrofitService) }
+        ).flow
+    }
+
+    fun getAllPopularSeries(): Flow<PagingData<PopularTV>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {TVPagingSource(retrofitService)}
+        ).flow
+    }
+
+    fun getAllPopularActors(): Flow<PagingData<PopularActor>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { ActorsPagingSource(retrofitService) }
         ).flow
     }
 
