@@ -127,8 +127,11 @@ class RegisterActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
+
+                    //Modificar User
                     val profileUpdates = UserProfileChangeRequest.Builder()
                         .setDisplayName(name)
+                        //.setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))
                         .build()
 
                     user!!.updateProfile(profileUpdates)
@@ -187,7 +190,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            val intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         } else {

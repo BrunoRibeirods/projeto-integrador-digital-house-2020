@@ -90,7 +90,6 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
         return view
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun showDialog(title: String?, url: String?, overview: String?, date: String?, votes: Double?, number: String?) {
 
         //Inicializa o Dialog
@@ -113,8 +112,8 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
 
 
         //Formatação da data de lançamento
-        if(date != null){
-            val inputFormatter = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if(date != null && date != ""){
+            val inputFormatter: DateTimeFormatter? = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH)
             } else {
                 TODO("VERSION.SDK_INT < O")
