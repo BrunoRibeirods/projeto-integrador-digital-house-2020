@@ -3,18 +3,26 @@ package com.example.filmly.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.filmly.data.model.*
 import com.example.filmly.database.FilmlyDatabase
 import com.example.filmly.database.asActorDomain
 import com.example.filmly.database.asFilmDomain
 import com.example.filmly.database.asSerieDomain
+import com.example.filmly.network.MoviesPagingSource
 import com.example.filmly.network.TmdbApiteste
-import com.example.filmly.ui.cardDetail.*
+import com.example.filmly.ui.cardDetail.MovieDetailsResults
+import com.example.filmly.ui.cardDetail.TvDetailsResults
+import com.example.filmly.ui.cardDetail.TvEpisodesResult
+import com.example.filmly.ui.home.PopularMovie
 import com.example.filmly.ui.home.TrendingResults
 import com.example.filmly.ui.search.MovieResults
 import com.example.filmly.ui.search.PersonResults
 import com.example.filmly.ui.search.TvResults
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 
@@ -94,6 +102,16 @@ abstract class ServicesRepository {
 
     suspend fun getTrending(type: String): TrendingResults {
         return retrofitService.getTrending(type, StatesRepository.searchTime, "0d3ca7edae2d9cb14c86ce991530aee6")
+    }
+
+    fun getAllPopularMovies(): Flow<PagingData<PopularMovie>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { MoviesPagingSource(retrofitService) }
+        ).flow
     }
 
     suspend fun getMoviesModel(query: String): MovieResults {

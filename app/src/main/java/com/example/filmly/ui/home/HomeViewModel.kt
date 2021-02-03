@@ -6,8 +6,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.filmly.data.model.HeadLists
 import com.example.filmly.repository.ServicesRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class HomeViewModel(val repository: ServicesRepository): ViewModel() {
@@ -27,6 +30,8 @@ class HomeViewModel(val repository: ServicesRepository): ViewModel() {
             }
         }
     }
+
+    fun getAllPopularMovies(): Flow<PagingData<PopularMovie>> = repository.getAllPopularMovies().cachedIn(viewModelScope)
 
     fun refreshLists() {
         viewModelScope.launch {

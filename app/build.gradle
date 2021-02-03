@@ -89,7 +89,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
 
     //Paging Jetpack
-    def paging_version = "2.1.2"
+    def paging_version = "3.0.0-alpha11"
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
 

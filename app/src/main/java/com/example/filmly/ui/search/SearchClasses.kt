@@ -43,7 +43,6 @@ data class TvShow(
     }
 }
 
-
 @Serializable
 data class PersonResults(val page: Int, val results: List<Person>)
 

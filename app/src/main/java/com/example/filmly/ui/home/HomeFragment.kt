@@ -8,23 +8,32 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.example.filmly.R
 import com.example.filmly.adapters.HomeListsAdapter
+import com.example.filmly.adapters.PopularMoviesAdapter
 import com.example.filmly.data.model.Card
 import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.HeadLists
 import com.example.filmly.repository.ServicesRepository
 import com.example.filmly.repository.StatesRepository
+import com.example.filmly.utils.CardDetailNavigation
 import com.example.filmly.utils.SeeMoreNavigation
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
 
     private lateinit var repository: ServicesRepository
+    private val popularMoviesAdapter = PopularMoviesAdapter(CardDetail.FILM, CardDetailNavigation { detail ->
+        val action = HomeFragmentDirections.actionHomeFragmentToCardDetailFragment(detail)
+        findNavController().navigate(action)
+    })
 
     val viewModel by viewModels<HomeViewModel>() {
         object : ViewModelProvider.Factory {
@@ -61,7 +70,18 @@ class HomeFragment : Fragment() {
             adapter = homeAdapter
         }
 
+        //
+        view.rv_popular_movies.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = popularMoviesAdapter
+        }
 
+        lifecycleScope.launch {
+            viewModel.getAllPopularMovies().collect {
+                popularMoviesAdapter.submitData(it)
+            }
+        }
+        //
         viewModel.refreshLists()
 
 

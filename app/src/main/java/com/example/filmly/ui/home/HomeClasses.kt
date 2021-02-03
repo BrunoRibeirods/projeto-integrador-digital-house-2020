@@ -38,3 +38,54 @@ data class Trending(
         return Actor(id = id, name = name, image = profile_path, descricao =  over?.joinToString(prefix = "Conhecido por:  \n", separator = "\n"), type = media_type)
     }
 }
+
+@Serializable
+data class PopularTVResults(
+    val page: Int?, val results: List<PopularTV>
+)
+
+@Serializable
+data class PopularTV(
+    val id: Int? = null,
+    val name: String? = null,
+    val overview: String? = null,
+    val poster_path: String? = null,
+    val vote_average: Double? = null,
+    val genre_ids: List<Int>? = null,
+    val popularity: Double? = null
+) {
+    fun convertToSerie() = Serie(id = id, name = name, image = poster_path, descricao = overview, type = "tv")
+}
+
+@Serializable
+data class PopularMoviesResults(val page: Int?, val results: List<PopularMovie>)
+
+@Serializable
+data class PopularMovie(
+    val id: Int? = null,
+    val title: String? = null,
+    val overview: String? = null,
+    val poster_path: String? = null,
+    val vote_average: Double? = null,
+    val genre_ids: List<Int>? = null,
+    val popularity: Double? = null
+) {
+    fun convertToFilm() = Film(id = id, name = title, image = poster_path, descricao = overview, "movie")
+}
+
+@Serializable
+data class PopularActorsResults(val page: Int?, val results: List<PopularActor>)
+
+@Serializable
+data class PopularActor(
+    val id: Int? = null,
+    val name: String? = null,
+    val profile_path: String? = null,
+    val popularity: Double? = null,
+    val known_for: List<KnownFor>? = null
+) {
+    fun convertToActor(): Actor {
+        val over = known_for?.map { it.title ?: it.name}
+        return Actor(id = id, name = name, image = profile_path, descricao =  over?.joinToString(prefix = "Conhecido por:  \n", separator = "\n"), type = "person")
+    }
+}

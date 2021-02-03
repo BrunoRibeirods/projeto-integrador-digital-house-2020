@@ -1,6 +1,11 @@
 package com.example.filmly.network
 
-import com.example.filmly.ui.cardDetail.*
+import com.example.filmly.ui.cardDetail.MovieDetailsResults
+import com.example.filmly.ui.cardDetail.TvDetailsResults
+import com.example.filmly.ui.cardDetail.TvEpisodesResult
+import com.example.filmly.ui.home.PopularActorsResults
+import com.example.filmly.ui.home.PopularMoviesResults
+import com.example.filmly.ui.home.PopularTVResults
 import com.example.filmly.ui.home.TrendingResults
 import com.example.filmly.ui.search.MovieResults
 import com.example.filmly.ui.search.PersonResults
@@ -10,7 +15,6 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -24,6 +28,23 @@ interface TmdbApi {
         @Path("time") time: String,
         @Query("api_key") api_key: String
     ): TrendingResults
+
+    //Incremented
+    @GET("tv/popular?language=pt-BR&api_key=0d3ca7edae2d9cb14c86ce991530aee6")
+    suspend fun getAllPopularTV(
+        @Query("page") page: Int
+    ): PopularTVResults
+
+    @GET("movie/popular?language=pt-BR&api_key=0d3ca7edae2d9cb14c86ce991530aee6")
+    suspend fun getAllPopularMovies(
+        @Query("page") page: Int
+    ): PopularMoviesResults
+
+    @GET("person/popular?language=pt-BR&api_key=0d3ca7edae2d9cb14c86ce991530aee6")
+    suspend fun getAllPopularActors(
+        @Query("page") page: Int
+    ): PopularActorsResults
+    //
 
     @GET("search/movie?language=pt-BR")
     suspend fun getSearchMovie(
