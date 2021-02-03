@@ -7,10 +7,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.filmly.data.model.HeadLists
+import com.example.filmly.data.model.UserInformation
 import com.example.filmly.repository.ServicesRepository
+import com.example.filmly.repository.StatesRepository
 import kotlinx.coroutines.launch
 
-class HomeViewModel(val repository: ServicesRepository): ViewModel() {
+class HomeViewModel(val repository: ServicesRepository, val statesRepository: StatesRepository): ViewModel() {
     private val _trendingLive = MutableLiveData<TrendingResults>()
     val trendingLive: LiveData<TrendingResults>
         get() = _trendingLive
@@ -36,8 +38,10 @@ class HomeViewModel(val repository: ServicesRepository): ViewModel() {
         }
     }
 
-
-
+    fun saveInformation(user: UserInformation) {
+        statesRepository.updateUserInformation(user)
+        StatesRepository.updateUserInformation(user)
+    }
 
 
 

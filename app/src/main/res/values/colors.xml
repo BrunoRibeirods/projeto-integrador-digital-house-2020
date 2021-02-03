@@ -23,7 +23,10 @@
     <color name="gray">#90FFFFFF</color>
     <color name="gray900">#FF555555</color>
     <color name="gray25">#22FFFFFF</color>
+    <color name="green">#21d07a</color>
+    <color name="orange">#ee9105</color>
     <color name="black101010">#FF101010</color>
+    <color name="black0d">#171717</color>
     <color name="yellow">#FFFFCC18</color>
     <color name="transparent">#99000000</color>
     <color name="red">#dd2d4a</color>

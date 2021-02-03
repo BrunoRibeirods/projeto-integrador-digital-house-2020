@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "525300964923",
+    "project_id": "filmly-ec39a",
+    "storage_bucket": "filmly-ec39a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525300964923:android:4b91d0a810ab156440861e",
+        "android_client_info": {
+          "package_name": "com.example.filmly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "525300964923-6dd529ve0crpmh0ipg22jb9oit6ssdi7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.filmly",
+            "certificate_hash": "9f8a8641822da55478f9219dafe2ff56aed6152a"
+          }
+        },
+        {
+          "client_id": "525300964923-l8qr4gfl727ljse429gjn8mmia28qv02.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWE2dz3vtRHeS0eyuxcE0R2-jeUboOZSQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525300964923-l8qr4gfl727ljse429gjn8mmia28qv02.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

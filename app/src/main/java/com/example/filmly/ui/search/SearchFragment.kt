@@ -120,8 +120,6 @@ class SearchFragment : Fragment() {
                             CardDetail.FILM
                         )
                     )
-                } else {
-                    searchAdapter.submitList(emptyList())
                 }
             }
 
@@ -133,8 +131,6 @@ class SearchFragment : Fragment() {
                             CardDetail.SERIE
                         )
                     )
-                } else {
-                    searchAdapter.submitList(emptyList())
                 }
             }
 
@@ -146,8 +142,6 @@ class SearchFragment : Fragment() {
                             CardDetail.ACTOR
                         )
                     )
-                } else {
-                    searchAdapter.submitList(emptyList())
                 }
             }
         }

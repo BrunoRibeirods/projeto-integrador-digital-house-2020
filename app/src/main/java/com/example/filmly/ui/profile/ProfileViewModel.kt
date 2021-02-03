@@ -3,6 +3,7 @@ package com.example.filmly.ui.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.filmly.data.model.UserInformation
 import com.example.filmly.repository.StatesRepository
 
 class ProfileViewModel : ViewModel() {
@@ -38,5 +39,9 @@ class ProfileViewModel : ViewModel() {
 
     fun showChangesToast() {
         StatesRepository.showChangesToast()
+    }
+
+    fun saveInformation(user: UserInformation) {
+        StatesRepository.updateUserInformation(user)
     }
 }

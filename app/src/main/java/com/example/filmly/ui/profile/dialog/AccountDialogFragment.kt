@@ -1,18 +1,24 @@
 package com.example.filmly.ui.profile.dialog
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.filmly.R
 import com.example.filmly.data.model.UserInformation
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.fragment_account_dialog.view.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class AccountDialogFragment : DialogFragment() {
     val viewModel: AccountDialogViewModel by viewModels()
+
 //
 //    override fun onStart() {
 //        super.onStart()
@@ -25,6 +31,7 @@ class AccountDialogFragment : DialogFragment() {
 //            dialog.window?.setLayout(width, height)
 //        }
 //    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +57,8 @@ class AccountDialogFragment : DialogFragment() {
             }
         }
 
+
+
         return view
     }
 
@@ -60,6 +69,7 @@ class AccountDialogFragment : DialogFragment() {
         val password = view.et_changePassword_configuration.text.toString()
 
 
-        viewModel.saveInformation(UserInformation(name, email, birthday, password))
+        viewModel.saveInformation(UserInformation(name, email, null, birthday, password))
     }
+
 }
