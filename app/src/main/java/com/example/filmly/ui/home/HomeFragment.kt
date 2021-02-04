@@ -117,6 +117,12 @@ class HomeFragment : Fragment() {
         }
 
         lifecycleScope.launch {
+            viewModel.getAllPopularMovies().collect {
+                popularMoviesAdapter.submitData(it)
+            }
+        }
+
+        lifecycleScope.launch {
             viewModel.getAllPopularSeries().collect {
                 popularTVAdapter.submitData(it)
             }
@@ -126,13 +132,6 @@ class HomeFragment : Fragment() {
             viewModel.getAllPopularActors().collect {
                 popularActorsAdapter.submitData(it)
             }
-        }
-
-        lifecycleScope.launch {
-            viewModel.getAllPopularMovies().collect {
-                popularMoviesAdapter.submitData(it)
-            }
-
         }
     }
 }

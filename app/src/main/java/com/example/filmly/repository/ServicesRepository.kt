@@ -18,9 +18,9 @@ import com.example.filmly.network.TmdbApiteste
 import com.example.filmly.ui.cardDetail.MovieDetailsResults
 import com.example.filmly.ui.cardDetail.TvDetailsResults
 import com.example.filmly.ui.cardDetail.TvEpisodesResult
-import com.example.filmly.ui.home.PopularActor
-import com.example.filmly.ui.home.PopularMovie
-import com.example.filmly.ui.home.PopularTV
+import com.example.filmly.ui.home.HomeActorNetwork
+import com.example.filmly.ui.home.HomeFilmNetwork
+import com.example.filmly.ui.home.HomeSerieNetwork
 import com.example.filmly.ui.home.Trending
 import com.example.filmly.ui.search.MovieResults
 import com.example.filmly.ui.search.PersonResults
@@ -111,7 +111,7 @@ abstract class ServicesRepository {
         }.let { return it }
     }
 
-    fun getAllPopularMovies(): Flow<PagingData<PopularMovie>> {
+    fun getAllPopularMovies(): Flow<PagingData<HomeFilmNetwork>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
@@ -121,7 +121,7 @@ abstract class ServicesRepository {
         ).flow
     }
 
-    fun getAllPopularSeries(): Flow<PagingData<PopularTV>> {
+    fun getAllPopularSeries(): Flow<PagingData<HomeSerieNetwork>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
@@ -131,7 +131,7 @@ abstract class ServicesRepository {
         ).flow
     }
 
-    fun getAllPopularActors(): Flow<PagingData<PopularActor>> {
+    fun getAllPopularActors(): Flow<PagingData<HomeActorNetwork>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,

@@ -30,13 +30,13 @@ class HomeViewModel(val repository: ServicesRepository) : ViewModel() {
         return mutableLiveData
     }
 
-    fun getAllPopularMovies(): Flow<PagingData<PopularMovie>> =
+    fun getAllPopularMovies(): Flow<PagingData<HomeFilmNetwork>> =
         repository.getAllPopularMovies().cachedIn(viewModelScope)
 
-    fun getAllPopularSeries(): Flow<PagingData<PopularTV>> =
+    fun getAllPopularSeries(): Flow<PagingData<HomeSerieNetwork>> =
         repository.getAllPopularSeries().cachedIn(viewModelScope)
 
-    fun getAllPopularActors(): Flow<PagingData<PopularActor>> =
+    fun getAllPopularActors(): Flow<PagingData<HomeActorNetwork>> =
         repository.getAllPopularActors().cachedIn(viewModelScope)
 
     fun refreshLists() {
@@ -46,6 +46,4 @@ class HomeViewModel(val repository: ServicesRepository) : ViewModel() {
             repository.updateFavoriteActors()
         }
     }
-
-
 }

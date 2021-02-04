@@ -1,9 +1,9 @@
 package com.example.filmly.network
 
 import androidx.paging.PagingSource
-import com.example.filmly.ui.home.PopularActor
-import com.example.filmly.ui.home.PopularMovie
-import com.example.filmly.ui.home.PopularTV
+import com.example.filmly.ui.home.HomeActorNetwork
+import com.example.filmly.ui.home.HomeFilmNetwork
+import com.example.filmly.ui.home.HomeSerieNetwork
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -11,13 +11,13 @@ private const val STARTING_PAGE_INDEX = 1
 
 class MoviesPagingSource(
     private val service: TmdbApi
-) : PagingSource<Int, PopularMovie>() {
+) : PagingSource<Int, HomeFilmNetwork>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PopularMovie> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, HomeFilmNetwork> {
         val position = params.key ?: STARTING_PAGE_INDEX
         return try {
             val response = service.getAllPopularMovies(position)
-            val movies = response.results
+            val movies = response.results.map { it }
             val nextKey = if (movies.isEmpty()) {
                 null
             } else {
@@ -38,9 +38,9 @@ class MoviesPagingSource(
 
 class TVPagingSource(
     private val service: TmdbApi
-) : PagingSource<Int, PopularTV>() {
+) : PagingSource<Int, HomeSerieNetwork>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PopularTV> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, HomeSerieNetwork> {
         val position = params.key ?: STARTING_PAGE_INDEX
         return try {
             val response = service.getAllPopularTV(position)
@@ -65,9 +65,9 @@ class TVPagingSource(
 
 class ActorsPagingSource(
     private val service: TmdbApi
-) : PagingSource<Int, PopularActor>() {
+) : PagingSource<Int, HomeActorNetwork>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PopularActor> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, HomeActorNetwork> {
         val position = params.key ?: STARTING_PAGE_INDEX
         return try {
             val response = service.getAllPopularActors(position)

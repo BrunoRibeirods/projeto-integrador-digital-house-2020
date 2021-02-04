@@ -12,9 +12,9 @@ import com.bumptech.glide.Glide
 import com.example.filmly.R
 import com.example.filmly.data.model.Card
 import com.example.filmly.data.model.CardDetail
-import com.example.filmly.ui.home.PopularActor
-import com.example.filmly.ui.home.PopularMovie
-import com.example.filmly.ui.home.PopularTV
+import com.example.filmly.ui.home.HomeActorNetwork
+import com.example.filmly.ui.home.HomeFilmNetwork
+import com.example.filmly.ui.home.HomeSerieNetwork
 import com.example.filmly.utils.CardDetailNavigation
 import com.example.filmly.utils.CardDiffCallback
 import kotlinx.android.synthetic.main.cards_list_item.view.*
@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.cards_list_item.view.*
 class PopularMoviesAdapter(
     val cardInfo: Int,
     val cardNavigation: CardDetailNavigation,
-) : PagingDataAdapter<PopularMovie, PopularMoviesAdapter.PopularMoviesViewHolder>(
+) : PagingDataAdapter<HomeFilmNetwork, PopularMoviesAdapter.PopularMoviesViewHolder>(
     POPULAR_MOVIE_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMoviesViewHolder {
@@ -37,17 +37,17 @@ class PopularMoviesAdapter(
     }
 
     companion object {
-        private val POPULAR_MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<PopularMovie>() {
-            override fun areItemsTheSame(oldItem: PopularMovie, newItem: PopularMovie): Boolean =
+        private val POPULAR_MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<HomeFilmNetwork>() {
+            override fun areItemsTheSame(oldItem: HomeFilmNetwork, newItem: HomeFilmNetwork): Boolean =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: PopularMovie, newItem: PopularMovie): Boolean =
+            override fun areContentsTheSame(oldItem: HomeFilmNetwork, newItem: HomeFilmNetwork): Boolean =
                 oldItem == newItem
         }
     }
 
     class PopularMoviesViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(item: PopularMovie, cardInfo: Int, cardNavigation: CardDetailNavigation) {
+        fun bind(item: HomeFilmNetwork, cardInfo: Int, cardNavigation: CardDetailNavigation) {
 
             val circularProgressDrawable = CircularProgressDrawable(view.context)
             circularProgressDrawable.strokeWidth = 5f
@@ -82,7 +82,7 @@ class PopularMoviesAdapter(
 class PopularTVAdapter(
     val cardInfo: Int,
     val cardNavigation: CardDetailNavigation,
-) : PagingDataAdapter<PopularTV, PopularTVAdapter.PopularTVViewHolder>(
+) : PagingDataAdapter<HomeSerieNetwork, PopularTVAdapter.PopularTVViewHolder>(
     POPULAR_TV_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularTVViewHolder {
@@ -97,17 +97,17 @@ class PopularTVAdapter(
     }
 
     companion object {
-        private val POPULAR_TV_COMPARATOR = object : DiffUtil.ItemCallback<PopularTV>() {
-            override fun areItemsTheSame(oldItem: PopularTV, newItem: PopularTV): Boolean =
+        private val POPULAR_TV_COMPARATOR = object : DiffUtil.ItemCallback<HomeSerieNetwork>() {
+            override fun areItemsTheSame(oldItem: HomeSerieNetwork, newItem: HomeSerieNetwork): Boolean =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: PopularTV, newItem: PopularTV): Boolean =
+            override fun areContentsTheSame(oldItem: HomeSerieNetwork, newItem: HomeSerieNetwork): Boolean =
                 oldItem == newItem
         }
     }
 
     class PopularTVViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(item: PopularTV, cardInfo: Int, cardNavigation: CardDetailNavigation) {
+        fun bind(item: HomeSerieNetwork, cardInfo: Int, cardNavigation: CardDetailNavigation) {
 
             val circularProgressDrawable = CircularProgressDrawable(view.context)
             circularProgressDrawable.strokeWidth = 5f
@@ -142,7 +142,7 @@ class PopularTVAdapter(
 class PopularActorsAdapter(
     val cardInfo: Int,
     val cardNavigation: CardDetailNavigation,
-) : PagingDataAdapter<PopularActor, PopularActorsAdapter.PopularActorsViewHolder>(
+) : PagingDataAdapter<HomeActorNetwork, PopularActorsAdapter.PopularActorsViewHolder>(
     POPULAR_ACTOR_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularActorsViewHolder {
@@ -157,17 +157,17 @@ class PopularActorsAdapter(
     }
 
     companion object {
-        private val POPULAR_ACTOR_COMPARATOR = object : DiffUtil.ItemCallback<PopularActor>() {
-            override fun areItemsTheSame(oldItem: PopularActor, newItem: PopularActor): Boolean =
+        private val POPULAR_ACTOR_COMPARATOR = object : DiffUtil.ItemCallback<HomeActorNetwork>() {
+            override fun areItemsTheSame(oldItem: HomeActorNetwork, newItem: HomeActorNetwork): Boolean =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: PopularActor, newItem: PopularActor): Boolean =
+            override fun areContentsTheSame(oldItem: HomeActorNetwork, newItem: HomeActorNetwork): Boolean =
                 oldItem == newItem
         }
     }
 
     class PopularActorsViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(item: PopularActor, cardInfo: Int, cardNavigation: CardDetailNavigation) {
+        fun bind(item: HomeActorNetwork, cardInfo: Int, cardNavigation: CardDetailNavigation) {
 
             val circularProgressDrawable = CircularProgressDrawable(view.context)
             circularProgressDrawable.strokeWidth = 5f

@@ -5,8 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Film::class, Actor::class, Serie::class, Watched::class], version = 2, exportSchema = false)
+@Database(
+    entities = [
+        Film::class, Actor::class, Serie::class, Watched::class
+    ], version = 3, exportSchema = false
+)
 abstract class FilmlyDatabase : RoomDatabase() {
+
     abstract val FilmlyDatabaseDao: FilmlyDao
 
     companion object {
