@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.text.LineBreaker
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -130,7 +131,7 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
         }
 
         //Preenche os dados retornados do Episodio
-        overviewEp.text = overview
+        if(!TextUtils.isEmpty(overview)) overviewEp.text = overview else overviewEp.text = "Descrição não disponivel no momento."
         titleEp.text = title
         epNumDetail.text = number
 
