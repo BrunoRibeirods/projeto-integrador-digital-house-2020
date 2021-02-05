@@ -25,6 +25,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.twitter.sdk.android.core.Callback
+import com.twitter.sdk.android.core.TwitterCore
+import com.twitter.sdk.android.core.TwitterException
+import com.twitter.sdk.android.core.TwitterSession
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.view.*
 
@@ -99,6 +104,10 @@ class RegisterActivity : AppCompatActivity() {
             signInWithGoogle()
         }
 
+        initTwitterSignIn()
+
+        re_twitter.setOnClickListener { re_twitterLogInButton_init.performClick() }
+
     }
 
     override fun onBackPressed() {
@@ -131,17 +140,21 @@ class RegisterActivity : AppCompatActivity() {
                     //Modificar User
                     val profileUpdates = UserProfileChangeRequest.Builder()
                         .setDisplayName(name)
-                        //.setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))
                         .build()
 
-                    user!!.updateProfile(profileUpdates)
-                        .addOnCompleteListener { task ->
+                    user?.updateProfile(profileUpdates)
+                        ?.addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 Log.d(TAG, "User profile updated.")
                             }
                         }
 
-                    updateUI(user)
+
+
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("name", name)
+                    startActivity(intent)
+                    finish()
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -191,6 +204,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("name", user.displayName)
             startActivity(intent)
             finish()
         } else {
@@ -267,6 +281,47 @@ class RegisterActivity : AppCompatActivity() {
                     updateUI(null)
                 }
 
+            }
+    }
+
+    private fun initTwitterSignIn() {
+        re_twitterLogInButton_init.callback = object : Callback<TwitterSession>() {
+            override fun failure(exception: TwitterException) {
+                Log.e(TAG, exception.toString())
+            }
+
+            override fun success(result: com.twitter.sdk.android.core.Result<TwitterSession>?) {
+                // Do something with result, which provides a TwitterSession for making API calls
+                val session = TwitterCore.getInstance().sessionManager.activeSession
+                handleTwitterLogin(session)
+            }
+        }
+    }
+
+    private fun handleTwitterLogin(session: TwitterSession) {
+        val credential = TwitterAuthProvider.getCredential(
+            session.authToken.token,
+            session.authToken.secret)
+
+
+
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener {task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                    val user = auth.currentUser
+                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        baseContext, "Email ou senha invalidos.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    updateUI(null)
+
+                }
             }
     }
 
