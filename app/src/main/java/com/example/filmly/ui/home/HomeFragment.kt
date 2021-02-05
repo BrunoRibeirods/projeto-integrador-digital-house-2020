@@ -95,18 +95,12 @@ class HomeFragment : Fragment() {
 
         //Update database
         viewModel.refreshLists()
-
-        view.tv_greetings.text =
-            getString(R.string.hello_wil, auth.currentUser?.displayName)
-
-        if(auth.currentUser!!.displayName == null) {
+        updateUI(auth.currentUser)
 
 
-            view.tv_greetings.text = getString(R.string.hello_wil, activity?.intent?.getStringExtra("name"))
+        view.tv_greetings.text = getString(R.string.hello_wil, viewModel.statesRepository.userInformation.value?.name)
+        Log.i("tainu", "oi")
 
-        }else{
-            updateUI(auth.currentUser)
-        }
 
         Glide.with(view)
             .load(auth.currentUser?.photoUrl)

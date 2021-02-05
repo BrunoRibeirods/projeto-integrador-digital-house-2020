@@ -19,7 +19,6 @@
         app:title="Series Favoritas"
         android:layout_gravity="center"
         app:titleTextColor="@color/white"
-        app:menu="@menu/menu_favorite"
         app:titleTextAppearance="@style/Toolbar.TitleText"
         app:navigationIcon="@drawable/ic_arrow_back"/>
 
@@ -44,17 +43,6 @@
         </LinearLayout>
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="10dp"
-            app:elevation="8dp"
-            android:background="@color/color_main"
-            android:backgroundTint="@color/color_main"
-            android:src="@drawable/ic_add"
-            app:maxImageSize="32dp"
-            />
 
 
 
