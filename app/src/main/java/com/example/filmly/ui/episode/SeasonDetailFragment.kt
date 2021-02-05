@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -52,10 +53,12 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
     private lateinit var adapter1: SeasonEpisodeAdapter
     private lateinit var cr: CollectionReference
     private lateinit var auth: FirebaseAuth
+    private lateinit var name: String
+    var season_number: Int = 0
     private val TAG = "Firestore"
-    val epMap: MutableMap<String, Any> = HashMap()
+    var epMap: MutableMap<String, Int> = HashMap()
 
-    private lateinit var listInt: MutableList<Any>
+    private lateinit var listInt: MutableList<String>
 
     private val viewModel: SeasonDetailViewModel by viewModels {
         object : ViewModelProvider.Factory {
@@ -73,7 +76,6 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
         val view = inflater.inflate(R.layout.fragment_season_detail, container, false)
         repository = ServicesRepository.getInstance(requireContext())
         val season_id: Int
-        val season_number: Int
         auth = FirebaseAuth.getInstance()
         config()
         readProds()
@@ -88,7 +90,13 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
             season_number = it!!
         }
 
+        arguments?.getString("name").let {
+            name = it!!
+        }
+
+
         viewModel.getEpisodeTvDetail(season_id, season_number)
+        listInt = mutableListOf()
 
         viewModel.tvEpisodesLive.observe(viewLifecycleOwner){
             adapter1 = it.episodes?.let { it1 ->  SeasonEpisodeAdapter(it1, this@SeasonDetailFragment, this@SeasonDetailFragment) }!!
@@ -264,9 +272,9 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
     }
 
 
-    fun sendProd(episodeDetail: MutableMap<String, Any>, seasonId: String){
+    fun sendProd(episodeDetail: MutableMap<String, Int>, name1: String){
 
-        cr.document(seasonId).set(episodeDetail).addOnCompleteListener {
+        cr.document(name1).set(episodeDetail).addOnCompleteListener {
             Log.i(TAG, it.toString())
         }.addOnFailureListener {
             Log.i(TAG, it.toString())
@@ -275,12 +283,31 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
 
 
     fun readProds(){
+        var pos = 0
+        var strin = "p"
         cr.get()
             .addOnCompleteListener {task ->
                 if (task.isSuccessful()) {
                     for (document in task.result!!) {
                         Log.d(TAG, document.id + " => " + document.data.values)
-                        document.data.map { epMap[it.key] = it.value }
+                        viewModel.tvEpisodesLive.observe(viewLifecycleOwner){
+                            it?.episodes.let {listEps->
+                                if (listEps != null) {
+                                    document.data.map {
+                                        epMap[it.key] = it.value.toString().toInt()
+                                        pos = it.value.toString().toInt()
+                                        strin = it.key.toString()
+                                        verificarWatch(it.value.toString().toInt())}
+                                    episodes = listEps[pos]
+                                    if(name+season_number.toString() == strin && season_number == episodes.season_number){
+                                    episodes.watched = true
+                                    }
+                                }
+
+                            }
+                        }
+
+
                     }
                 } else {
                     Log.w(TAG, "Error getting documents.", task.exception)
@@ -298,11 +325,12 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
                 if (listEps != null) {
                     episodes = listEps[position]
                     if (episodes.watched == true){
-                        deleteprod(epId = episodes.id.toString())
+                        deleteprod(name + "S${episodes.season_number}E${episodes.episode_number}", position)
                         episodes.watched = false
                     }else if(episodes.watched == false) {
-                        epMap["tvId"] = "adicionado"
-                        sendProd(epMap,  episodes.id.toString())
+                        epMap = hashMapOf()
+                        epMap[name + season_number.toString()] = position
+                        sendProd(epMap, name + "S${episodes.season_number}E${episodes.episode_number}")
                         episodes.watched = true
                     }
 
@@ -312,15 +340,15 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
         }
     }
 
-    fun verificarWatch(){
-
+    fun verificarWatch(position: Int){
+        adapter1.notifyItemChanged(position)
     }
 
-    fun deleteprod(epId: String){
-        cr.document(epId).delete().addOnSuccessListener{
-            Log.i(TAG, "deletado!")
-        }.addOnFailureListener {
-            Log.e(TAG, it.toString())
+    fun deleteprod(delete1: String, position: Int){
+
+
+        cr.document(delete1).delete().addOnCompleteListener {
+            verificarWatch(position)
         }
     }
 

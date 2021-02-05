@@ -39,9 +39,8 @@ class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>, val lis
         holder.numberOfEpisode.text = if(current.episode_number!! < 10) "E0" + current.episode_number else "E" + current.episode_number
         holder.titleEpisode.text = current.name
 
-        if(current.watched == true) {
-            holder.btn_watched.imageTintList = ColorStateList.valueOf(holder.itemView.resources.getColor(R.color.green))
-        }
+        holder.btn_watched.imageTintList = if(current.watched == true) ColorStateList.valueOf(holder.itemView.resources.getColor(R.color.green)) else ColorStateList.valueOf(holder.itemView.resources.getColor(R.color.black101010))
+
 
 
 

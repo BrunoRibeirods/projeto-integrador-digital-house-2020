@@ -264,7 +264,8 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
         viewModel.tvProvidersLive.observe(viewLifecycleOwner){ tvDetailsResults ->
             tvDetailsResults.seasons.let {
             val bundle = bundleOf("id" to season.card.id,
-                    "season_number" to it!![position].season_number
+                    "season_number" to it!![position].season_number,
+                    "name" to season.card.name
                 )
 
                 findNavController().navigate(R.id.action_cardDetailFragment_to_seasonDetailFragment, bundle)
