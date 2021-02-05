@@ -58,7 +58,13 @@ class HomeFragment : Fragment() {
 
         repository = ServicesRepository.getInstance(requireContext())
         repositoryStates = StatesRepository
+
         updateUI(auth.currentUser)
+
+
+
+
+
 
 
 
@@ -92,10 +98,19 @@ class HomeFragment : Fragment() {
         viewModel.getTrendingLive("person")
 
         view.tv_greetings.text =
-            getString(R.string.hello_wil, StatesRepository.userInformation.value?.name)
+            getString(R.string.hello_wil, auth.currentUser?.displayName)
+
+        if(auth.currentUser!!.displayName == null) {
+
+
+            view.tv_greetings.text = getString(R.string.hello_wil, activity?.intent?.getStringExtra("name"))
+
+        }else{
+            updateUI(auth.currentUser)
+        }
 
         Glide.with(view)
-            .load(viewModel.statesRepository.userInformation.value?.img)
+            .load(auth.currentUser?.photoUrl)
             .error(R.drawable.profile_placeholder)
             .fallback(R.drawable.profile_placeholder)
             .into(view.civ_profileImage)

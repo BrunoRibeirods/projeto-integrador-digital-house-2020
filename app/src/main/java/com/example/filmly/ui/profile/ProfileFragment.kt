@@ -38,7 +38,6 @@ class ProfileFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     lateinit var storageReference: StorageReference
     private lateinit var googleSignInClient: GoogleSignInClient
-    private var imgURl: String? = null
     private val CODE_IMG = 1000
 
     override fun onCreateView(
@@ -116,7 +115,7 @@ class ProfileFragment : Fragment() {
         }
 
         Glide.with(view)
-            .load(StatesRepository.userInformation.value?.img)
+            .load(auth.currentUser?.photoUrl)
             .error(R.drawable.profile_placeholder)
             .fallback(R.drawable.profile_placeholder)
             .into(view.circleImageView)
