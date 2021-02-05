@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 @Database(
     entities = [
         Film::class, Actor::class, Serie::class, Watched::class
-    ], version = 3, exportSchema = false
+    ], version = 4, exportSchema = false
 )
 abstract class FilmlyDatabase : RoomDatabase() {
 

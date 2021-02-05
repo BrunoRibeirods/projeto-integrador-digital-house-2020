@@ -7,6 +7,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.filmly.data.model.Card
 import com.example.filmly.repository.ServicesRepository
+import com.example.filmly.repository.StatesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -28,6 +29,13 @@ class HomeViewModel(val repository: ServicesRepository) : ViewModel() {
         }
 
         return mutableLiveData
+    }
+
+    fun trendingMessage(): String {
+        return when(StatesRepository.searchTime) {
+            "day" -> "Trending do Dia"
+            else -> "Trending da Semana"
+        }
     }
 
     fun getAllPopularMovies(): Flow<PagingData<HomeFilmNetwork>> =

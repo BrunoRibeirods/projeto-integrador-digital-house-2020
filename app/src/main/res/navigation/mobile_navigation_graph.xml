@@ -78,10 +78,17 @@
         tools:layout="@layout/fragment_view_more" >
         <argument
             android:name="headList"
-            app:argType="com.example.filmly.data.model.HeadLists" />
+            app:argType="com.example.filmly.data.model.HeadLists"
+            app:nullable="true"
+            android:defaultValue="@null" />
         <action
             android:id="@+id/action_viewMoreFragment_to_cardDetailFragment"
             app:destination="@id/cardDetailFragment" />
+        <argument
+            android:name="type"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="null" />
     </fragment>
     <fragment
         android:id="@+id/favoriteListsFragment"

@@ -17,6 +17,7 @@ import com.example.filmly.adapters.PopularMoviesAdapter
 import com.example.filmly.adapters.PopularTVAdapter
 import com.example.filmly.adapters.TrendingAdapter
 import com.example.filmly.data.model.CardDetail
+import com.example.filmly.data.model.HeadLists
 import com.example.filmly.repository.ServicesRepository
 import com.example.filmly.repository.StatesRepository
 import com.example.filmly.utils.CardDetailNavigation
@@ -65,17 +66,7 @@ class HomeFragment : Fragment() {
 
         repository = ServicesRepository.getInstance(requireContext())
 
-        //ANTIGO
-//        homeAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
-//            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-//                super.onItemRangeInserted(positionStart, itemCount)
-//                if (!view.rv_homeLists.canScrollVertically(-1)) {
-//                    view.rv_homeLists.scrollToPosition(0)
-//                }
-//            }
-//        })
-
-
+        setSeeMoreClicks(view)
         setRecyclerViews(view)
 
         //Update database
@@ -89,6 +80,39 @@ class HomeFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun setSeeMoreClicks(view: View) {
+
+        view.tv_title_trending.text = viewModel.trendingMessage()
+        view.tv_seeMore_trending.setOnClickListener {
+            val titleMessage = viewModel.trendingMessage()
+            val headList =
+                HeadLists(titleMessage, trendingAdapter.currentList, CardDetail.TRENDING)
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToViewMoreFragment(headList))
+        }
+
+        view.tv_seeMore_filmes.setOnClickListener {
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToViewMoreFragment(
+                    type = "movie"
+                )
+            )
+        }
+        view.tv_seeMore_series.setOnClickListener {
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToViewMoreFragment(
+                    type = "tv"
+                )
+            )
+        }
+        view.tv_seeMore_atores.setOnClickListener {
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToViewMoreFragment(
+                    type = "person"
+                )
+            )
+        }
     }
 
     private fun setRecyclerViews(view: View) {
