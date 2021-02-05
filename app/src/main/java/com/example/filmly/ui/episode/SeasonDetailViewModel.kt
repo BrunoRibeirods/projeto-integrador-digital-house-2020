@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.filmly.data.model.Watchable
+import com.example.filmly.database.Watched
 import com.example.filmly.repository.ServicesRepository
 import com.example.filmly.ui.cardDetail.TvEpisodesResult
 import kotlinx.coroutines.launch
@@ -22,6 +24,12 @@ class SeasonDetailViewModel(val repository: ServicesRepository): ViewModel() {
             }
         }catch (e: Exception){
             Log.e("CardDetailViewModel", e.toString())
+        }
+    }
+
+    fun getEpisodeWatched(watchable: Watchable){
+        viewModelScope.launch {
+            repository.insertWatched(watchable)
         }
     }
 

@@ -228,6 +228,19 @@
             app:layout_constraintStart_toEndOf="@+id/re_facebook"
             app:srcCompat="@drawable/ic_twitter" />
 
+        <com.twitter.sdk.android.core.identity.TwitterLoginButton
+            android:id="@+id/re_twitterLogInButton_init"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginBottom="44dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/re_facebook"
+            app:srcCompat="@drawable/ic_twitter" />
+
         <ProgressBar
             android:id="@+id/loading"
             android:layout_width="wrap_content"
