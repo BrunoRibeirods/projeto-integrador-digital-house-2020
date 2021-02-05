@@ -95,8 +95,13 @@ class HomeFragment : Fragment() {
         viewModel.refreshLists()
         updateUI(auth.currentUser)
 
+        if(auth.currentUser?.displayName == null){
+            view.tv_greetings.text = getString(R.string.hello_wil, activity?.intent?.getStringExtra("name"))
+        }else{
+            view.tv_greetings.text = getString(R.string.hello_wil, viewModel.statesRepository.userInformation.value?.name)
+        }
 
-        view.tv_greetings.text = getString(R.string.hello_wil, viewModel.statesRepository.userInformation.value?.name)
+
         Log.i("tainu", "oi")
 
 
