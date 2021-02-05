@@ -35,13 +35,15 @@ class LostPasswordActivity : AppCompatActivity() {
         }
 
         auth.sendPasswordResetEmail(email)
-            .addOnCompleteListener(OnCompleteListener {
+            .addOnCompleteListener {
                 if (it.isSuccessful) {
                     Toast.makeText(this, "Email de confirmação enviado.", Toast.LENGTH_SHORT).show()
-                }else{
-                    Toast.makeText(this, "Não foi possivel completar a ação.", Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
+                    Toast.makeText(this, "Não foi possivel completar a ação.", Toast.LENGTH_SHORT)
+                        .show()
                 }
-            })
+            }
     }
 
     private fun validateForm(): Boolean {
@@ -51,9 +53,9 @@ class LostPasswordActivity : AppCompatActivity() {
 
 
 
-        if (TextUtils.isEmpty(email.text.toString())) {
+        if (TextUtils.isEmpty(email.text.toString()) || !email.text.toString().contains("@")) {
             valid = false
-            email.error = "Campo vazio"
+            email.error = "Email inválido."
         }
 
 
