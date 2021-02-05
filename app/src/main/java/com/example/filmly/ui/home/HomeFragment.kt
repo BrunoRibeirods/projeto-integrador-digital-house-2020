@@ -25,10 +25,8 @@ import com.example.filmly.data.model.UserInformation
 import com.example.filmly.repository.ServicesRepository
 import com.example.filmly.repository.StatesRepository
 import com.example.filmly.utils.CardDetailNavigation
-import com.example.filmly.utils.SeeMoreNavigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.android.synthetic.main.cards_list_item.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

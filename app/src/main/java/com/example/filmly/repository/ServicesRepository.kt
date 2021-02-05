@@ -15,6 +15,7 @@ import com.example.filmly.network.ActorsPagingSource
 import com.example.filmly.network.MoviesPagingSource
 import com.example.filmly.network.TVPagingSource
 import com.example.filmly.network.TmdbApiteste
+import com.example.filmly.ui.cardDetail.ActorDetail
 import com.example.filmly.ui.cardDetail.MovieDetailsResults
 import com.example.filmly.ui.cardDetail.TvDetailsResults
 import com.example.filmly.ui.cardDetail.TvEpisodesResult
@@ -175,6 +176,10 @@ abstract class ServicesRepository {
     suspend fun getEpisodesModel(id: Int, season_number: Int): TvEpisodesResult {
         return retrofitService.getEpisodeDetail(id, season_number, "0d3ca7edae2d9cb14c86ce991530aee6")
 
+    }
+
+    suspend fun getActorDetail(id: Int): ActorDetail {
+        return retrofitService.getActorDetail(id)
     }
 
     //Singleton

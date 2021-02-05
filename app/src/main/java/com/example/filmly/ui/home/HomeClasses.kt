@@ -116,8 +116,9 @@ data class HomeActorNetwork(
             id = id,
             name = name,
             image = profile_path,
-            descricao = over?.joinToString(prefix = "Conhecido por:  \n", separator = "\n"),
-            type = "person"
+            descricao = null,
+            type = "person",
+            known_for = known_for
         )
     }
 }
