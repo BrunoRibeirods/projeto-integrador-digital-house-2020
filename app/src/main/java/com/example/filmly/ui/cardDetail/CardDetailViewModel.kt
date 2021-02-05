@@ -116,4 +116,12 @@ class CardDetailViewModel(private val repository: ServicesRepository) : ViewMode
             is Actor -> deleteActor(card)
         }
     }
+
+    fun getActorDetail(id: Int): MutableLiveData<ActorDetail> {
+        val mutableLiveData = MutableLiveData<ActorDetail>()
+        viewModelScope.launch {
+            mutableLiveData.postValue(repository.getActorDetail(id))
+        }
+        return mutableLiveData
+    }
 }

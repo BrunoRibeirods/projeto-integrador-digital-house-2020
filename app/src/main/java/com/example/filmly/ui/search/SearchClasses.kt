@@ -59,7 +59,7 @@ data class Person(
             it.title ?: it.name
 
         }
-        return Actor(id = id, name = name, image = profile_path, descricao = over.joinToString(prefix = "Conhecido por:  \n", separator = "\n"), type = "person")
+        return Actor(id = id, name = name, image = profile_path, descricao = null, type = "person", known_for)
     }
 }
 
@@ -69,10 +69,14 @@ data class KnownFor(
     val poster_path: String? = null,
     val overview: String? = null,
     val media_type: String? = null,
-    val id: Double?,
+    val id: Int,
     val name: String? = null,
     val first_air_date: String? = null,
     val popularity: Double? = null,
     val genre_ids: List<Double>?,
     val vote_average: Double?
-)
+) {
+    fun convertToFilm() = Film(id, title, poster_path, overview, media_type)
+
+    fun convertToSerie() = Serie(id, name, poster_path, overview, media_type)
+}

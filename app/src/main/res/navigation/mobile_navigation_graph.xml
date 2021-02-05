@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_cardDetailFragment_to_seasonDetailFragment"
             app:destination="@id/seasonDetailFragment" />
+        <action
+            android:id="@+id/action_cardDetailFragment_self"
+            app:destination="@id/cardDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"

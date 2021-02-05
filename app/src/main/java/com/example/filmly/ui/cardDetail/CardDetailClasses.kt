@@ -76,3 +76,10 @@ data class Provider(
     val provider_id: Int? = null,
     val provider_name: String? = null
 )
+
+@Serializable
+data class ActorDetail(
+    val id: Int,
+    val name: String?,
+    val biography: String?
+)
