@@ -1,6 +1,5 @@
 package com.example.filmly.ui.episode
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
@@ -11,9 +10,12 @@ import android.graphics.drawable.Drawable
 import android.graphics.text.LineBreaker
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -30,6 +32,10 @@ import com.example.filmly.repository.ServicesRepository
 import com.example.filmly.ui.cardDetail.TvEpisodes
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.dialog_episode_detail.*
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
 import kotlinx.android.synthetic.main.fragment_season_detail.*
@@ -39,11 +45,20 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeListener {
+class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeListener, SeasonEpisodeAdapter.OnClickWatchListener {
 
     private lateinit var repository: ServicesRepository
     private lateinit var episodes: TvEpisodes
+    private lateinit var db: FirebaseFirestore
+    private lateinit var adapter1: SeasonEpisodeAdapter
+    private lateinit var cr: CollectionReference
+    private lateinit var auth: FirebaseAuth
+    private lateinit var name: String
+    var season_number: Int = 0
+    private val TAG = "Firestore"
+    var epMap: MutableMap<String, Int> = HashMap()
 
+    private lateinit var listInt: MutableList<String>
 
     private val viewModel: SeasonDetailViewModel by viewModels {
         object : ViewModelProvider.Factory {
@@ -61,7 +76,9 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
         val view = inflater.inflate(R.layout.fragment_season_detail, container, false)
         repository = ServicesRepository.getInstance(requireContext())
         val season_id: Int
-        val season_number: Int
+        auth = FirebaseAuth.getInstance()
+        config()
+        readProds()
 
         view.toolbar_season_detail.setNavigationOnClickListener { activity?.onBackPressed() }
 
@@ -73,14 +90,18 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
             season_number = it!!
         }
 
+        arguments?.getString("name").let {
+            name = it!!
+        }
+
+
         viewModel.getEpisodeTvDetail(season_id, season_number)
+        listInt = mutableListOf()
 
         viewModel.tvEpisodesLive.observe(viewLifecycleOwner){
+            adapter1 = it.episodes?.let { it1 ->  SeasonEpisodeAdapter(it1, this@SeasonDetailFragment, this@SeasonDetailFragment) }!!
             rc_season_detail.apply {
-                adapter = it.episodes?.let { it1 -> SeasonEpisodeAdapter(
-                    it1,
-                    this@SeasonDetailFragment
-                ) }
+                adapter = adapter1
                 layoutManager = LinearLayoutManager(view.context)
                 setHasFixedSize(true)
             }
@@ -130,7 +151,7 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
         }
 
         //Preenche os dados retornados do Episodio
-        overviewEp.text = overview
+        if(!TextUtils.isEmpty(overview)) overviewEp.text = overview else overviewEp.text = "Descrição não disponivel no momento."
         titleEp.text = title
         epNumDetail.text = number
 
@@ -214,8 +235,6 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
 
             }
         }
-
-
     }
 
     private fun ImageView.setTextBitmap(text: String, textSize: Float, textColor: Int) {
@@ -247,6 +266,90 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
         setImageBitmap(bitmap)
     }
 
+    fun config(){
+        db = FirebaseFirestore.getInstance()
+        cr = db.collection(auth.currentUser!!.uid.toString())
+    }
+
+
+    fun sendProd(episodeDetail: MutableMap<String, Int>, name1: String){
+
+        cr.document(name1).set(episodeDetail).addOnCompleteListener {
+            Log.i(TAG, it.toString())
+        }.addOnFailureListener {
+            Log.i(TAG, it.toString())
+        }
+    }
+
+
+    fun readProds(){
+        var pos = 0
+        var strin = "p"
+        cr.get()
+            .addOnCompleteListener {task ->
+                if (task.isSuccessful()) {
+                    for (document in task.result!!) {
+                        Log.d(TAG, document.id + " => " + document.data.values)
+                        viewModel.tvEpisodesLive.observe(viewLifecycleOwner){
+                            it?.episodes.let {listEps->
+                                if (listEps != null) {
+                                    document.data.map {
+                                        epMap[it.key] = it.value.toString().toInt()
+                                        pos = it.value.toString().toInt()
+                                        strin = it.key.toString()
+                                        verificarWatch(it.value.toString().toInt())}
+                                    episodes = listEps[pos]
+                                    if(name+season_number.toString() == strin && season_number == episodes.season_number){
+                                    episodes.watched = true
+                                    }
+                                }
+
+                            }
+                        }
+
+
+                    }
+                } else {
+                    Log.w(TAG, "Error getting documents.", task.exception)
+                }
+            }
+    }
+
+
+    override fun onClickWatch(position: Int) {
+        adapter1.notifyItemChanged(position)
+
+        viewModel.tvEpisodesLive.observe(viewLifecycleOwner){
+            it?.episodes.let {listEps->
+                if (listEps != null) {
+                    episodes = listEps[position]
+                    if (episodes.watched == true){
+                        deleteprod(name + "S${episodes.season_number}E${episodes.episode_number}", position)
+                        episodes.watched = false
+                    }else if(episodes.watched == false) {
+                        epMap = hashMapOf()
+                        epMap[name + season_number.toString()] = position
+                        sendProd(epMap, name + "S${episodes.season_number}E${episodes.episode_number}")
+                        episodes.watched = true
+                    }
+
+                }
+
+            }
+        }
+    }
+
+    fun verificarWatch(position: Int){
+        adapter1.notifyItemChanged(position)
+    }
+
+    fun deleteprod(delete1: String, position: Int){
+
+
+        cr.document(delete1).delete().addOnCompleteListener {
+            verificarWatch(position)
+        }
+    }
 
 
 }

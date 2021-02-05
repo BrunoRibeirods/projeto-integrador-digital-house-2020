@@ -85,6 +85,7 @@ class HomeFragment : Fragment() {
         repository = ServicesRepository.getInstance(requireContext())
       
         repositoryStates = StatesRepository
+
         updateUI(auth.currentUser)
 
         setSeeMoreClicks(view)
@@ -92,12 +93,15 @@ class HomeFragment : Fragment() {
 
         //Update database
         viewModel.refreshLists()
+        updateUI(auth.currentUser)
 
-        view.tv_greetings.text =
-            getString(R.string.hello_wil, StatesRepository.userInformation.value?.name)
+
+        view.tv_greetings.text = getString(R.string.hello_wil, viewModel.statesRepository.userInformation.value?.name)
+        Log.i("tainu", "oi")
+
 
         Glide.with(view)
-            .load(viewModel.statesRepository.userInformation.value?.img)
+            .load(auth.currentUser?.photoUrl)
             .error(R.drawable.profile_placeholder)
             .fallback(R.drawable.profile_placeholder)
             .into(view.civ_profileImage)

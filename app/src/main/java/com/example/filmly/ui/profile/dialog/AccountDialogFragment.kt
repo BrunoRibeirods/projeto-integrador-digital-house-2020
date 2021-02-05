@@ -11,13 +11,16 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.filmly.R
 import com.example.filmly.data.model.UserInformation
+import com.example.filmly.ui.register.RegisterActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.android.synthetic.main.fragment_account_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class AccountDialogFragment : DialogFragment() {
     val viewModel: AccountDialogViewModel by viewModels()
+    private lateinit var auth: FirebaseAuth
 
 //
 //    override fun onStart() {
@@ -39,6 +42,7 @@ class AccountDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_account_dialog, container, false)
+        auth = FirebaseAuth.getInstance()
 
         view.toolbar_dialog.setNavigationOnClickListener {
             findNavController().navigateUp()
@@ -63,13 +67,21 @@ class AccountDialogFragment : DialogFragment() {
     }
 
     fun saveInformation(view: View) {
-        val name = view.et_name_configuration.text.toString()
-        val email = view.et_email_configuration.text.toString()
-        val birthday = view.et_dateOfBirth_configuration.text.toString()
-        val password = view.et_changePassword_configuration.text.toString()
+        val user = auth.currentUser
+
+        val profileUpdates = UserProfileChangeRequest.Builder()
+            .setDisplayName(view.et_name_configuration.text.toString())
+            .build()
+
+        user?.updateProfile(profileUpdates)
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("", "User profile updated.")
+                }
+            }
 
 
-        viewModel.saveInformation(UserInformation(name, email, null, birthday, password))
+        viewModel.saveInformation(UserInformation(user?.displayName, user?.email, user?.photoUrl.toString(), null, null))
     }
 
 }

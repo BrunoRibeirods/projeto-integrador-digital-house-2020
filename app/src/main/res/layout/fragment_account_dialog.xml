@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_dialog"
@@ -20,7 +20,7 @@
 
             <TextView
                 android:text="Configurações de Conta"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
@@ -67,46 +67,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"/>
 
-        <TextView
-            android:id="@+id/tv_change_email"
-            android:text="Alterar email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Dialog.TextAppearance" />
-
-        <EditText
-            android:id="@+id/et_email_configuration"
-            android:hint="Email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:inputType="textEmailAddress"/>
-
-        <TextView
-            android:text="Data de nascimento"
-            style="@style/Dialog.TextAppearance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/et_dateOfBirth_configuration"
-            android:hint="Data de nascimento"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="date"/>
-
-        <TextView
-            android:text="Alterar senha"
-            style="@style/Dialog.TextAppearance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/et_changePassword_configuration"
-            android:hint="Alterar senha"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword" />
 
     </LinearLayout>
 

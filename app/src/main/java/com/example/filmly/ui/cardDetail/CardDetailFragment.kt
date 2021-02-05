@@ -10,6 +10,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -98,7 +99,12 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
 
                     viewModel.tvProvidersLive.observe(viewLifecycleOwner) {
                         view.rc_serie_seasons.apply {
-                            adapter = it.seasons?.let { it1 -> CardDetailListsAdapter(it1, this@CardDetailFragment) }
+                            adapter = it.seasons?.let { it1 ->
+                                CardDetailListsAdapter(
+                                    it1,
+                                    this@CardDetailFragment
+                                )
+                            }
                             layoutManager = LinearLayoutManager(
                                 view.context,
                                 LinearLayoutManager.HORIZONTAL,
@@ -110,6 +116,8 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                         view.rc_serie_watch.apply {
                             view.tv_titleDetail.text = it.name
                             view.tv_sinopseCardDetail.text = it.overview
+                            if (TextUtils.isEmpty(view.tv_sinopseCardDetail.text)) view.tv_sinopseCardDetail.text =
+                                "Descrição não disponivel no momento."
 
                             if (it.watch?.results?.BR != null) {
                                 adapter = CardDetailProvidersAdapter(
@@ -134,6 +142,7 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                     viewModel.movieProvidersLive.observe(viewLifecycleOwner) {
                         view.tv_titleDetail.text = it.title
                         view.tv_sinopseCardDetail.text = it.overview
+                        if(TextUtils.isEmpty(view.tv_sinopseCardDetail.text)) view.tv_sinopseCardDetail.text = "Descrição não disponivel no momento."
 
                         view.rc_serie_watch.apply {
                             if (it.watch?.results?.BR != null) {
@@ -156,6 +165,7 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
 
                     view.tv_title_rc.text = "Conhecido por:"
                     view.tv_title_rc.setTextColor(resources.getColor(R.color.yellow))
+
                     view.tv_titleDetail.text = detail.card.name
 
                     val actor = detail.card as Actor?
@@ -267,7 +277,8 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
         viewModel.tvProvidersLive.observe(viewLifecycleOwner){ tvDetailsResults ->
             tvDetailsResults.seasons.let {
             val bundle = bundleOf("id" to season.card.id,
-                    "season_number" to it!![position].season_number
+                    "season_number" to it!![position].season_number,
+                    "name" to season.card.name
                 )
 
                 findNavController().navigate(R.id.action_cardDetailFragment_to_seasonDetailFragment, bundle)

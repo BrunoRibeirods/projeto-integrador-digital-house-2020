@@ -32,7 +32,9 @@ data class TvSeasonResults(
 
 @Serializable
 data class TvEpisodesResult(
+    val _id: String? = null,
     val air_date: String? = null,
+    val season_number: Int? = null,
     val episodes: List<TvEpisodes>? = null
 )
 
@@ -41,10 +43,12 @@ data class TvEpisodes(
     val air_date: String? = null,
     val name: String? = null,
     val episode_number: Int? = null,
+    val id: Int? = null,
     val vote_average: Double? = null,
     val still_path: String? = null,
     val overview: String? = null,
-    val season_number: Int? = null
+    val season_number: Int? = null,
+    var watched: Boolean? = false
 )
 
 

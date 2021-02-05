@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -16,7 +17,7 @@ import com.example.filmly.R
 import com.example.filmly.ui.cardDetail.TvEpisodes
 import kotlinx.android.synthetic.main.item_season_detail.view.*
 
-class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>, val listener: OnClickEpisodeListener): RecyclerView.Adapter<SeasonEpisodeAdapter.EpisodesViewHolder>() {
+class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>, val listener: OnClickEpisodeListener, val watchedListener: OnClickWatchListener): RecyclerView.Adapter<SeasonEpisodeAdapter.EpisodesViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodesViewHolder {
        val itemview = LayoutInflater.from(parent.context).inflate(R.layout.item_season_detail, parent, false)
 
@@ -38,6 +39,11 @@ class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>, val lis
         holder.numberOfEpisode.text = if(current.episode_number!! < 10) "E0" + current.episode_number else "E" + current.episode_number
         holder.titleEpisode.text = current.name
 
+        holder.btn_watched.imageTintList = if(current.watched == true) ColorStateList.valueOf(holder.itemView.resources.getColor(R.color.yellow)) else ColorStateList.valueOf(holder.itemView.resources.getColor(R.color.black))
+
+
+
+
 
         Glide.with(holder.itemView).asBitmap()
             .load("https://image.tmdb.org/t/p/w500${current.still_path}")
@@ -56,9 +62,14 @@ class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>, val lis
         fun onClickEpisode(position: Int)
     }
 
+    interface OnClickWatchListener{
+        fun onClickWatch(position: Int)
+    }
+
     inner class EpisodesViewHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickListener{
         init {
             view.setOnClickListener(this)
+            view.btn_episode_watched.setOnClickListener(this)
         }
 
         val numberOfEpisode = view.tv_season_detail_episode
@@ -68,9 +79,18 @@ class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>, val lis
         val btn_watched = view.btn_episode_watched
 
         override fun onClick(p0: View?) {
-            val position = adapterPosition
-            if(position != RecyclerView.NO_POSITION)
-                listener.onClickEpisode(position)
+            when(p0!!.id){
+                R.id.btn_episode_watched ->{
+                    val position = adapterPosition
+                    if(position != RecyclerView.NO_POSITION)
+                        watchedListener.onClickWatch(position)
+                }
+                else -> {
+                    val position = adapterPosition
+                    if(position != RecyclerView.NO_POSITION)
+                        listener.onClickEpisode(position)
+                }
+            }
         }
     }
 }
