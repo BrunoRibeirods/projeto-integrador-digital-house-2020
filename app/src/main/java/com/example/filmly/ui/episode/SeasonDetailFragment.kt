@@ -319,7 +319,6 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
     override fun onClickWatch(position: Int) {
         adapter1.notifyItemChanged(position)
 
-        readProds()
         viewModel.tvEpisodesLive.observe(viewLifecycleOwner){
             it?.episodes.let {listEps->
                 if (listEps != null) {
