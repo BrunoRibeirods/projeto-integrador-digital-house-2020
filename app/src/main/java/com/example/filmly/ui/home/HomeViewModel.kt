@@ -11,8 +11,9 @@ import com.example.filmly.repository.StatesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import com.example.filmly.data.model.UserInformation
 
-class HomeViewModel(val repository: ServicesRepository) : ViewModel() {
+class HomeViewModel(val repository: ServicesRepository, val statesRepository: StatesRepository): ViewModel() {
 
     fun getTrending(): MutableLiveData<MutableList<Card>> {
         val mutableList = mutableListOf<Card>()
@@ -54,4 +55,14 @@ class HomeViewModel(val repository: ServicesRepository) : ViewModel() {
             repository.updateFavoriteActors()
         }
     }
+
+    fun saveInformation(user: UserInformation) {
+        statesRepository.updateUserInformation(user)
+        StatesRepository.updateUserInformation(user)
+    }
+
+
+
+
+
 }

@@ -1,10 +1,13 @@
 package com.example.filmly.adapters
 
+import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
@@ -13,7 +16,7 @@ import com.example.filmly.R
 import com.example.filmly.ui.cardDetail.TvEpisodes
 import kotlinx.android.synthetic.main.item_season_detail.view.*
 
-class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>): RecyclerView.Adapter<SeasonEpisodeAdapter.EpisodesViewHolder>() {
+class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>, val listener: OnClickEpisodeListener): RecyclerView.Adapter<SeasonEpisodeAdapter.EpisodesViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodesViewHolder {
        val itemview = LayoutInflater.from(parent.context).inflate(R.layout.item_season_detail, parent, false)
 
@@ -49,10 +52,25 @@ class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>): Recycl
 
     override fun getItemCount() = listOfEpisodes.size
 
-    inner class EpisodesViewHolder(view: View): RecyclerView.ViewHolder(view){
+    interface OnClickEpisodeListener{
+        fun onClickEpisode(position: Int)
+    }
+
+    inner class EpisodesViewHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickListener{
+        init {
+            view.setOnClickListener(this)
+        }
+
         val numberOfEpisode = view.tv_season_detail_episode
         val seasonNumEpisode = view.tv_season_detail_number
         val titleEpisode = view.tv_season_detail_title
         val imageEpisode = view.iv_season_detail
+        val btn_watched = view.btn_episode_watched
+
+        override fun onClick(p0: View?) {
+            val position = adapterPosition
+            if(position != RecyclerView.NO_POSITION)
+                listener.onClickEpisode(position)
+        }
     }
 }

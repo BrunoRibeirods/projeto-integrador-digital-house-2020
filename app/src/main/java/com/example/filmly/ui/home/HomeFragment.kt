@@ -1,6 +1,7 @@
 package com.example.filmly.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+import com.bumptech.glide.Glide
 import com.example.filmly.R
 import com.example.filmly.adapters.PopularActorsAdapter
 import com.example.filmly.adapters.PopularMoviesAdapter
@@ -18,9 +21,14 @@ import com.example.filmly.adapters.PopularTVAdapter
 import com.example.filmly.adapters.TrendingAdapter
 import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.HeadLists
+import com.example.filmly.data.model.UserInformation
 import com.example.filmly.repository.ServicesRepository
 import com.example.filmly.repository.StatesRepository
 import com.example.filmly.utils.CardDetailNavigation
+import com.example.filmly.utils.SeeMoreNavigation
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import kotlinx.android.synthetic.main.cards_list_item.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -29,6 +37,7 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
 
     private lateinit var repository: ServicesRepository
+
     private val popularMoviesAdapter = PopularMoviesAdapter(CardDetail.FILM, CardDetailNavigation { detail ->
         val action = HomeFragmentDirections.actionHomeFragmentToCardDetailFragment(detail)
         findNavController().navigate(action)
@@ -49,13 +58,23 @@ class HomeFragment : Fragment() {
         findNavController().navigate(action)
     })
 
+    private lateinit var repositoryStates: StatesRepository
+    private lateinit var auth: FirebaseAuth
+
+
     val viewModel by viewModels<HomeViewModel>() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return HomeViewModel(repository) as T
+                return HomeViewModel(repository, repositoryStates) as T
             }
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        updateUI(auth.currentUser)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,8 +82,12 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+        auth = FirebaseAuth.getInstance()
 
         repository = ServicesRepository.getInstance(requireContext())
+      
+        repositoryStates = StatesRepository
+        updateUI(auth.currentUser)
 
         setSeeMoreClicks(view)
         setRecyclerViews(view)
@@ -74,6 +97,12 @@ class HomeFragment : Fragment() {
 
         view.tv_greetings.text =
             getString(R.string.hello_wil, StatesRepository.userInformation.value?.name)
+
+        Glide.with(view)
+            .load(viewModel.statesRepository.userInformation.value?.img)
+            .error(R.drawable.profile_placeholder)
+            .fallback(R.drawable.profile_placeholder)
+            .into(view.civ_profileImage)
 
         view.civ_profileImage.setOnClickListener {
             findNavController().navigate(R.id.profileFragment)
@@ -156,6 +185,16 @@ class HomeFragment : Fragment() {
             viewModel.getAllPopularActors().collect {
                 popularActorsAdapter.submitData(it)
             }
+        }
+    }
+
+
+
+    private fun updateUI(user: FirebaseUser?) {
+        if (user != null) {
+            viewModel.saveInformation(UserInformation(user.displayName.toString(), user.email.toString(), user.photoUrl.toString(), null, null))
+        } else {
+            Log.i("Account", "Nenhum usuario conectado.")
         }
     }
 }
