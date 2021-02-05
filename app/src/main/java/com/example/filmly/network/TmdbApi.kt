@@ -1,5 +1,6 @@
 package com.example.filmly.network
 
+import com.example.filmly.ui.cardDetail.ActorDetail
 import com.example.filmly.ui.cardDetail.MovieDetailsResults
 import com.example.filmly.ui.cardDetail.TvDetailsResults
 import com.example.filmly.ui.cardDetail.TvEpisodesResult
@@ -86,7 +87,10 @@ interface TmdbApi {
         @Query("api_key") api_key: String
     ): TvEpisodesResult
 
-
+    @GET("person/{person_id}?language=pt-BR&api_key=0d3ca7edae2d9cb14c86ce991530aee6&append_to_response=popular")
+    suspend fun getActorDetail(
+        @Path("person_id") person_id: Int
+    ): ActorDetail
 
 }
 

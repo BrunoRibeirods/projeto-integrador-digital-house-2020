@@ -1,7 +1,6 @@
 package com.example.filmly.ui.cardDetail
 
 
-import android.app.Dialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -15,9 +14,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -25,9 +21,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -35,11 +29,13 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.filmly.R
 import com.example.filmly.adapters.CardDetailListsAdapter
 import com.example.filmly.adapters.CardDetailProvidersAdapter
-import com.example.filmly.adapters.SeasonEpisodeAdapter
+import com.example.filmly.adapters.KnownForAdapter
+import com.example.filmly.data.model.Actor
 import com.example.filmly.data.model.Card
 import com.example.filmly.data.model.CardDetail
 import com.example.filmly.data.model.FastBlur
 import com.example.filmly.repository.ServicesRepository
+import com.example.filmly.utils.CardDetailNavigation
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
 
@@ -156,11 +152,26 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                     }
                 }
                 "person" -> {
-                    view.tv_title_rc.visibility = View.GONE
                     view.tv_title_provider.visibility = View.GONE
 
-                    view.tv_sinopseCardDetail.text = detail.card.descricao
+                    view.tv_title_rc.text = "Conhecido por:"
+                    view.tv_title_rc.setTextColor(resources.getColor(R.color.yellow))
                     view.tv_titleDetail.text = detail.card.name
+
+                    val actor = detail.card as Actor?
+
+                    actor?.id?.let { viewModel.getActorDetail(it).observe(viewLifecycleOwner) {
+                        view.tv_sinopseCardDetail.text = it.biography
+                    } }
+
+                    actor?.known_for?.let { view.rc_serie_seasons.apply {
+                        adapter = KnownForAdapter(it, CardDetailNavigation { detail ->
+                            val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
+                            findNavController().navigate(action)
+                        })
+                        layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
+                        setHasFixedSize(true)
+                    } }
 
                 }
 
