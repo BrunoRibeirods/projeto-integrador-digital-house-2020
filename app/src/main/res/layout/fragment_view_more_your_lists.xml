@@ -9,7 +9,7 @@
     android:padding="8dp"
     android:layout_gravity="center"
     android:gravity="center"
-    android:background="@color/blackFilmly"
+    android:background="?attr/colorPrimary"
     tools:context=".ui.yourLists.ViewMoreYourListsFragment">
 
     <androidx.appcompat.widget.Toolbar

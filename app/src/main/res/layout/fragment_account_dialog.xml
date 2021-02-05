@@ -7,7 +7,7 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_dialog"
-        android:background="@color/black101010"
+        android:background="?attr/colorPrimary"
         app:navigationIcon="@drawable/ic_baseline_close_24"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
