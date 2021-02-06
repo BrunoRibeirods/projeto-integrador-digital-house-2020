@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.filmly.ui.home.HomeFragment"
+        android:name="com.filmly.app.ui.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -19,12 +19,12 @@
     </fragment>
     <fragment
         android:id="@+id/cardDetailFragment"
-        android:name="com.example.filmly.ui.cardDetail.CardDetailFragment"
+        android:name="com.filmly.app.ui.cardDetail.CardDetailFragment"
         android:label="fragment_card_detail"
         tools:layout="@layout/fragment_card_detail" >
         <argument
             android:name="detail"
-            app:argType="com.example.filmly.data.model.CardDetail" />
+            app:argType="com.filmly.app.data.model.CardDetail" />
         <action
             android:id="@+id/action_cardDetailFragment_to_seasonDetailFragment"
             app:destination="@id/seasonDetailFragment" />
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.filmly.ui.search.SearchFragment"
+        android:name="com.filmly.app.ui.search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.filmly.ui.profile.ProfileFragment"
+        android:name="com.filmly.app.ui.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -64,7 +64,7 @@
     </fragment>
     <fragment
         android:id="@+id/yourListsFragment"
-        android:name="com.example.filmly.ui.yourLists.YourListsFragment"
+        android:name="com.filmly.app.ui.yourLists.YourListsFragment"
         android:label="fragment_your_lists"
         tools:layout="@layout/fragment_your_lists" >
         <action
@@ -76,12 +76,12 @@
     </fragment>
     <fragment
         android:id="@+id/viewMoreFragment"
-        android:name="com.example.filmly.ui.viewMore.ViewMoreFragment"
+        android:name="com.filmly.app.ui.viewMore.ViewMoreFragment"
         android:label="fragment_view_more"
         tools:layout="@layout/fragment_view_more" >
         <argument
             android:name="headList"
-            app:argType="com.example.filmly.data.model.HeadLists"
+            app:argType="com.filmly.app.data.model.HeadLists"
             app:nullable="true"
             android:defaultValue="@null" />
         <action
@@ -95,19 +95,19 @@
     </fragment>
     <fragment
         android:id="@+id/favoriteListsFragment"
-        android:name="com.example.filmly.ui.yourLists.ViewMoreYourListsFragment"
+        android:name="com.filmly.app.ui.yourLists.ViewMoreYourListsFragment"
         android:label="fragment_favorite_lists"
         tools:layout="@layout/fragment_view_more_your_lists" >
         <argument
             android:name="headList"
-            app:argType="com.example.filmly.data.model.HeadLists" />
+            app:argType="com.filmly.app.data.model.HeadLists" />
         <action
             android:id="@+id/action_favoriteListsFragment_to_cardDetailFragment"
             app:destination="@id/cardDetailFragment" />
     </fragment>
     <dialog
         android:id="@+id/accountDialogFragment"
-        android:name="com.example.filmly.ui.profile.dialog.AccountDialogFragment"
+        android:name="com.filmly.app.ui.profile.dialog.AccountDialogFragment"
         android:label="AccountDialogFragment" >
         <action
             android:id="@+id/action_accountDialogFragment_to_profileFragment"
@@ -115,15 +115,15 @@
     </dialog>
     <dialog
         android:id="@+id/homeListsDialogFragment"
-        android:name="com.example.filmly.ui.profile.dialog.HomeListsDialogFragment"
+        android:name="com.filmly.app.ui.profile.dialog.HomeListsDialogFragment"
         android:label="HomeListsDialogFragment" />
     <dialog
         android:id="@+id/yourListsDialogFragment"
-        android:name="com.example.filmly.ui.profile.dialog.YourListsDialogFragment"
+        android:name="com.filmly.app.ui.profile.dialog.YourListsDialogFragment"
         android:label="YourListsDialogFragment" />
     <fragment
         android:id="@+id/seasonDetailFragment"
-        android:name="com.example.filmly.ui.episode.SeasonDetailFragment"
+        android:name="com.filmly.app.ui.episode.SeasonDetailFragment"
         android:label="fragment_season_detail"
         tools:layout="@layout/fragment_season_detail" />
 </navigation>

@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:525300964923:android:4b91d0a810ab156440861e",
         "android_client_info": {
-          "package_name": "com.example.filmly"
+          "package_name": "com.filmly.app"
         }
       },
       "oauth_client": [
@@ -17,8 +17,53 @@
           "client_id": "525300964923-6dd529ve0crpmh0ipg22jb9oit6ssdi7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.filmly",
+            "package_name": "com.filmly.app",
             "certificate_hash": "9f8a8641822da55478f9219dafe2ff56aed6152a"
+          }
+        },
+        {
+          "client_id": "525300964923-95irc2kkn5j5j0bbr6r7sereaaskkgr7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.filmly.app",
+            "certificate_hash": "5935bafe09c645d739ec7ecc6b2414a5f1cfd55a"
+          }
+        },
+        {
+          "client_id": "525300964923-l8qr4gfl727ljse429gjn8mmia28qv02.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWE2dz3vtRHeS0eyuxcE0R2-jeUboOZSQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525300964923-l8qr4gfl727ljse429gjn8mmia28qv02.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525300964923:android:a65bb2ee9cbb691e40861e",
+        "android_client_info": {
+          "package_name": "com.filmly.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "525300964923-ril18k79m8escuk42vmbjc21p6cesl68.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.filmly.app",
+            "certificate_hash": "2d26a5f1efc09d98c3ea0310ae145c0f21804ff6"
           }
         },
         {

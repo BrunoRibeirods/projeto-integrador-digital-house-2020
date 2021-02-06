@@ -2,7 +2,7 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.filmly">
+    package="com.filmly.app">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -22,7 +22,7 @@
         android:theme="@style/Theme.Filmly">
 
         <activity
-            android:name="com.example.filmly.ui.SplashActivity"
+            android:name="com.filmly.app.ui.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,16 +32,16 @@
         </activity>
 
         <activity
-            android:name=".ui.lostpassword.LostPasswordActivity"
+            android:name="com.filmly.app.ui.lostpassword.LostPasswordActivity"
             android:theme="@style/LoginTheme" />
         <activity
-            android:name=".ui.register.RegisterActivity"
+            android:name="com.filmly.app.ui.register.RegisterActivity"
             android:theme="@style/LoginTheme" />
         <activity
-            android:name=".ui.login.LoginActivity"
+            android:name="com.filmly.app.ui.login.LoginActivity"
             android:theme="@style/LoginTheme" />
         <activity
-        android:name=".ui.MainActivity"
+        android:name="com.filmly.app.ui.MainActivity"
         android:windowSoftInputMode="adjustNothing" />
 
         <activity android:name="com.twitter.sdk.android.core.identity.OAuthActivity" />
