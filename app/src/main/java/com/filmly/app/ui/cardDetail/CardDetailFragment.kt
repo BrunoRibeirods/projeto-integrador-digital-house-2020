@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -28,9 +29,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.filmly.app.R
-import com.filmly.app.adapters.CardDetailListsAdapter
-import com.filmly.app.adapters.CardDetailProvidersAdapter
-import com.filmly.app.adapters.KnownForAdapter
+import com.filmly.app.adapters.*
 import com.filmly.app.data.model.Actor
 import com.filmly.app.data.model.Card
 import com.filmly.app.data.model.CardDetail
@@ -39,6 +38,8 @@ import com.filmly.app.repository.ServicesRepository
 import com.filmly.app.utils.CardDetailNavigation
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListener {
@@ -131,6 +132,22 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                                 view.tv_title_provider.visibility = View.GONE
                             }
                         }
+
+                        val recommendedAdapter = PopularTVAdapter(CardDetail.SERIE, CardDetailNavigation { detail ->
+                            val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
+                            findNavController().navigate(action)
+                        })
+                        view.rc_recommended_for_you.apply {
+                            view.tv_recommended_for_you.visibility = View.VISIBLE
+                            adapter = recommendedAdapter
+                            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+                            lifecycleScope.launch {
+                                viewModel.getTvRecommendations(detail.card.id!!).collect {
+                                    recommendedAdapter.submitData(it)
+                                }
+                            }
+                        }
                     }
 
                 }
@@ -158,6 +175,22 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                             }
                         }
 
+                    }
+
+                    val recommendedAdapter = PopularMoviesAdapter(CardDetail.FILM, CardDetailNavigation { detail ->
+                        val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
+                        findNavController().navigate(action)
+                    })
+                    view.rc_recommended_for_you.apply {
+                        view.tv_recommended_for_you.visibility = View.VISIBLE
+                        adapter = recommendedAdapter
+                        layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+                        lifecycleScope.launch {
+                            viewModel.getMovieRecommendations(detail.card.id!!).collect {
+                                recommendedAdapter.submitData(it)
+                            }
+                        }
                     }
                 }
                 "person" -> {
