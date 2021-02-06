@@ -92,6 +92,20 @@ interface TmdbApi {
         @Path("person_id") person_id: Int
     ): ActorDetail
 
+    @GET("tv/{tv_id}/recommendations?language=pt-BR")
+    suspend fun getTvRecommendations(
+        @Path("tv_id") tv_id: Int,
+        @Query("page") page: Int,
+        @Query("api_key") api_key: String
+    ): PopularTVResults
+
+    @GET("movie/{movie_id}/recommendations?language=pt-BR")
+    suspend fun getMovieRecommendations(
+        @Path("movie_id") movie_id: Int,
+        @Query("page") page: Int,
+        @Query("api_key") api_key: String
+    ): PopularMoviesResults
+
 }
 
 
