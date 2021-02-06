@@ -142,6 +142,26 @@ abstract class ServicesRepository {
         ).flow
     }
 
+    fun getMoviesRecommended(movie_id: Int): Flow<PagingData<HomeFilmNetwork>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { MoviesPagingSource(retrofitService, movie_id)}
+        ).flow
+    }
+
+    fun getTvRecommended(tv_id: Int): Flow<PagingData<HomeSerieNetwork>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { TVPagingSource(retrofitService, tv_id) }
+        ).flow
+    }
+
     suspend fun getMoviesModel(query: String): MovieResults {
         return retrofitService.getSearchMovie("0d3ca7edae2d9cb14c86ce991530aee6", 1, query)
     }

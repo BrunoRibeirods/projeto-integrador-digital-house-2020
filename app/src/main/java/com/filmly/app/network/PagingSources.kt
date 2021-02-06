@@ -11,13 +11,14 @@ import java.io.IOException
 private const val STARTING_PAGE_INDEX = 1
 
 class MoviesPagingSource(
-    private val service: TmdbApi
+    private val service: TmdbApi,
+    private val movie_id: Int? = null
 ) : PagingSource<Int, HomeFilmNetwork>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, HomeFilmNetwork> {
         val position = params.key ?: STARTING_PAGE_INDEX
         return try {
-            val response = service.getAllPopularMovies(position)
+            val response = if(movie_id == null) service.getAllPopularMovies(position) else service.getMovieRecommendations(movie_id, position, "0d3ca7edae2d9cb14c86ce991530aee6")
             val movies = response.results.map { it }
             val nextKey = if (movies.isEmpty()) {
                 null
@@ -42,13 +43,14 @@ class MoviesPagingSource(
 }
 
 class TVPagingSource(
-    private val service: TmdbApi
+    private val service: TmdbApi,
+    private val tv_id: Int? = null
 ) : PagingSource<Int, HomeSerieNetwork>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, HomeSerieNetwork> {
         val position = params.key ?: STARTING_PAGE_INDEX
         return try {
-            val response = service.getAllPopularTV(position)
+            val response = if(tv_id == null) service.getAllPopularTV(position) else service.getTvRecommendations(tv_id, position, "0d3ca7edae2d9cb14c86ce991530aee6")
             val series = response.results
             val nextKey = if (series.isEmpty()) {
                 null
