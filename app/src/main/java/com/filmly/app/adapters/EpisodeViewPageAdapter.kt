@@ -81,15 +81,19 @@ class EpisodeViewPageAdapter(val listaEp: List<TvEpisodes>): RecyclerView.Adapte
         holder.seasonNum.text = if(current.episode_number!! < 10) "EP0" + current.episode_number else "EP" + current.episode_number
         if(!TextUtils.isEmpty(current.overview)) holder.overviewEp.text = current.overview else holder.overviewEp.text = "Descrição não disponivel no momento."
 
+        if(current.air_date != null && current.air_date != ""){
         val fmt = SimpleDateFormat("yyyy-MM-dd")
         val date: Date = fmt.parse(current.air_date)
-
         val fmtOut = SimpleDateFormat("dd MMMM, yyyy", Locale.forLanguageTag("pt"))
-
-
         holder.airDateEp.text = fmtOut.format(date)
+        }else{
+            holder.airDateEp.text = "Não Disponivel"
+        }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             holder.overviewEp.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
         }
 
