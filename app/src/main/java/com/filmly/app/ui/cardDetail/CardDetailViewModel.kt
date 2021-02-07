@@ -130,6 +130,22 @@ class CardDetailViewModel(private val repository: ServicesRepository) : ViewMode
         return mutableLiveData
     }
 
+    fun getTvCast(id: Int): MutableLiveData<TvCast> {
+        val mutableLiveData = MutableLiveData<TvCast>()
+        viewModelScope.launch {
+            mutableLiveData.postValue(repository.getTvCast(id))
+        }
+        return mutableLiveData
+    }
+
+    fun getMovieCast(id: Int): MutableLiveData<MovieCast> {
+        val mutableLiveData = MutableLiveData<MovieCast>()
+        viewModelScope.launch {
+            mutableLiveData.postValue(repository.getMovieCast(id))
+        }
+        return mutableLiveData
+    }
+
     fun getMovieRecommendations(id: Int): Flow<PagingData<HomeFilmNetwork>> =
         repository.getMoviesRecommended(id).cachedIn(viewModelScope)
 
