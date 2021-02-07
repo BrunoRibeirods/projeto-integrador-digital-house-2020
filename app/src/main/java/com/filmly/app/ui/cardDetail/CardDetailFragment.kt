@@ -136,7 +136,7 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                         val recommendedAdapter = PopularTVAdapter(CardDetail.SERIE, CardDetailNavigation { detail ->
                             val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
                             findNavController().navigate(action)
-                        })
+                        }, true)
                         view.rc_recommended_for_you.apply {
                             view.tv_recommended_for_you.visibility = View.VISIBLE
                             adapter = recommendedAdapter
@@ -180,7 +180,7 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                     val recommendedAdapter = PopularMoviesAdapter(CardDetail.FILM, CardDetailNavigation { detail ->
                         val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
                         findNavController().navigate(action)
-                    })
+                    }, true)
                     view.rc_recommended_for_you.apply {
                         view.tv_recommended_for_you.visibility = View.VISIBLE
                         adapter = recommendedAdapter

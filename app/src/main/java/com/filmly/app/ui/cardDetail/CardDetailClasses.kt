@@ -1,5 +1,6 @@
 package com.filmly.app.ui.cardDetail
 
+import com.filmly.app.ui.home.HomeActorNetwork
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -82,4 +83,21 @@ data class ActorDetail(
     val id: Int,
     val name: String?,
     val biography: String?
+)
+
+@Serializable
+data class MovieCast(
+    val id: Int,
+    val credits: Credits? = null
+)
+
+@Serializable
+data class TvCast(
+    val id: Int,
+    val credits: Credits? = null
+)
+
+@Serializable
+data class Credits(
+    val cast: List<HomeActorNetwork>
 )

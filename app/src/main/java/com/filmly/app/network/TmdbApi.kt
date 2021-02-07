@@ -1,9 +1,6 @@
 package com.filmly.app.network
 
-import com.filmly.app.ui.cardDetail.ActorDetail
-import com.filmly.app.ui.cardDetail.MovieDetailsResults
-import com.filmly.app.ui.cardDetail.TvDetailsResults
-import com.filmly.app.ui.cardDetail.TvEpisodesResult
+import com.filmly.app.ui.cardDetail.*
 import com.filmly.app.ui.home.PopularActorsResults
 import com.filmly.app.ui.home.PopularMoviesResults
 import com.filmly.app.ui.home.PopularTVResults
@@ -105,6 +102,18 @@ interface TmdbApi {
         @Query("page") page: Int,
         @Query("api_key") api_key: String
     ): PopularMoviesResults
+
+    @GET("movie/{movie_id}?language=pt-BR&append_to_response=credits")
+    suspend fun getMovieCast(
+        @Path("movie_id") movie_id: Int,
+        @Query("api_key") api_key: String
+    ): MovieCast
+
+    @GET("tv/{tv_id}?language=pt-BR&append_to_response=credits")
+    suspend fun getTvCast(
+        @Path("tv_id") tv_id: Int,
+        @Query("api_key") api_key: String
+    ): TvCast
 
 }
 
