@@ -125,5 +125,14 @@
         android:id="@+id/seasonDetailFragment"
         android:name="com.filmly.app.ui.episode.SeasonDetailFragment"
         android:label="fragment_season_detail"
-        tools:layout="@layout/fragment_season_detail" />
+        tools:layout="@layout/fragment_season_detail" >
+        <action
+            android:id="@+id/action_seasonDetailFragment_to_episodeDetailFragment"
+            app:destination="@id/episodeDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/episodeDetailFragment"
+        android:name="com.filmly.app.ui.episode.episodeDetail.EpisodeDetailFragment"
+        android:label="fragment_episode_detail"
+        tools:layout="@layout/fragment_episode_detail" />
 </navigation>
