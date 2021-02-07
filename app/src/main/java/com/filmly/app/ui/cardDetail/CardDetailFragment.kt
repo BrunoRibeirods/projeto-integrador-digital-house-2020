@@ -139,6 +139,7 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                         }, true)
                         view.rc_recommended_for_you.apply {
                             view.tv_recommended_for_you.visibility = View.VISIBLE
+                            visibility = View.VISIBLE
                             adapter = recommendedAdapter
                             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
@@ -183,6 +184,7 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                     }, true)
                     view.rc_recommended_for_you.apply {
                         view.tv_recommended_for_you.visibility = View.VISIBLE
+                        visibility = View.VISIBLE
                         adapter = recommendedAdapter
                         layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 

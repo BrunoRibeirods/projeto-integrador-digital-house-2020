@@ -133,10 +133,31 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/tv_title_provider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/yellow"
+                    android:textSize="18sp"
+                    android:text="Onde assistir:"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/rc_serie_watch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="32dp"
+                    tools:listitem="@layout/item_serie_watch"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="vertical"
+                    tools:itemCount="3"
+
+                    />
+
+                <TextView
                     android:id="@+id/tv_title_rc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Temporadas"
+                    android:text="Temporadas:"
                     android:textSize="18sp"
                     android:layout_marginBottom="5dp"
                     android:textColor="@color/yellow"
@@ -152,31 +173,27 @@
                     />
 
                 <LinearLayout
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="32dp"
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tv_title_provider"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/yellow"
+                        android:id="@+id/tv_cast_title"
+                        android:text="Elenco:"
                         android:textSize="18sp"
-                        android:text="Onde assistir:"/>
-
+                        android:textColor="@color/yellow"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                     <androidx.recyclerview.widget.RecyclerView
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="15dp"
-                        android:id="@+id/rc_serie_watch"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        tools:listitem="@layout/item_serie_watch"
+                        android:id="@+id/rc_cast"
+                        android:visibility="gone"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="32dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        android:orientation="vertical"
-                        tools:itemCount="3"
-
-                        />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/tv_recommended_for_you"
@@ -188,12 +205,17 @@
                         android:layout_height="wrap_content" />
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rc_recommended_for_you"
-                        android:layout_marginBottom="16dp"
                         android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:visibility="gone"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="wrap_content" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp" />
 
                 </LinearLayout>
 
