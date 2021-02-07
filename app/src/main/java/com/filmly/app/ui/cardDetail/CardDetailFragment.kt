@@ -197,6 +197,7 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                     view.tv_title_provider.visibility = View.GONE
 
                     view.tv_title_rc.text = "Conhecido por:"
+                    view.tv_title_rc.visibility = View.GONE
                     view.tv_title_rc.setTextColor(resources.getColor(R.color.yellow))
 
                     view.tv_titleDetail.text = detail.card.name
@@ -204,10 +205,14 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                     val actor = detail.card as Actor?
 
                     actor?.id?.let { viewModel.getActorDetail(it).observe(viewLifecycleOwner) {
-                        view.tv_sinopseCardDetail.text = it.biography
+                        if (it.biography.isNullOrEmpty())
+                            view.tv_sinopseCardDetail.text = "Biografia não disponível no momento."
+                        else
+                            view.tv_sinopseCardDetail.text = it.biography
                     } }
 
                     actor?.known_for?.let { view.rc_serie_seasons.apply {
+                        view.tv_title_rc.visibility = View.VISIBLE
                         adapter = KnownForAdapter(it, CardDetailNavigation { detail ->
                             val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
                             findNavController().navigate(action)
