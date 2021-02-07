@@ -1,6 +1,7 @@
 package com.filmly.app.adapters
 
 import android.content.res.ColorStateList
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.filmly.app.R
 import com.filmly.app.ui.cardDetail.TvEpisodes
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.item_season_detail.view.*
 
 class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>, val listener: OnClickEpisodeListener, val watchedListener: OnClickWatchListener): RecyclerView.Adapter<SeasonEpisodeAdapter.EpisodesViewHolder>() {
@@ -34,6 +38,7 @@ class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>, val lis
         holder.numberOfEpisode.text = if(current.episode_number!! < 10) "E0" + current.episode_number else "E" + current.episode_number
         holder.titleEpisode.text = current.name
 
+        //holder.btn_watched.imageTintList = if(current.watched == true) ColorStateList.valueOf(holder.itemView.resources.getColor(R.color.yellow)) else ColorStateList.valueOf(holder.itemView.resources.getColor(R.color.black))
 
 
 

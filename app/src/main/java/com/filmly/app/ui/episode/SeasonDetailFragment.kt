@@ -36,7 +36,9 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.android.synthetic.main.dialog_episode_detail.*
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
 import kotlinx.android.synthetic.main.fragment_season_detail.*
@@ -44,6 +46,7 @@ import kotlinx.android.synthetic.main.fragment_season_detail.view.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeListener, SeasonEpisodeAdapter.OnClickWatchListener {
@@ -91,7 +94,6 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
             name = it!!
         }
 
-
         viewModel.getEpisodeTvDetail(season_id, season_number)
 
         viewModel.tvEpisodesLive.observe(viewLifecycleOwner){
@@ -104,6 +106,7 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
         }
 
 
+        readEpisodesWatch()
         return view
     }
 
@@ -112,8 +115,7 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
         viewModel.tvEpisodesLive.observe(viewLifecycleOwner){
             it?.episodes.let {listEps->
                 if (listEps != null) {
-                    val bundle = bundleOf("Episodios" to listEps)
-                    findNavController().navigate(R.id.action_seasonDetailFragment_to_episodeDetailFragment, bundle)
+                    findNavController().navigate(R.id.action_seasonDetailFragment_to_episodeDetailFragment, bundleOf("Episodios" to listEps, "Season" to season_number, "position" to position))
                 }
 
             }
@@ -121,14 +123,57 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
     }
 
 
-    fun config(){
+    private fun config(){
         db = FirebaseFirestore.getInstance()
         cr = db.collection(auth.currentUser!!.uid.toString())
     }
 
+    private fun sendEpisodeWatch(tvTitle: String, episodeDetail: HashMap<String, String>){
+
+        cr.document(tvTitle).set(episodeDetail, SetOptions.merge()).addOnSuccessListener {}
+
+    }
+
+
+    private fun readEpisodesWatch(){
+        cr.document(name)
+            .get()
+            .addOnSuccessListener { documents ->
+                if(documents.data != null) {
+                    for (document in documents.data!!.values) {
+                        Log.i("Value", document.toString())
+                    }
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.i("Firestore", "Error getting documents: ", exception)
+            }
+
+    }
+
+
+    private fun deleteEpisodeWatch(tvTitle: String, ep: String){
+
+        val updates = hashMapOf<String, Any>(
+            ep to FieldValue.delete()
+        )
+
+        cr.document(tvTitle).update(updates).addOnCompleteListener {
+
+        }
+
+
+    }
+
 
     override fun onClickWatch(position: Int) {
-        Toast.makeText(context, "Adicionado", Toast.LENGTH_SHORT).show()
+        viewModel.tvEpisodesLive.observe(viewLifecycleOwner){
+           it.episodes?.let {listEps ->
+           episodes = listEps[position]
+               sendEpisodeWatch(name, hashMapOf("S${season_number}E${episodes.episode_number}" to episodes.id.toString()))
+           }
+        }
+        readEpisodesWatch()
     }
 
 

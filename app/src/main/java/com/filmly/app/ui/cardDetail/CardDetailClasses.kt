@@ -1,5 +1,8 @@
 package com.filmly.app.ui.cardDetail
 
+import android.os.Parcelable
+import androidx.annotation.RequiresPermission
+import kotlinx.android.parcel.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -39,6 +42,7 @@ data class TvEpisodesResult(
 )
 
 @Serializable
+@Parcelize
 data class TvEpisodes(
     val air_date: String? = null,
     val name: String? = null,
@@ -48,8 +52,7 @@ data class TvEpisodes(
     val still_path: String? = null,
     val overview: String? = null,
     val season_number: Int? = null,
-    var watched: Boolean? = false
-)
+): Parcelable
 
 
 @Serializable

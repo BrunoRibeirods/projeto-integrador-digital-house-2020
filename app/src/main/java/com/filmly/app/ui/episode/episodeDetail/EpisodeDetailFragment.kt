@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_episode_detail.view.*
 
 class EpisodeDetailFragment : Fragment() {
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -22,16 +23,22 @@ class EpisodeDetailFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_episode_detail, container, false)
 
 
+        val episodes = arguments?.getSerializable("Episodios") as List<TvEpisodes>
+        val seasonNum = arguments?.getInt("Season")
+        val pos = arguments?.getInt("position")
 
-        arguments?.get("Episodios").let {
-            it as List<TvEpisodes>
-
-            view.pager.adapter = EpisodeViewPageAdapter(it)
-
-            TabLayoutMediator(view.tabs, view.pager) { tab, position ->
-
-            }.attach()
+        if (seasonNum != null) {
+            view.toolbar_episode_detail.title = if(seasonNum > 0)"Temporada " + seasonNum.toString() else "Especiais"
         }
+
+        view.toolbar_episode_detail.setNavigationOnClickListener { activity?.onBackPressed() }
+
+
+        view.pager.adapter = EpisodeViewPageAdapter(episodes)
+        view.pager.setCurrentItem(pos!!, false)
+
+        TabLayoutMediator(view.tabs, view.pager) { tab, position -> }.attach()
+
 
 
 

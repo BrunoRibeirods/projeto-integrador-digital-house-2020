@@ -78,7 +78,7 @@ class EpisodeViewPageAdapter(val listaEp: List<TvEpisodes>): RecyclerView.Adapte
             })
 
         holder.titleEp.text = current.name
-        holder.seasonNum.text = "Nda"
+        holder.seasonNum.text = if(current.episode_number!! < 10) "EP0" + current.episode_number else "EP" + current.episode_number
         if(!TextUtils.isEmpty(current.overview)) holder.overviewEp.text = current.overview else holder.overviewEp.text = "Descrição não disponivel no momento."
 
         val fmt = SimpleDateFormat("yyyy-MM-dd")
