@@ -59,6 +59,8 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
     private lateinit var auth: FirebaseAuth
     private lateinit var name: String
 
+    var listaRandom = mutableListOf<TvEpisodes>()
+
     var season_number: Int = 0
 
     private val viewModel: SeasonDetailViewModel by viewModels {
@@ -96,8 +98,11 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
 
         viewModel.getEpisodeTvDetail(season_id, season_number)
 
+
         viewModel.tvEpisodesLive.observe(viewLifecycleOwner){
             adapter1 = it.episodes?.let { it1 ->  SeasonEpisodeAdapter(it1, this@SeasonDetailFragment, this@SeasonDetailFragment) }!!
+            listaRandom = mutableListOf()
+            readEpisodesWatch()
             rc_season_detail.apply {
                 adapter = adapter1
                 layoutManager = LinearLayoutManager(view.context)
@@ -106,7 +111,8 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
         }
 
 
-        readEpisodesWatch()
+
+
         return view
     }
 
@@ -136,14 +142,27 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
 
 
     private fun readEpisodesWatch(){
+
         cr.document(name)
             .get()
             .addOnSuccessListener { documents ->
                 if(documents.data != null) {
-                    for (document in documents.data!!.values) {
-                        Log.i("Value", document.toString())
-                    }
+                    viewModel.tvEpisodesLive.observe(viewLifecycleOwner){
+                        it.episodes.let {listEps->
+                            documents.data!!.map {map ->
+                                listEps?.forEach {
+                                    if(it.id.toString() == map.value){
+                                        listaRandom.add(it)
+                                    }
+                                 }
+                               }
+                            }
+                         }
+                      }
+                listaRandom.forEach{
+                    it.watch = true
                 }
+                adapter1.notifyDataSetChanged()
             }
             .addOnFailureListener { exception ->
                 Log.i("Firestore", "Error getting documents: ", exception)
@@ -158,22 +177,29 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
             ep to FieldValue.delete()
         )
 
-        cr.document(tvTitle).update(updates).addOnCompleteListener {
-
-        }
-
+        cr.document(tvTitle).update(updates).addOnCompleteListener {}
 
     }
 
 
     override fun onClickWatch(position: Int) {
+        adapter1.notifyItemChanged(position)
+
         viewModel.tvEpisodesLive.observe(viewLifecycleOwner){
            it.episodes?.let {listEps ->
            episodes = listEps[position]
-               sendEpisodeWatch(name, hashMapOf("S${season_number}E${episodes.episode_number}" to episodes.id.toString()))
+               if(episodes.watch == true){
+                   episodes.watch = false
+                   listaRandom.remove(episodes)
+                   deleteEpisodeWatch(name,"S${season_number}E${episodes.episode_number}")
+               }else if(episodes.watch == false){
+                   episodes.watch = true
+                   sendEpisodeWatch(name, hashMapOf("S${season_number}E${episodes.episode_number}" to episodes.id.toString()))
+               }
            }
         }
-        readEpisodesWatch()
+
+
     }
 
 

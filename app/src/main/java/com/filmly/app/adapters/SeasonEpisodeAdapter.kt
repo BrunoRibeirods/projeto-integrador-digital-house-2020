@@ -17,6 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.item_season_detail.view.*
 
 class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>, val listener: OnClickEpisodeListener, val watchedListener: OnClickWatchListener): RecyclerView.Adapter<SeasonEpisodeAdapter.EpisodesViewHolder>() {
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodesViewHolder {
        val itemview = LayoutInflater.from(parent.context).inflate(R.layout.item_season_detail, parent, false)
 
@@ -25,6 +27,8 @@ class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>, val lis
 
     override fun onBindViewHolder(holder: EpisodesViewHolder, position: Int) {
         val current = listOfEpisodes[position]
+
+        holder.setIsRecyclable(false)
 
         val circularProgressDrawable = CircularProgressDrawable(holder.itemView.context)
         circularProgressDrawable.strokeWidth = 5f
@@ -38,8 +42,7 @@ class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>, val lis
         holder.numberOfEpisode.text = if(current.episode_number!! < 10) "E0" + current.episode_number else "E" + current.episode_number
         holder.titleEpisode.text = current.name
 
-        //holder.btn_watched.imageTintList = if(current.watched == true) ColorStateList.valueOf(holder.itemView.resources.getColor(R.color.yellow)) else ColorStateList.valueOf(holder.itemView.resources.getColor(R.color.black))
-
+        holder.btn_watched.imageTintList = if(current.watch == true) ColorStateList.valueOf(holder.itemView.resources.getColor(R.color.yellow)) else ColorStateList.valueOf(holder.itemView.resources.getColor(R.color.black))
 
 
 
@@ -55,6 +58,8 @@ class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>, val lis
     }
 
     override fun getItemCount() = listOfEpisodes.size
+
+    override fun getItemId(position: Int): Long = position.toLong()
 
     interface OnClickEpisodeListener{
         fun onClickEpisode(position: Int)
@@ -91,4 +96,7 @@ class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>, val lis
             }
         }
     }
+
+
 }
+

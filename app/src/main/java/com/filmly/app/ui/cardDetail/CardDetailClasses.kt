@@ -52,6 +52,7 @@ data class TvEpisodes(
     val still_path: String? = null,
     val overview: String? = null,
     val season_number: Int? = null,
+    var watch: Boolean? = false,
 ): Parcelable
 
 
