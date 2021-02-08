@@ -59,7 +59,7 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
     private lateinit var auth: FirebaseAuth
     private lateinit var name: String
 
-    var listaRandom = mutableListOf<TvEpisodes>()
+    var episodiosAssistidos = mutableListOf<TvEpisodes>()
 
     var season_number: Int = 0
 
@@ -101,7 +101,7 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
 
         viewModel.tvEpisodesLive.observe(viewLifecycleOwner){
             adapter1 = it.episodes?.let { it1 ->  SeasonEpisodeAdapter(it1, this@SeasonDetailFragment, this@SeasonDetailFragment) }!!
-            listaRandom = mutableListOf()
+            episodiosAssistidos = mutableListOf()
             readEpisodesWatch()
             rc_season_detail.apply {
                 adapter = adapter1
@@ -152,14 +152,14 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
                             documents.data!!.map {map ->
                                 listEps?.forEach {
                                     if(it.id.toString() == map.value){
-                                        listaRandom.add(it)
+                                        episodiosAssistidos.add(it)
                                     }
                                  }
                                }
                             }
                          }
                       }
-                listaRandom.forEach{
+                episodiosAssistidos.forEach{
                     it.watch = true
                 }
                 adapter1.notifyDataSetChanged()
@@ -190,7 +190,7 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
            episodes = listEps[position]
                if(episodes.watch == true){
                    episodes.watch = false
-                   listaRandom.remove(episodes)
+                   episodiosAssistidos.remove(episodes)
                    deleteEpisodeWatch(name,"S${season_number}E${episodes.episode_number}")
                }else if(episodes.watch == false){
                    episodes.watch = true
