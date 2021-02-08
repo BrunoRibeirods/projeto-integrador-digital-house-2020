@@ -18,21 +18,23 @@ import com.filmly.app.ui.home.HomeSerieNetwork
 import com.filmly.app.utils.CardDetailNavigation
 import com.filmly.app.utils.CardDiffCallback
 import kotlinx.android.synthetic.main.cards_list_item.view.*
+import kotlinx.android.synthetic.main.item_mini_known_for_cards.view.*
 
 class PopularMoviesAdapter(
     val cardInfo: Int,
     val cardNavigation: CardDetailNavigation,
+    val miniCards: Boolean = false
 ) : PagingDataAdapter<HomeFilmNetwork, PopularMoviesAdapter.PopularMoviesViewHolder>(
     POPULAR_MOVIE_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMoviesViewHolder {
-        return PopularMoviesViewHolder.from(parent)
+        return PopularMoviesViewHolder.from(parent, miniCards = miniCards)
     }
 
     override fun onBindViewHolder(holder: PopularMoviesViewHolder, position: Int) {
         val item = getItem(position)
         if (item != null) {
-            holder.bind(item, cardInfo, cardNavigation)
+            holder.bind(item, cardInfo, cardNavigation, miniCards)
         }
     }
 
@@ -47,7 +49,8 @@ class PopularMoviesAdapter(
     }
 
     class PopularMoviesViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(item: HomeFilmNetwork, cardInfo: Int, cardNavigation: CardDetailNavigation) {
+        fun bind(item: HomeFilmNetwork, cardInfo: Int, cardNavigation: CardDetailNavigation, miniCards: Boolean) {
+            val imageView = if (!miniCards) view.iv_cardImage else view.iv_known_for
 
             val circularProgressDrawable = CircularProgressDrawable(view.context)
             circularProgressDrawable.strokeWidth = 5f
@@ -62,17 +65,19 @@ class PopularMoviesAdapter(
                 .placeholder(circularProgressDrawable)
                 .error(R.drawable.placeholder)
                 .fallback(R.drawable.placeholder)
-                .into(view.iv_cardImage)
+                .into(imageView)
 
             val cardDetail = CardDetail(cardInfo, item.convertToFilm())
-            view.iv_cardImage.setOnClickListener {
+            imageView.setOnClickListener {
                 cardNavigation.onClick(cardDetail)
             }
         }
 
         companion object {
-            fun from(parent: ViewGroup): PopularMoviesViewHolder {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.cards_list_item, parent, false)
+            fun from(parent: ViewGroup, miniCards: Boolean = false): PopularMoviesViewHolder {
+                val layout = if (!miniCards) R.layout.cards_list_item else R.layout.item_mini_known_for_cards
+
+                val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
                 return PopularMoviesViewHolder(view)
             }
         }
@@ -82,17 +87,18 @@ class PopularMoviesAdapter(
 class PopularTVAdapter(
     val cardInfo: Int,
     val cardNavigation: CardDetailNavigation,
+    val miniCards: Boolean = false
 ) : PagingDataAdapter<HomeSerieNetwork, PopularTVAdapter.PopularTVViewHolder>(
     POPULAR_TV_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularTVViewHolder {
-        return PopularTVViewHolder.from(parent)
+        return PopularTVViewHolder.from(parent, miniCards = miniCards)
     }
 
     override fun onBindViewHolder(holder: PopularTVViewHolder, position: Int) {
         val item = getItem(position)
         if (item != null) {
-            holder.bind(item, cardInfo, cardNavigation)
+            holder.bind(item, cardInfo, cardNavigation, miniCards)
         }
     }
 
@@ -107,7 +113,8 @@ class PopularTVAdapter(
     }
 
     class PopularTVViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(item: HomeSerieNetwork, cardInfo: Int, cardNavigation: CardDetailNavigation) {
+        fun bind(item: HomeSerieNetwork, cardInfo: Int, cardNavigation: CardDetailNavigation, miniCards: Boolean) {
+            val imageView = if (!miniCards) view.iv_cardImage else view.iv_known_for
 
             val circularProgressDrawable = CircularProgressDrawable(view.context)
             circularProgressDrawable.strokeWidth = 5f
@@ -122,17 +129,19 @@ class PopularTVAdapter(
                 .placeholder(circularProgressDrawable)
                 .error(R.drawable.placeholder)
                 .fallback(R.drawable.placeholder)
-                .into(view.iv_cardImage)
+                .into(imageView)
 
             val cardDetail = CardDetail(cardInfo, item.convertToSerie())
-            view.iv_cardImage.setOnClickListener {
+            imageView.setOnClickListener {
                 cardNavigation.onClick(cardDetail)
             }
         }
 
         companion object {
-            fun from(parent: ViewGroup): PopularTVViewHolder {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.cards_list_item, parent, false)
+            fun from(parent: ViewGroup, miniCards: Boolean = false): PopularTVViewHolder {
+                val layout = if (!miniCards) R.layout.cards_list_item else R.layout.item_mini_known_for_cards
+
+                val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
                 return PopularTVViewHolder(view)
             }
         }
@@ -142,17 +151,18 @@ class PopularTVAdapter(
 class PopularActorsAdapter(
     val cardInfo: Int,
     val cardNavigation: CardDetailNavigation,
+    val miniCards: Boolean = false
 ) : PagingDataAdapter<HomeActorNetwork, PopularActorsAdapter.PopularActorsViewHolder>(
     POPULAR_ACTOR_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularActorsViewHolder {
-        return PopularActorsViewHolder.from(parent)
+        return PopularActorsViewHolder.from(parent, miniCards = miniCards)
     }
 
     override fun onBindViewHolder(holder: PopularActorsViewHolder, position: Int) {
         val item = getItem(position)
         if (item != null) {
-            holder.bind(item, cardInfo, cardNavigation)
+            holder.bind(item, cardInfo, cardNavigation, miniCards)
         }
     }
 
@@ -167,7 +177,8 @@ class PopularActorsAdapter(
     }
 
     class PopularActorsViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(item: HomeActorNetwork, cardInfo: Int, cardNavigation: CardDetailNavigation) {
+        fun bind(item: HomeActorNetwork, cardInfo: Int, cardNavigation: CardDetailNavigation, miniCards: Boolean) {
+            val imageView = if (!miniCards) view.iv_cardImage else view.iv_known_for
 
             val circularProgressDrawable = CircularProgressDrawable(view.context)
             circularProgressDrawable.strokeWidth = 5f
@@ -182,17 +193,19 @@ class PopularActorsAdapter(
                 .placeholder(circularProgressDrawable)
                 .error(R.drawable.placeholder)
                 .fallback(R.drawable.placeholder)
-                .into(view.iv_cardImage)
+                .into(imageView)
 
             val cardDetail = CardDetail(cardInfo, item.convertToActor())
-            view.iv_cardImage.setOnClickListener {
+            imageView.setOnClickListener {
                 cardNavigation.onClick(cardDetail)
             }
         }
 
         companion object {
-            fun from(parent: ViewGroup): PopularActorsViewHolder {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.cards_list_item, parent, false)
+            fun from(parent: ViewGroup, miniCards: Boolean = false): PopularActorsViewHolder {
+                val layout = if (!miniCards) R.layout.cards_list_item else R.layout.item_mini_known_for_cards
+
+                val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
                 return PopularActorsViewHolder(view)
             }
         }
@@ -247,50 +260,3 @@ class TrendingAdapter(
         }
     }
 }
-
-//class FilmsGridAdapter(
-//    val cardInfo: Int,
-//    val cardNavigation: CardDetailNavigation
-//) : PagingDataAdapter<> {
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardListViewHolder {
-//        return CardListViewHolder.from(parent)
-//    }
-//
-//    override fun onBindViewHolder(holder: CardListViewHolder, position: Int) {
-//        val item = getItem(position)
-//        val cardDetail = CardDetail(cardInfo, item)
-//
-//        holder.bind(item, cardDetail, cardNavigation)
-//    }
-//
-//    class CardListViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-//
-//        companion object {
-//            fun from(parent: ViewGroup): CardListViewHolder {
-//                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_view_more, parent, false)
-//
-//                return CardListViewHolder(view)
-//            }
-//        }
-//        fun bind(item: Card, cardDetail: CardDetail, cardNavigation: CardDetailNavigation) {
-//            view.tv_filme_view_more.text = item.name
-//
-//            val circularProgressDrawable = CircularProgressDrawable(view.context)
-//            circularProgressDrawable.strokeWidth = 5f
-//            circularProgressDrawable.setColorSchemeColors(view.resources.getColor(R.color.color_main))
-//            circularProgressDrawable.centerRadius = 30f
-//            circularProgressDrawable.start()
-//
-//            Glide.with(view).asBitmap()
-//                .load("https://image.tmdb.org/t/p/w500${item.image}")
-//                .placeholder(circularProgressDrawable)
-//                .error(R.drawable.placeholder)
-//                .fallback(R.drawable.placeholder)
-//                .into(view.iv_filme_view_more)
-//
-//            view.card_item_view_more.setOnClickListener {
-//                cardNavigation.onClick(cardDetail)
-//            }
-//        }
-//    }
-//}

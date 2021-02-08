@@ -15,10 +15,7 @@ import com.filmly.app.network.ActorsPagingSource
 import com.filmly.app.network.MoviesPagingSource
 import com.filmly.app.network.TVPagingSource
 import com.filmly.app.network.TmdbApiteste
-import com.filmly.app.ui.cardDetail.ActorDetail
-import com.filmly.app.ui.cardDetail.MovieDetailsResults
-import com.filmly.app.ui.cardDetail.TvDetailsResults
-import com.filmly.app.ui.cardDetail.TvEpisodesResult
+import com.filmly.app.ui.cardDetail.*
 import com.filmly.app.ui.home.HomeActorNetwork
 import com.filmly.app.ui.home.HomeFilmNetwork
 import com.filmly.app.ui.home.HomeSerieNetwork
@@ -142,6 +139,26 @@ abstract class ServicesRepository {
         ).flow
     }
 
+    fun getMoviesRecommended(movie_id: Int): Flow<PagingData<HomeFilmNetwork>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { MoviesPagingSource(retrofitService, movie_id)}
+        ).flow
+    }
+
+    fun getTvRecommended(tv_id: Int): Flow<PagingData<HomeSerieNetwork>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { TVPagingSource(retrofitService, tv_id) }
+        ).flow
+    }
+
     suspend fun getMoviesModel(query: String): MovieResults {
         return retrofitService.getSearchMovie("0d3ca7edae2d9cb14c86ce991530aee6", 1, query)
     }
@@ -181,6 +198,10 @@ abstract class ServicesRepository {
     suspend fun getActorDetail(id: Int): ActorDetail {
         return retrofitService.getActorDetail(id)
     }
+
+    suspend fun getTvCast(id: Int): TvCast = retrofitService.getTvCast(id, "0d3ca7edae2d9cb14c86ce991530aee6")
+
+    suspend fun getMovieCast(id: Int): MovieCast = retrofitService.getMovieCast(id, "0d3ca7edae2d9cb14c86ce991530aee6")
 
     //Singleton
     companion object {

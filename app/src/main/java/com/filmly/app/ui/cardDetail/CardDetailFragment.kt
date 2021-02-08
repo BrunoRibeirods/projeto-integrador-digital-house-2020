@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -28,9 +29,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.filmly.app.R
-import com.filmly.app.adapters.CardDetailListsAdapter
-import com.filmly.app.adapters.CardDetailProvidersAdapter
-import com.filmly.app.adapters.KnownForAdapter
+import com.filmly.app.adapters.*
 import com.filmly.app.data.model.Actor
 import com.filmly.app.data.model.Card
 import com.filmly.app.data.model.CardDetail
@@ -39,6 +38,8 @@ import com.filmly.app.repository.ServicesRepository
 import com.filmly.app.utils.CardDetailNavigation
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_card_detail.view.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListener {
@@ -95,6 +96,37 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
             when (detail.card.type) {
                 "tv" -> {
                     viewModel.getProvidersDetail(detail.card.id!!)
+
+                    val recommendedAdapter = PopularTVAdapter(CardDetail.SERIE, CardDetailNavigation { detail ->
+                        val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
+                        findNavController().navigate(action)
+                    }, true)
+                    view.rc_recommended_for_you.apply {
+                        view.tv_recommended_for_you.visibility = View.VISIBLE
+                        visibility = View.VISIBLE
+                        adapter = recommendedAdapter
+                        layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+                        lifecycleScope.launch {
+                            viewModel.getTvRecommendations(detail.card.id!!).collect {
+                                recommendedAdapter.submitData(it)
+                            }
+                        }
+                    }
+
+                    viewModel.getTvCast(detail.card.id!!).observe(viewLifecycleOwner) {
+                        view.tv_cast_title.visibility = View.VISIBLE
+                        view.rc_cast.visibility = View.VISIBLE
+
+                        view.rc_cast.apply {
+                            adapter = it.credits?.cast?.let { it1 -> CastAdapter(it1, CardDetailNavigation {
+                                detail -> val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
+                                findNavController().navigate(action)
+                            }) }
+                            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                            setHasFixedSize(true)
+                        }
+                    }
 
 
                     viewModel.tvProvidersLive.observe(viewLifecycleOwner) {
@@ -159,11 +191,44 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                         }
 
                     }
+
+                    viewModel.getMovieCast(detail.card.id!!).observe(viewLifecycleOwner) {
+                        view.tv_cast_title.visibility = View.VISIBLE
+                        view.rc_cast.visibility = View.VISIBLE
+
+                        view.rc_cast.apply {
+                            adapter = it.credits?.cast?.let { it1 -> CastAdapter(it1, CardDetailNavigation {
+                                detail -> val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
+                                findNavController().navigate(action)
+                            }) }
+
+                            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                            setHasFixedSize(true)
+                        }
+                    }
+
+                    val recommendedAdapter = PopularMoviesAdapter(CardDetail.FILM, CardDetailNavigation { detail ->
+                        val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
+                        findNavController().navigate(action)
+                    }, true)
+                    view.rc_recommended_for_you.apply {
+                        view.tv_recommended_for_you.visibility = View.VISIBLE
+                        visibility = View.VISIBLE
+                        adapter = recommendedAdapter
+                        layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+                        lifecycleScope.launch {
+                            viewModel.getMovieRecommendations(detail.card.id!!).collect {
+                                recommendedAdapter.submitData(it)
+                            }
+                        }
+                    }
                 }
                 "person" -> {
                     view.tv_title_provider.visibility = View.GONE
 
                     view.tv_title_rc.text = "Conhecido por:"
+                    view.tv_title_rc.visibility = View.GONE
                     view.tv_title_rc.setTextColor(resources.getColor(R.color.yellow))
 
                     view.tv_titleDetail.text = detail.card.name
@@ -171,18 +236,26 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                     val actor = detail.card as Actor?
 
                     actor?.id?.let { viewModel.getActorDetail(it).observe(viewLifecycleOwner) {
-                        view.tv_sinopseCardDetail.text = it.biography
-                    } }
+                        if (it.biography.isNullOrEmpty())
+                            view.tv_sinopseCardDetail.text = "Biografia não disponível no momento."
+                        else
+                            view.tv_sinopseCardDetail.text = it.biography
 
-                    actor?.known_for?.let { view.rc_serie_seasons.apply {
-                        adapter = KnownForAdapter(it, CardDetailNavigation { detail ->
-                            val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
-                            findNavController().navigate(action)
-                        })
-                        layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
-                        setHasFixedSize(true)
-                    } }
+                        val movies = it.movie_credits?.cast?.map { it.convertToFilm() }
 
+                        view.rc_serie_seasons.apply {
+                            view.tv_title_rc.visibility = View.VISIBLE
+                            adapter =
+                                movies?.let { movies ->
+                                    KnownForAdapter(movies, CardDetailNavigation { detail ->
+                                        val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
+                                        findNavController().navigate(action)
+                                    })
+                                }
+                            layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
+                            setHasFixedSize(true)
+                        }
+                    } }
                 }
 
 

@@ -111,7 +111,6 @@ data class HomeActorNetwork(
 ) {
 
     fun convertToActor(): com.filmly.app.data.model.Actor {
-        val over = known_for?.map { it.title ?: it.name}
         return com.filmly.app.data.model.Actor(
             id = id,
             name = name,

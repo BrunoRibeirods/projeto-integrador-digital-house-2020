@@ -1,5 +1,8 @@
 package com.filmly.app.ui.cardDetail
 
+import com.filmly.app.ui.home.HomeActorNetwork
+import com.filmly.app.ui.home.HomeFilmNetwork
+import com.filmly.app.ui.home.HomeSerieNetwork
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -81,5 +84,34 @@ data class Provider(
 data class ActorDetail(
     val id: Int,
     val name: String?,
-    val biography: String?
+    val biography: String?,
+    val movie_credits: MovieCredits?,
+    val tv_credits: TvCredits?
+)
+
+@Serializable
+data class MovieCredits(
+    val cast: List<HomeFilmNetwork>?
+)
+
+@Serializable
+data class TvCredits(
+    val cast: List<HomeSerieNetwork>?
+)
+
+@Serializable
+data class MovieCast(
+    val id: Int,
+    val credits: Credits? = null
+)
+
+@Serializable
+data class TvCast(
+    val id: Int,
+    val credits: Credits? = null
+)
+
+@Serializable
+data class Credits(
+    val cast: List<HomeActorNetwork>
 )
