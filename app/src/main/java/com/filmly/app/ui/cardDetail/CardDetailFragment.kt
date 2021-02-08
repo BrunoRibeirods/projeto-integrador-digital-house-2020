@@ -97,6 +97,37 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                 "tv" -> {
                     viewModel.getProvidersDetail(detail.card.id!!)
 
+                    val recommendedAdapter = PopularTVAdapter(CardDetail.SERIE, CardDetailNavigation { detail ->
+                        val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
+                        findNavController().navigate(action)
+                    }, true)
+                    view.rc_recommended_for_you.apply {
+                        view.tv_recommended_for_you.visibility = View.VISIBLE
+                        visibility = View.VISIBLE
+                        adapter = recommendedAdapter
+                        layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+                        lifecycleScope.launch {
+                            viewModel.getTvRecommendations(detail.card.id!!).collect {
+                                recommendedAdapter.submitData(it)
+                            }
+                        }
+                    }
+
+                    viewModel.getTvCast(detail.card.id!!).observe(viewLifecycleOwner) {
+                        view.tv_cast_title.visibility = View.VISIBLE
+                        view.rc_cast.visibility = View.VISIBLE
+
+                        view.rc_cast.apply {
+                            adapter = it.credits?.cast?.let { it1 -> CastAdapter(it1, CardDetailNavigation {
+                                detail -> val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
+                                findNavController().navigate(action)
+                            }) }
+                            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                            setHasFixedSize(true)
+                        }
+                    }
+
 
                     viewModel.tvProvidersLive.observe(viewLifecycleOwner) {
                         view.rc_serie_seasons.apply {
@@ -132,23 +163,6 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                                 view.tv_title_provider.visibility = View.GONE
                             }
                         }
-
-                        val recommendedAdapter = PopularTVAdapter(CardDetail.SERIE, CardDetailNavigation { detail ->
-                            val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
-                            findNavController().navigate(action)
-                        }, true)
-                        view.rc_recommended_for_you.apply {
-                            view.tv_recommended_for_you.visibility = View.VISIBLE
-                            visibility = View.VISIBLE
-                            adapter = recommendedAdapter
-                            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
-                            lifecycleScope.launch {
-                                viewModel.getTvRecommendations(detail.card.id!!).collect {
-                                    recommendedAdapter.submitData(it)
-                                }
-                            }
-                        }
                     }
 
                 }
@@ -176,6 +190,21 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                             }
                         }
 
+                    }
+
+                    viewModel.getMovieCast(detail.card.id!!).observe(viewLifecycleOwner) {
+                        view.tv_cast_title.visibility = View.VISIBLE
+                        view.rc_cast.visibility = View.VISIBLE
+
+                        view.rc_cast.apply {
+                            adapter = it.credits?.cast?.let { it1 -> CastAdapter(it1, CardDetailNavigation {
+                                detail -> val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
+                                findNavController().navigate(action)
+                            }) }
+
+                            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                            setHasFixedSize(true)
+                        }
                     }
 
                     val recommendedAdapter = PopularMoviesAdapter(CardDetail.FILM, CardDetailNavigation { detail ->
@@ -211,18 +240,22 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                             view.tv_sinopseCardDetail.text = "Biografia não disponível no momento."
                         else
                             view.tv_sinopseCardDetail.text = it.biography
-                    } }
 
-                    actor?.known_for?.let { view.rc_serie_seasons.apply {
-                        view.tv_title_rc.visibility = View.VISIBLE
-                        adapter = KnownForAdapter(it, CardDetailNavigation { detail ->
-                            val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
-                            findNavController().navigate(action)
-                        })
-                        layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
-                        setHasFixedSize(true)
-                    } }
+                        val movies = it.movie_credits?.cast?.map { it.convertToFilm() }
 
+                        view.rc_serie_seasons.apply {
+                            view.tv_title_rc.visibility = View.VISIBLE
+                            adapter =
+                                movies?.let { movies ->
+                                    KnownForAdapter(movies, CardDetailNavigation { detail ->
+                                        val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
+                                        findNavController().navigate(action)
+                                    })
+                                }
+                            layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
+                            setHasFixedSize(true)
+                        }
+                    } }
                 }
 
 

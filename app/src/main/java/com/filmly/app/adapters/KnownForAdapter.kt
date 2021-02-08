@@ -8,12 +8,12 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.filmly.app.R
+import com.filmly.app.data.model.Card
 import com.filmly.app.data.model.CardDetail
-import com.filmly.app.ui.search.KnownFor
 import com.filmly.app.utils.CardDetailNavigation
 import kotlinx.android.synthetic.main.item_mini_known_for_cards.view.*
 
-class KnownForAdapter(val knownList: List<KnownFor>, val cardDetailNavigation: CardDetailNavigation): RecyclerView.Adapter<KnownForAdapter.KnownForViewHolder>() {
+class KnownForAdapter(val knownList: List<Card>, val cardDetailNavigation: CardDetailNavigation): RecyclerView.Adapter<KnownForAdapter.KnownForViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KnownForViewHolder {
         return KnownForViewHolder.from(parent)
     }
@@ -26,7 +26,7 @@ class KnownForAdapter(val knownList: List<KnownFor>, val cardDetailNavigation: C
     override fun getItemCount() = knownList.size
 
     class KnownForViewHolder(val view: View): RecyclerView.ViewHolder(view) {
-        fun bind(item: KnownFor, navigation: CardDetailNavigation) {
+        fun bind(item: Card, navigation: CardDetailNavigation) {
             val circularProgressDrawable = CircularProgressDrawable(view.context)
             circularProgressDrawable.strokeWidth = 5f
             circularProgressDrawable.setColorSchemeColors(
@@ -36,7 +36,7 @@ class KnownForAdapter(val knownList: List<KnownFor>, val cardDetailNavigation: C
             circularProgressDrawable.start()
 
             Glide.with(view).asBitmap()
-                .load("https://image.tmdb.org/t/p/w500${item.poster_path}")
+                .load("https://image.tmdb.org/t/p/w500${item.image}")
                 .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(circularProgressDrawable)
@@ -45,12 +45,12 @@ class KnownForAdapter(val knownList: List<KnownFor>, val cardDetailNavigation: C
                 .into(view.iv_known_for)
 
             view.iv_known_for.setOnClickListener {
-                when (item.media_type) {
+                when (item.type) {
                     "tv" -> {
-                        navigation.onClick(CardDetail(CardDetail.SERIE, item.convertToSerie()))
+                        navigation.onClick(CardDetail(CardDetail.SERIE, item))
                     }
                     "movie" -> {
-                        navigation.onClick(CardDetail(CardDetail.FILM, item.convertToFilm()))
+                        navigation.onClick(CardDetail(CardDetail.FILM, item))
                     }
                 }
             }

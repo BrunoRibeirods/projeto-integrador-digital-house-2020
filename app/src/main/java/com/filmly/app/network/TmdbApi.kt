@@ -84,7 +84,7 @@ interface TmdbApi {
         @Query("api_key") api_key: String
     ): TvEpisodesResult
 
-    @GET("person/{person_id}?language=pt-BR&api_key=0d3ca7edae2d9cb14c86ce991530aee6&append_to_response=popular")
+    @GET("person/{person_id}?language=pt-BR&api_key=0d3ca7edae2d9cb14c86ce991530aee6&append_to_response=movie_credits,tv_credits")
     suspend fun getActorDetail(
         @Path("person_id") person_id: Int
     ): ActorDetail
