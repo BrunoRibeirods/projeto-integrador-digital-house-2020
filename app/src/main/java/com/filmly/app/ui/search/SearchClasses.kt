@@ -59,7 +59,7 @@ data class Person(
             it.title ?: it.name
 
         }
-        return Actor(id = id, name = name, image = profile_path, descricao = null, type = "person", known_for)
+        return Actor(id = id, name = name, image = profile_path, descricao = null, type = "person", null)
     }
 }
 
