@@ -28,7 +28,6 @@ class SeasonEpisodeAdapter(private val listOfEpisodes: List<TvEpisodes>, val lis
     override fun onBindViewHolder(holder: EpisodesViewHolder, position: Int) {
         val current = listOfEpisodes[position]
 
-        holder.setIsRecyclable(false)
 
         val circularProgressDrawable = CircularProgressDrawable(holder.itemView.context)
         circularProgressDrawable.strokeWidth = 5f
