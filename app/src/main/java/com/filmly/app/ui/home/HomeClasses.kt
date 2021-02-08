@@ -117,7 +117,7 @@ data class HomeActorNetwork(
             image = profile_path,
             descricao = null,
             type = "person",
-            known_for = known_for
+            known_for = null
         )
     }
 }
