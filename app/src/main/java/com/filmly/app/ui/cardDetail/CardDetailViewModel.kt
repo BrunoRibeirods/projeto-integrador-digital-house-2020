@@ -6,8 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.filmly.app.data.model.*
 import com.filmly.app.repository.ServicesRepository
+import com.filmly.app.ui.home.HomeFilmNetwork
+import com.filmly.app.ui.home.HomeSerieNetwork
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class CardDetailViewModel(private val repository: ServicesRepository) : ViewModel() {
@@ -124,4 +129,26 @@ class CardDetailViewModel(private val repository: ServicesRepository) : ViewMode
         }
         return mutableLiveData
     }
+
+    fun getTvCast(id: Int): MutableLiveData<TvCast> {
+        val mutableLiveData = MutableLiveData<TvCast>()
+        viewModelScope.launch {
+            mutableLiveData.postValue(repository.getTvCast(id))
+        }
+        return mutableLiveData
+    }
+
+    fun getMovieCast(id: Int): MutableLiveData<MovieCast> {
+        val mutableLiveData = MutableLiveData<MovieCast>()
+        viewModelScope.launch {
+            mutableLiveData.postValue(repository.getMovieCast(id))
+        }
+        return mutableLiveData
+    }
+
+    fun getMovieRecommendations(id: Int): Flow<PagingData<HomeFilmNetwork>> =
+        repository.getMoviesRecommended(id).cachedIn(viewModelScope)
+
+    fun getTvRecommendations(id: Int): Flow<PagingData<HomeSerieNetwork>> =
+        repository.getTvRecommended(id).cachedIn(viewModelScope)
 }
