@@ -9,7 +9,8 @@ data class Actor(
     override val image: String?,
     override val descricao: String?,
     override val type: String?,
-    val known_for: List<KnownFor>? = null
+    val known_for: List<KnownFor>? = null,
+    override val popularity: Double?
 ) : Card {
     fun asActorDatabase(): Actor {
         return Actor(marvel_id = id, name = name, image = image, description = descricao)

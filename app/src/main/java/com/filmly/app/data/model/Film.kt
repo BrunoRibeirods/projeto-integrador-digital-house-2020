@@ -8,7 +8,8 @@ data class Film(
     override val name: String?,
     override val image: String?,
     override val descricao: String?,
-    override val type: String?
+    override val type: String?,
+    override val popularity: Double?
 ) : Card, Watchable {
     fun asFilmDatabase(): Film {
         return Film(name = name, image = image, description = descricao, marvel_id = id)

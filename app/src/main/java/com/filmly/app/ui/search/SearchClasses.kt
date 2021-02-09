@@ -20,7 +20,7 @@ data class Movie(
     val vote_average: Double?
 ){
     fun convertToFilm(): Film {
-        return Film(id = id, name = title, image = poster_path, descricao = overview, type = "movie")
+        return Film(id = id, name = title, image = poster_path, descricao = overview, type = "movie", popularity)
     }
 }
 
@@ -39,7 +39,7 @@ data class TvShow(
     val vote_average: Double?
 ){
     fun convertToSerie(): Serie {
-        return Serie(id = id, name = name, image = poster_path, descricao = overview, type = "tv")
+        return Serie(id = id, name = name, image = poster_path, descricao = overview, type = "tv", popularity)
     }
 }
 
@@ -59,7 +59,7 @@ data class Person(
             it.title ?: it.name
 
         }
-        return Actor(id = id, name = name, image = profile_path, descricao = null, type = "person", null)
+        return Actor(id = id, name = name, image = profile_path, descricao = null, type = "person", null, popularity)
     }
 }
 
@@ -76,7 +76,7 @@ data class KnownFor(
     val genre_ids: List<Double>?,
     val vote_average: Double?
 ) {
-    fun convertToFilm() = Film(id, title, poster_path, overview, media_type)
+    fun convertToFilm() = Film(id, title, poster_path, overview, media_type, popularity)
 
-    fun convertToSerie() = Serie(id, name, poster_path, overview, media_type)
+    fun convertToSerie() = Serie(id, name, poster_path, overview, media_type, popularity)
 }

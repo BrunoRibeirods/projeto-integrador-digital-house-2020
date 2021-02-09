@@ -112,7 +112,7 @@ data class MovieCast(
 @Serializable
 data class TvCast(
     val id: Int,
-    val credits: Credits? = null
+    val aggregate_credits: Credits? = null
 )
 
 @Serializable
