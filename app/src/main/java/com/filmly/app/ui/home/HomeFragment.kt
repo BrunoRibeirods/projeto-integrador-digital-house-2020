@@ -1,5 +1,8 @@
 package com.filmly.app.ui.home
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -152,47 +155,72 @@ class HomeFragment : Fragment() {
 
 
     private fun setRecyclerViews(view: View) {
-        view.rv_trending.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = trendingAdapter
-        }
+        if(isOnline(view.context)) {
+            view.rv_trending.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = trendingAdapter
+            }
 
-        view.rv_popular_movies.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = popularMoviesAdapter
-        }
+            view.rv_popular_movies.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = popularMoviesAdapter
+            }
 
-        view.rv_popular_atores.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = popularActorsAdapter
-        }
+            view.rv_popular_atores.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = popularActorsAdapter
+            }
 
-        view.rv_popular_series.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = popularTVAdapter
-        }
+            view.rv_popular_series.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = popularTVAdapter
+            }
 
-        viewModel.getTrending().observe(viewLifecycleOwner) {
-            trendingAdapter.submitList(it)
-        }
+            viewModel.getTrending().observe(viewLifecycleOwner) {
+                trendingAdapter.submitList(it)
+            }
 
-        lifecycleScope.launch {
-             viewModel.getAllPopularMovies().collect {
-                popularMoviesAdapter.submitData(it)
+            lifecycleScope.launch {
+                viewModel.getAllPopularMovies().collect {
+                    popularMoviesAdapter.submitData(it)
+                }
+            }
+
+            lifecycleScope.launch {
+                viewModel.getAllPopularSeries().collect {
+                    popularTVAdapter.submitData(it)
+                }
+            }
+
+            lifecycleScope.launch {
+                viewModel.getAllPopularActors().collect {
+                    popularActorsAdapter.submitData(it)
+                }
+            }
+        }
+    }
+
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+
+
+        if (capabilities != null) {
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                return true
             }
         }
 
-        lifecycleScope.launch {
-            viewModel.getAllPopularSeries().collect {
-                popularTVAdapter.submitData(it)
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModel.getAllPopularActors().collect {
-                popularActorsAdapter.submitData(it)
-            }
-        }
+        return false
     }
 
 

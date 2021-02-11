@@ -16,21 +16,45 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity() : AppCompatActivity() {
+
+    var applicationContext_: Context? = null
+    var defaultHandler: Thread.UncaughtExceptionHandler? = null
+    var exceptionHandler: Thread.UncaughtExceptionHandler? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        if (defaultHandler == null) {
+            defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
+        }
 
+        if (applicationContext == null) {
+            applicationContext_ = applicationContext
+        }
+
+        if (exceptionHandler == null) {
+            exceptionHandler = Thread.UncaughtExceptionHandler { paramThread, paramThrowable ->
+                Log.e("Uncaught Exception", paramThrowable.message!!)
+                paramThrowable.printStackTrace()
+                defaultHandler?.uncaughtException(paramThread, paramThrowable)
+            }
+            Thread.setDefaultUncaughtExceptionHandler(exceptionHandler)
+        }
         setNavigationController()
 
         btn_reconect.setOnClickListener {
             onResume()
             Toast.makeText(this, "Reconectando...", Toast.LENGTH_SHORT).show()
         }
-
     }
 
     fun setNavigationController() {
         val navController = findNavController(R.id.navHostFragment_MainActivity)
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            if(arrayListOf(R.id.homeFragment, R.id.searchFragment).contains(destination.id)){
+                isOnline(this)
+            }
+        }
         isOnline(this)
         bottom_navigation.setupWithNavController(navController)
 
@@ -76,7 +100,6 @@ class MainActivity() : AppCompatActivity() {
 
 
         findNavController(R.id.navHostFragment_MainActivity).navigate(R.id.yourListsFragment)
-
     }
 
     private fun setItemOn(){
@@ -88,5 +111,11 @@ class MainActivity() : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if(!isOnline(this)){
+            this.finishAffinity();
+        }
+    }
 
 }

@@ -31,8 +31,10 @@ class MoviesPagingSource(
                 nextKey = nextKey
             )
         } catch (exception: IOException) {
+            exception.printStackTrace()
             return LoadResult.Error(exception)
         } catch (exception: HttpException) {
+            exception.printStackTrace()
             return LoadResult.Error(exception)
         }
     }
@@ -63,8 +65,10 @@ class TVPagingSource(
                 nextKey = nextKey
             )
         } catch (exception: IOException) {
+            exception.printStackTrace()
             return LoadResult.Error(exception)
         } catch (exception: HttpException) {
+            exception.printStackTrace()
             return LoadResult.Error(exception)
         }
     }
@@ -94,8 +98,10 @@ class ActorsPagingSource(
                 nextKey = nextKey
             )
         } catch (exception: IOException) {
+            exception.printStackTrace()
             return LoadResult.Error(exception)
         } catch (exception: HttpException) {
+            exception.printStackTrace()
             return LoadResult.Error(exception)
         }
     }

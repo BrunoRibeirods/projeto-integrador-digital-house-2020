@@ -13,6 +13,6 @@ data class Actor(
     override val popularity: Double?
 ) : Card {
     fun asActorDatabase(): Actor {
-        return Actor(marvel_id = id, name = name, image = image, description = descricao)
+        return Actor(marvel_id = id, name = name, image = image, description = "")
     }
 }
