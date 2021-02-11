@@ -249,7 +249,7 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                         view.rc_serie_seasons.apply {
                             view.tv_title_rc.visibility = View.VISIBLE
                             adapter =
-                                knownfor?.let { card ->
+                                knownfor.distinctBy { it.id }.let { card ->
                                     KnownForAdapter(card, CardDetailNavigation { detail ->
                                         val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
                                         findNavController().navigate(action)
