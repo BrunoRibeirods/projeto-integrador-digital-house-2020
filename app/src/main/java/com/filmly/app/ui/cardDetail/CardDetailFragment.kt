@@ -119,7 +119,7 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                         view.rc_cast.visibility = View.VISIBLE
 
                         view.rc_cast.apply {
-                            adapter = it.credits?.cast?.let { it1 -> CastAdapter(it1, CardDetailNavigation {
+                            adapter = it.aggregate_credits?.cast?.let { it1 -> CastAdapter(it1, CardDetailNavigation {
                                 detail -> val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
                                 findNavController().navigate(action)
                             }) }
@@ -241,13 +241,16 @@ class CardDetailFragment : Fragment(), CardDetailListsAdapter.OnClickSeasonListe
                         else
                             view.tv_sinopseCardDetail.text = it.biography
 
-                        val movies = it.movie_credits?.cast?.map { it.convertToFilm() }
+                        val knownfor = arrayListOf<Card>()
+                        knownfor.addAll(it.movie_credits?.cast?.map { it.convertToFilm() }!!)
+                        knownfor.addAll(it.tv_credits?.cast?.map { it.convertToSerie() }!!)
+                        knownfor.sortByDescending { it.popularity }
 
                         view.rc_serie_seasons.apply {
                             view.tv_title_rc.visibility = View.VISIBLE
                             adapter =
-                                movies?.let { movies ->
-                                    KnownForAdapter(movies, CardDetailNavigation { detail ->
+                                knownfor?.let { card ->
+                                    KnownForAdapter(card, CardDetailNavigation { detail ->
                                         val action = CardDetailFragmentDirections.actionCardDetailFragmentSelf(detail)
                                         findNavController().navigate(action)
                                     })

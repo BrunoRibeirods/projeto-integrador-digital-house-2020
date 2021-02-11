@@ -8,4 +8,5 @@ interface Card: Serializable {
     val image: String?
     val descricao: String?
     val type: String?
+    val popularity: Double?
 }

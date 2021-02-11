@@ -31,7 +31,8 @@ data class Trending(
             name = title,
             image = poster_path,
             descricao = overview,
-            type = media_type
+            type = media_type,
+            popularity = popularity
         )
     }
 
@@ -41,7 +42,8 @@ data class Trending(
             name = name,
             image = poster_path,
             descricao = overview,
-            type = media_type
+            type = media_type,
+            popularity = popularity
         )
     }
 
@@ -52,7 +54,8 @@ data class Trending(
             name = name,
             image = profile_path,
             descricao = over?.joinToString(prefix = "Conhecido por:  \n", separator = "\n"),
-            type = media_type
+            type = media_type,
+            popularity = popularity
         )
     }
 }
@@ -78,7 +81,8 @@ data class HomeSerieNetwork(
         name = name,
         image = poster_path,
         descricao = overview,
-        type = "tv"
+        type = "tv",
+        popularity = popularity
     )
 }
 
@@ -95,7 +99,7 @@ data class HomeFilmNetwork(
     val genre_ids: List<Int>? = null,
     val popularity: Double? = null
 ) {
-    fun convertToFilm() = Film(id, title, poster_path, overview, "movie")
+    fun convertToFilm() = Film(id, title, poster_path, overview, "movie", popularity)
 }
 
 @Serializable
@@ -117,7 +121,8 @@ data class HomeActorNetwork(
             image = profile_path,
             descricao = null,
             type = "person",
-            known_for = null
+            known_for = null,
+            popularity = popularity
         )
     }
 }

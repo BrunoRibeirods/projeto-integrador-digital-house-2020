@@ -109,7 +109,7 @@ interface TmdbApi {
         @Query("api_key") api_key: String
     ): MovieCast
 
-    @GET("tv/{tv_id}?language=pt-BR&append_to_response=credits")
+    @GET("tv/{tv_id}?language=pt-BR&append_to_response=aggregate_credits")
     suspend fun getTvCast(
         @Path("tv_id") tv_id: Int,
         @Query("api_key") api_key: String
