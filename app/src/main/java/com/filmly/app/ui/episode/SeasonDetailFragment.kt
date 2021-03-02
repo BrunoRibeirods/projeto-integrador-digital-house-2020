@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -102,7 +103,7 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
         viewModel.tvEpisodesLive.observe(viewLifecycleOwner){
             adapter1 = it.episodes?.let { it1 ->  SeasonEpisodeAdapter(it1, this@SeasonDetailFragment, this@SeasonDetailFragment) }!!
             episodiosAssistidos = mutableListOf()
-            readEpisodesWatch()
+            readEpisodesWatch(viewLifecycleOwner)
             rc_season_detail.apply {
                 adapter = adapter1
                 layoutManager = LinearLayoutManager(view.context)
@@ -141,7 +142,7 @@ class SeasonDetailFragment : Fragment(), SeasonEpisodeAdapter.OnClickEpisodeList
     }
 
 
-    private fun readEpisodesWatch(){
+    private fun readEpisodesWatch(viewLifecycleOwner: LifecycleOwner){
 
         cr.document(name)
             .get()
